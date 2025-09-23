@@ -7,7 +7,7 @@ import ReactPlayer from "react-player";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
  
 import { useState } from "react";
-import Comments from "../components/comments";
+import Comments from "../components/Comments";
 
  
 
@@ -73,7 +73,7 @@ const Video = () => {
                     <Box>
                          <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} mb={"15px"}   >
                               <Box display={"flex"}   gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>

@@ -40,7 +40,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -51,7 +51,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-1.png"
+                                        image="/assets/testImages/thumb-1.png"
                                         title="green iguana"
                                    />
                                     
@@ -95,7 +95,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -106,7 +106,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-2.png"
+                                        image="/assets/testImages/thumb-2.png"
                                         title="green iguana"
                                    />
                                     
@@ -150,7 +150,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -161,7 +161,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-3.png"
+                                        image="/assets/testImages/thumb-3.png"
                                         title="green iguana"
                                    />
                                     
@@ -205,7 +205,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -216,7 +216,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-4.png"
+                                        image="/assets/testImages/thumb-4.png"
                                         title="green iguana"
                                    />
                                     
@@ -260,7 +260,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -271,7 +271,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-5.png"
+                                        image="/assets/testImages/thumb-5.png"
                                         title="green iguana"
                                    />
                                     
@@ -315,7 +315,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -326,7 +326,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-6.png"
+                                        image="/assets/testImages/thumb-6.png"
                                         title="green iguana"
                                    />
                                     
@@ -370,7 +370,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -381,7 +381,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-7.png"
+                                        image="/assets/testImages/thumb-7.png"
                                         title="green iguana"
                                    />
                                     
@@ -425,7 +425,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -436,7 +436,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-8.png"
+                                        image="/assets/testImages/thumb-8.png"
                                         title="green iguana"
                                    />
                                     
@@ -480,7 +480,7 @@ const Courses = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -491,7 +491,7 @@ const Courses = () => {
                               <Box position={"relative"}>
                                     <CardMedia
                                         sx={{ height: 260 }}
-                                        image="src/assets/testImages/thumb-9.png"
+                                        image="/assets/testImages/thumb-9.png"
                                         title="green iguana"
                                    />
                                     

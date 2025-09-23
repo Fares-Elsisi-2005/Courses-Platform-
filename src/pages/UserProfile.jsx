@@ -16,7 +16,7 @@ const UserProfile = () => {
                <Divider sx={{ mt: "15px", mb: "25px" }} />
                <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} sx={{backgroundColor:colors.primary[200],borderRadius:"8px",p:"20px"}}>
                     <Box display={"flex"} flexDirection={"column"} marginBottom={"20px"} gap={"10px"} textAlign={"center"}  >
-                         <Avatar alt="Ardit korko" src="/src/assets/testImages/pic-1.jpg" sx={{ width: 56, height: 56,alignSelf:"center" }}  /> 
+                         <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg" sx={{ width: 56, height: 56,alignSelf:"center" }}  /> 
                          <Box>
                               <Typography variant="h5">Ardit korko</Typography>
                               <Typography variant="h6" sx={{ color: colors.primary[300], }}>developer</Typography>

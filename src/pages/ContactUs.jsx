@@ -8,7 +8,7 @@ const ContactUs = () => {
                <Box sx={{
                     width: isMobile ? "100%" : "50%" 
                }}>
-               <img   width={"100%"} src="src/assets/testImages/contact-img.svg" alt="" />
+               <img   width={"100%"} src="/assets/testImages/contact-img.svg" alt="" />
 
                </Box>
                <ContactForm  />

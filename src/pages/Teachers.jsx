@@ -60,7 +60,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -96,7 +96,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -132,7 +132,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -168,7 +168,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -204,7 +204,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -240,7 +240,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -276,7 +276,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -312,7 +312,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -348,7 +348,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
@@ -384,7 +384,7 @@ const Teachers = () => {
                          
                          <CardContent>
                               <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
                                         <Typography variant="h5">Ardit korko</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>

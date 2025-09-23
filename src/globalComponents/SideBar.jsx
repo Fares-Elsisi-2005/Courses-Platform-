@@ -38,7 +38,7 @@ const SideBar = ({ isCollapsed ,setIsCollapsed }) => {
                </Box> :  ""}
                
                <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src="/src/assets/images/profileImage.png" alt="profile image" /> 
+                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src="/assets/images/profileImage.png" alt="profile image" /> 
                     <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>Fares Ahmed</Typography>
                     <Typography variant="h5" sx={{ color: colors.grey[400] }}>Student</Typography>
                     <Button onClick={()=>{navigate("/UserProfile")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>

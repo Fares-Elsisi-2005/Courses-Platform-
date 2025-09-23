@@ -1,7 +1,7 @@
 import {useTheme, Box,Button ,Typography    } from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
-import aboutImg from "../assets/testImages/about-img.svg";
+import aboutImg from "/assets/testImages/about-img.svg";
 import SchoolIcon from '@mui/icons-material/School';
 import ClassIcon from '@mui/icons-material/Class';
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';

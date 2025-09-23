@@ -45,7 +45,7 @@ const Course = () => {
                          > 
                               <Box      >
                                    <Box position={"relative"}>
-                                             <img style={{width:"100%", borderRadius:"10px" }} src="src/assets/testImages/post-1-1.png" alt="" />
+                                             <img style={{width:"100%", borderRadius:"10px" }} src="/assets/testImages/post-1-1.png" alt="" />
                                              <Box sx={{
                                                   width: "fit-content",
                                                   padding: "6px",
@@ -65,7 +65,7 @@ const Course = () => {
                               </Box>
                               <Box alignSelf={"start"}>
                                    <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src="src/assets/testImages/pic-1.jpg"  /> 
+                                             <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                              <Box>
                                                   <Typography variant="h5">Ardit korko</Typography>
                                                   <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
@@ -106,7 +106,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src="src/assets/testImages/post-1-1.png"
+                                        src="/assets/testImages/post-1-1.png"
                                         loading="lazy"
                                         alt=""
                                         style={{
@@ -158,7 +158,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src="src/assets/testImages/post-1-2.png"
+                                        src="/assets/testImages/post-1-2.png"
                                         loading="lazy"
                                         alt=""
                                         style={{
@@ -210,7 +210,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src="src/assets/testImages/post-1-3.png"
+                                        src="/assets/testImages/post-1-3.png"
                                         loading="lazy"
                                         alt=""
                                         style={{
@@ -262,7 +262,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src="src/assets/testImages/post-1-4.png"
+                                        src="/assets/testImages/post-1-4.png"
                                         loading="lazy"
                                         alt=""
                                         style={{
@@ -314,7 +314,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src="src/assets/testImages/post-1-5.png"
+                                        src="/assets/testImages/post-1-5.png"
                                         loading="lazy"
                                         alt=""
                                         style={{
@@ -366,7 +366,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src="src/assets/testImages/post-1-6.png"
+                                        src="/assets/testImages/post-1-6.png"
                                         loading="lazy"
                                         alt=""
                                         style={{
