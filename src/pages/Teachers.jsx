@@ -7,6 +7,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
+import { users } from "../data/data";
+
+import {   getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } from "./../services/serviceProvider";
+ 
+
 
 const Teachers = () => {
      const theme = useTheme();
@@ -54,366 +59,46 @@ const Teachers = () => {
                               
                               
                     </Box>
-
-                    <Card sx={{ maxWidth: "100%" }}>
+ 
+                    {users.filter((user) => user.role === "teacher").map((teacher) => (
+                          <Card key={teacher.userId} sx={{ maxWidth: "100%" }}>
                          
                          
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
+                              <CardContent>
+                                   <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
+                                        <Avatar alt="Ardit korko" src= {teacher.image}  /> 
+                                        <Box>
+                                             <Typography variant="h5">{teacher.name}</Typography>
+                                             <Typography variant="h6" sx={{color:colors.primary[300],}}>{teacher.role}</Typography>
 
+                                        </Box>
                                    </Box>
-                              </Box>
 
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
+                                   <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
+                                   <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>{getTotalPlaylists(teacher.userId)}</span></Typography>
+                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>{getTotalVideos(teacher.userId)}</span></Typography>
+                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>{getTotalPlaylitslikes(teacher.userId)}</span></Typography>
+                                        
 
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
+                                        
                                    </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
+                              
                                    
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
-
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>developer</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>3</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>39</span></Typography>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>1324</span></Typography>
-                                   
-
-                              </Box>
-                             
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/TeacherProfile/10")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View profile</Button>
-                          
-                         </CardActions>
-                    </Card>
+                              </CardContent>
+                              <CardActions>
+                                   <Button onClick={()=>{navigate(`/TeacherProfile/${teacher.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                        width:"fit-content", 
+                                        color:colors.white[100],
+                                        textTransform:"capitalize",
+                                        "&:hover":{
+                                             backgroundColor:colors.purple[600]
+                                        },
+                                        transition:"all 0.3s"  }}>View profile</Button>
+                              
+                              </CardActions>
+                         </Card>
+                    ))}
+ 
                </Box>
                     
           </Box>

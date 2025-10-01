@@ -18,12 +18,15 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Logout from '@mui/icons-material/Logout';
+import { getuserByid} from "./../services/serviceProvider";
+
 
 
  
 
 
 const TobBar = ({ isCollapsed, setIsCollapsed }) => {
+  let userData = getuserByid("u_1002")
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -159,9 +162,9 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src="/assets/images/profileImage.png" alt="profile image" /> 
-                <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>Fares Ahmed</Typography>
-                <Typography variant="h5" sx={{ color: colors.grey[400] }}>Student</Typography>
+                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {userData.image} alt="profile image" /> 
+                <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{userData.name}</Typography>
+                <Typography variant="h5" sx={{ color: colors.grey[400] }}>{userData.role}</Typography>
                 <Button onClick={()=>{navigate("/UserProfile")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                     
         </Box>

@@ -9,6 +9,7 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { getuserByid} from "./../services/serviceProvider";
 
  
 const SideBar = ({ isCollapsed ,setIsCollapsed }) => {
@@ -17,7 +18,7 @@ const SideBar = ({ isCollapsed ,setIsCollapsed }) => {
      const isSmallScreen = useMediaQuery('(max-width:900px)');
      const ismobile = useMediaQuery('(max-width:500px)');
      const navigate = useNavigate();
-     
+     let userData = getuserByid("u_1002")
 
      console.log(isCollapsed)
      return (
@@ -38,9 +39,9 @@ const SideBar = ({ isCollapsed ,setIsCollapsed }) => {
                </Box> :  ""}
                
                <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src="/assets/images/profileImage.png" alt="profile image" /> 
-                    <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>Fares Ahmed</Typography>
-                    <Typography variant="h5" sx={{ color: colors.grey[400] }}>Student</Typography>
+                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {userData.image} alt="profile image" /> 
+                    <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{userData.name}</Typography>
+                    <Typography variant="h5" sx={{ color: colors.grey[400] }}>{userData.role}</Typography>
                     <Button onClick={()=>{navigate("/UserProfile")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                </Box>
                <List>

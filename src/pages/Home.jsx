@@ -7,22 +7,36 @@ import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
 
-import CodeIcon from '@mui/icons-material/Code';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import SettingsIcon from '@mui/icons-material/Settings';
+ 
 import HtmlIcon from '@mui/icons-material/Html';
 import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import PhpIcon from '@mui/icons-material/Php';
+import { getuserByid } from "./../services/serviceProvider";
+import * as FaIcons from "react-icons/fa"; // all fontawesome icons
+import * as IoIcons from "react-icons/io5";
+import * as MdIcons from "react-icons/md";
+import * as HiIcons from "react-icons/hi";
+import * as SiIcons from "react-icons/si";
+import { courses, categories } from "../data/data";
+
+const allIcons = { 
+     ...FaIcons, 
+     ...IoIcons, 
+     ...MdIcons,
+     ...HiIcons,
+     ...SiIcons,
+
+  
+
+};
+
 
 const Home = () => {
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
+     let CurrentUserData = getuserByid("u_1002");
 
 
      const handleClick = () => {
@@ -57,11 +71,11 @@ const Home = () => {
                               
                          }}>
                               <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Likes And Comments</Typography>
-                              <Typography variant="h5">total likes: <span style={{color:colors.purple[500]}}>25</span></Typography>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View likes</Button>
-                              <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>12</span></Typography>
+                              <Typography variant="h5">total Liked Videos: <span style={{color:colors.purple[500]}}>{CurrentUserData.likedVideos.length}</span></Typography>
+                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Liked vidoes</Button>
+                              <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>{CurrentUserData.userCommentsId.length}</span></Typography>
                               <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View comments</Button>
-                              <Typography variant="h5">total Playlists: <span style={{color:colors.purple[500]}}>4</span></Typography>
+                              <Typography variant="h5">Saved Playlists: <span style={{ color: colors.purple[500] }}>{CurrentUserData.savedPlaylits.length}</span></Typography>
                               <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Playlists</Button>
                              
 
@@ -78,15 +92,15 @@ const Home = () => {
                               height:"fit-content"
                               
                          }}>
-                              <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Top Categories</Typography>
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<CodeIcon />} label="development" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<BarChartIcon />} label="business" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<ModeEditIcon />} label="design" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<TrendingUpIcon />} label="marketing" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<MusicNoteIcon />} label="music" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<PhotoCameraIcon />} label="photography" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<SettingsIcon />} label="software" />
-                             
+                              <Typography variant="h4" sx={{ marginBottom: "10px", width: "100%" }}>Categories</Typography>
+                              {categories.map((category, index) => {
+                                   const IconComponent = allIcons[category.icon]; 
+
+                                   return (
+                                        <Chip key={index} sx={{ width: "fit-content" }} onClick={handleClick} icon={IconComponent ? <IconComponent size={20} />  : null} label={category.name} />
+                                        
+                                   )
+                                })}
 
                               
                               
@@ -101,13 +115,26 @@ const Home = () => {
                               height:"fit-content"
                               
                          }}>
-                              <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Pupular Topics</Typography>
+                              <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Sub Categories</Typography>
                                 
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<HtmlIcon />} label="HTML" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<JavascriptIcon />} label="javascript" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<CssIcon />} label="CSS" />
-                               <Chip sx={{width:"fit-content"}} onClick={handleClick} icon={<PhpIcon />} label="PHP" />
+                               
+                               {categories.map((category, i) =>
+                                   category.subCategories.map((subCategory, j) => {
+                                        const IconComponent = allIcons[subCategory.icon];
+                                        return (
+                                             <Chip
+                                             key={`${i}-${j}`}
+                                             sx={{ width: "fit-content" }}
+                                             onClick={handleClick}
+                                             icon={IconComponent ? <IconComponent size={20} /> : null}
+                                             label={subCategory.name}
+                                             />
+                                        );
+                                   })
+                              )}
                              
+                              
+
 
                               
                               
@@ -152,282 +179,64 @@ const Home = () => {
                          },
                          }}>
                    
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
+                    {
+                         courses.map((course) => (
+                              <Card key={course.courseId} sx={{ maxWidth: "100%" }}>
                          
                          
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
+                                   <CardContent>
+                                        <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
+                                             <Avatar alt="Ardit korko" src= {getuserByid(course.teacherId).image} /> 
+                                             <Box>
+                                                  <Typography variant="h5">{ getuserByid(course.teacherId).name}</Typography>
+                                                  <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
 
-                                   </Box>
-                              </Box>
+                                             </Box>
+                                        </Box>
 
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-1.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
+                                        <Box position={"relative"}>
+                                             <CardMedia
+                                                  sx={{ height: 260 }}
+                                                  image={course.image}
+                                                  title="green iguana"
+                                             />
+                                             
+                                             <Box sx={{
+                                                  width: "fit-content",
+                                                  padding: "6px",
+                                                  borderRadius: "5px",
+                                                  backgroundColor: "#000000ac",
+                                                  color: "#fff",
+                                                  position: "absolute",
+                                                  top: "10px",
+                                                  left:"10px"
+                                                  
+                                             }}>
+                                                  <Typography variant="h6">{`${course.playlist.length} videos`}</Typography>
+                                                  
+                                             </Box>
+
+
+                                        </Box>
+                                        <Typography variant="h5" component="div" mt={"10px"}>
+                                              {course.title}
+                                        </Typography>
                                         
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-2.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-3.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-4.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-5.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                      
+                                   </CardContent>
+                                   <CardActions>
+                                        <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                             width:"fit-content", 
+                                             color:colors.white[100],
+                                             textTransform:"capitalize",
+                                             "&:hover":{
+                                                  backgroundColor:colors.purple[600]
+                                             },
+                                             transition:"all 0.3s"  }}>View Playlists</Button>
+                                   
+                                   </CardActions>
+                              </Card>
+                         ))
+                    }
                
                      
                     </Box>

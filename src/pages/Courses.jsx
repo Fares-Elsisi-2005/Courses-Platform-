@@ -7,12 +7,16 @@ import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { getuserByid} from "./../services/serviceProvider";
+import { courses } from "../data/data";
 
 const Courses = () => {
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const divider = useRef(null);
      const navigate = useNavigate();
+
+      
 
 
 
@@ -35,506 +39,69 @@ const Courses = () => {
                          }}>
                    
                      
-                    <Card sx={{ maxWidth: "100%" }}>
+
+                    {
+                         courses.map((course) => (
+                              <Card key={course.courseId} sx={{ maxWidth: "100%" }}>
                          
                          
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
+                                   <CardContent>
+                                        <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
+                                             <Avatar alt="Ardit korko" src={getuserByid(course.teacherId).image} /> 
+                                             <Box>
+                                                  <Typography variant="h5">{ getuserByid(course.teacherId).name}</Typography>
+                                                  <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
 
-                                   </Box>
-                              </Box>
+                                             </Box>
+                                        </Box>
 
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-1.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
+                                        <Box position={"relative"}>
+                                             <CardMedia
+                                                  sx={{ height: 260 }}
+                                                  image={course.image}
+                                                  title="green iguana"
+                                             />
+                                             
+                                             <Box sx={{
+                                                  width: "fit-content",
+                                                  padding: "6px",
+                                                  borderRadius: "5px",
+                                                  backgroundColor: "#000000ac",
+                                                  color: "#fff",
+                                                  position: "absolute",
+                                                  top: "10px",
+                                                  left:"10px"
+                                                  
+                                             }}>
+                                                  <Typography variant="h6">{`${course.playlist.length} videos`}</Typography>
+                                                  
+                                             </Box>
+
+
+                                        </Box>
+                                        <Typography variant="h5" component="div" mt={"10px"}>
+                                              {course.title}
+                                        </Typography>
                                         
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-2.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-3.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-4.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-5.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-6.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-7.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-8.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                    <Card sx={{ maxWidth: "100%" }}>
-                         
-                         
-                         <CardContent>
-                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
-                                   <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
-
-                                   </Box>
-                              </Box>
-
-                              <Box position={"relative"}>
-                                    <CardMedia
-                                        sx={{ height: 260 }}
-                                        image="/assets/testImages/thumb-9.png"
-                                        title="green iguana"
-                                   />
-                                    
-                                   <Box sx={{
-                                        width: "fit-content",
-                                        padding: "6px",
-                                        borderRadius: "5px",
-                                        backgroundColor: "#000000ac",
-                                        color: "#fff",
-                                        position: "absolute",
-                                        top: "10px",
-                                        left:"10px"
-                                        
-                                   }}>
-                                        <Typography variant="h6">10 videos</Typography>
-                                        
-                                    </Box>
-
-
-                              </Box>
-                              <Typography variant="h5" component="div" mt={"10px"}>
-                                   complete HTML tutorial
-                              </Typography>
-                               
-                         </CardContent>
-                         <CardActions>
-                              <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                    width:"fit-content", 
-                                    color:colors.white[100],
-                                    textTransform:"capitalize",
-                                    "&:hover":{
-                                        backgroundColor:colors.purple[600]
-                                    },
-                                    transition:"all 0.3s"  }}>View Playlists</Button>
-                          
-                         </CardActions>
-                    </Card>
-                     
-                     
+                                   </CardContent>
+                                   <CardActions>
+                                        <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                             width:"fit-content", 
+                                             color:colors.white[100],
+                                             textTransform:"capitalize",
+                                             "&:hover":{
+                                                  backgroundColor:colors.purple[600]
+                                             },
+                                             transition:"all 0.3s"  }}>View Playlists</Button>
+                                   
+                                   </CardActions>
+                              </Card>
+                         ))
+                    }
                
                      
                     </Box>
-                    <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}  >
+                    {courses.length> 8? <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}  >
                          <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{backgroundColor:colors.yellow[100],
                          width: "fit-content", 
                                    
@@ -547,7 +114,7 @@ const Courses = () => {
                     }}>
                          load more
                     </Button>
-                    </Box>
+                    </Box>:null}
                </Box>
      )
 }

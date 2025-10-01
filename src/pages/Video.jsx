@@ -2,22 +2,28 @@ import {useTheme, Box,Button ,Typography ,Divider,Avatar,TextField ,TextareaAuto
 import { tokens } from "../theme";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,  useParams  } from "react-router-dom";
 import ReactPlayer from "react-player";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
  
 import { useState } from "react";
 import Comments from "../components/Comments";
+import { getCourse,getuserByid} from "./../services/serviceProvider";
+
 
  
 
 const Video = () => {
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
+     const { courseid,videoid } = useParams();
      const navigate = useNavigate();
-     const [islike,setIslike] = useState(false)
+     const [islike, setIslike] = useState(false)
+     let courseData = getCourse(courseid)
+     let videoData = courseData.playlist.filter((video)=> video.videoId === videoid)[0]
      return (
           <Box>
+                
                <Box sx={{
                backgroundColor: colors.primary[200],
                     p: "15px",
@@ -34,7 +40,7 @@ const Video = () => {
           }} >
                <ReactPlayer
                          slot="media"
-                         src="https://youtu.be/BEi3tU61ixc?si=NnKCYE9tO6WOx_80"
+                         src= {videoData.url}
                          controls 
                          style={{
                               width: "100%",
@@ -45,17 +51,17 @@ const Video = () => {
                ></ReactPlayer>
                </Box>
                <Box >
-                    <Typography sx={{margin:"10px 0"}} variant="h5">Complete HTML tutorial (part 01)</Typography>
+                         <Typography sx={{ margin: "10px 0" }} variant="h5">{videoData.title}</Typography>
 
                     <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
                          <Box  display={"flex"} gap={"10px"}>
                               <Box display={"flex"} gap={"5px"}  >
                               <CalendarTodayIcon sx={{color:colors.purple[500]}} />
-                              <Typography>22-10-2025</Typography>
+                              <Typography>{videoData.createdAt}</Typography>
                               </Box>
                               <Box display={"flex"} gap={"5px"}>
                                    <FavoriteIcon sx={{color:colors.purple[500]}} />
-                                   <Typography>44 likes</Typography>
+                                   <Typography>{`${videoData.likes} likes`}</Typography>
                               </Box>
                     
                          </Box>
@@ -75,8 +81,8 @@ const Video = () => {
                               <Box display={"flex"}   gap={"10px"} >
                                    <Avatar alt="Ardit korko" src="/assets/testImages/pic-1.jpg"  /> 
                                    <Box>
-                                        <Typography variant="h5">Ardit korko</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>8-9-2025</Typography>
+                                             <Typography variant="h5">{getuserByid(courseData.teacherId ).name}</Typography>
+                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>{courseData.createdAt}</Typography>
 
                                    </Box>
                               </Box>
@@ -92,7 +98,7 @@ const Video = () => {
                               }}>View Playlists</Button>
 
                          </Box>
-                         <Typography variant="body1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum rem et ullam unde, aliquid voluptatibus asperiores tempora veritatis quaerat est sed quae debitis, totam repudiandae labore. Ipsum, modi quas. Unde!</Typography>
+                              <Typography variant="body1">{ courseData.description}</Typography>
                     </Box>
 
        
