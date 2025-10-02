@@ -69,7 +69,8 @@ function App() {
                 <Route path="/About" element={ <About/>} /> 
                 <Route path="/ContactUs" element={ <ContactUs/>} /> 
                 
-                <Route path="/Courses" element={<Courses />} /> 
+                <Route path="/courses/:categoryParam?/:subCategoryParam?" element={<Courses />} />
+ 
                 <Route path="/Course/:id" element={<Course />} /> 
                 <Route path="/Video/:courseid/:videoid" element={<Video />} /> 
                 <Route path="/Teachers" element={<Teachers />} /> 

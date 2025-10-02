@@ -6,12 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
-
  
-import HtmlIcon from '@mui/icons-material/Html';
-import CssIcon from '@mui/icons-material/Css';
-import JavascriptIcon from '@mui/icons-material/Javascript';
-import PhpIcon from '@mui/icons-material/Php';
 import { getuserByid } from "./../services/serviceProvider";
 import * as FaIcons from "react-icons/fa"; // all fontawesome icons
 import * as IoIcons from "react-icons/io5";
@@ -39,9 +34,13 @@ const Home = () => {
      let CurrentUserData = getuserByid("u_1002");
 
 
-     const handleClick = () => {
-          console.info('You clicked the Chip.');
+     const handleClickChipMainCategory = (mainCategoryid) => {
+          navigate(`/Courses/${mainCategoryid}`)
      };
+     const handleClickChipSubCategory = (mainCategoryid,subCategoryid ) => {
+          navigate(`/Courses/${mainCategoryid}/${subCategoryid}`)
+          
+     }
      return ( 
           <Box display={"flex"} flexDirection={"column"} gap={"50px"} >
                <Box>
@@ -97,7 +96,7 @@ const Home = () => {
                                    const IconComponent = allIcons[category.icon]; 
 
                                    return (
-                                        <Chip key={index} sx={{ width: "fit-content" }} onClick={handleClick} icon={IconComponent ? <IconComponent size={20} />  : null} label={category.name} />
+                                        <Chip key={index} sx={{ width: "fit-content" }} onClick={()=>{handleClickChipMainCategory(category.categoryId)}} icon={IconComponent ? <IconComponent size={20} />  : null} label={category.name} />
                                         
                                    )
                                 })}
@@ -125,7 +124,7 @@ const Home = () => {
                                              <Chip
                                              key={`${i}-${j}`}
                                              sx={{ width: "fit-content" }}
-                                             onClick={handleClick}
+                                             onClick={()=>{handleClickChipSubCategory(category.categoryId,subCategory.id)}}
                                              icon={IconComponent ? <IconComponent size={20} /> : null}
                                              label={subCategory.name}
                                              />
