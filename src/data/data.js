@@ -23,7 +23,7 @@ export const users =[
     enrolledCourses: ["c_2001" ],
     createdAt: "2025-08-21T12:30:00Z",
     savedPlaylits: ["c_2001"],
-    likedVideos: ["v_3002", "v_3003"],
+    likedVideos: [ ],
     userCommentsId:["c_2001_cm1","c_2001_cm2","c_2002_cm1","c_2002_cm2","c_2003_cm1","c_2003_cm2","c_2004_cm1","c_2004_cm2","c_2005_cm1","c_2005_cm2","c_2006_cm1","c_2006_cm2","c_2007_cm1","c_2007_cm2","c_2008_cm1","c_2008_cm2"]
     
   },
@@ -656,3 +656,6 @@ export const messages = [
     date: "2025-08-26T14:30:00Z"
   }
 ];
+
+
+ 

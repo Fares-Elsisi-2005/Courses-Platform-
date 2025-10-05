@@ -9,7 +9,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { useNavigate,useParams } from "react-router-dom";
 import {getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "./../services/serviceProvider";
- 
+import { useAppData } from "../Contexts/AppContext";
+
 /* 
  {
     userId: "u_1001",
@@ -27,11 +28,13 @@ import {getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPla
   }
  */
 const TeacherProfile = () => {
+     const { state } = useAppData();
+     const { courses,users } = state;
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const { id } = useParams();
      const navigate = useNavigate();
-     let teacherData = getuserByid(id);
+     let teacherData = getuserByid(users,id);
      return (
           <Box>
                <Typography variant="h3">Profile Details</Typography>
@@ -58,23 +61,23 @@ const TeacherProfile = () => {
                          }}>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"} >
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalPlaylists(id)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalPlaylists(users,id)}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalVideos(id)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalVideos(courses,users,id)}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  enrolled students: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalEnrolledStudent(id)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  enrolled students: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalEnrolledStudent(courses,users,id)}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  likes: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalPlaylitslikes(id)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  likes: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalPlaylitslikes(courses,users,id)}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(id)}</span></Typography>
+                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(courses,users,id)}</span></Typography>
                          </Box>
 
                     </Box>
@@ -141,15 +144,15 @@ const TeacherProfile = () => {
                    
                       
                          {
-                              getCoursesById(id).map((course) => (
-                                   <Card key={course.courseId} sx={{ maxWidth: "100%" }}>
+                              getCoursesById(courses,users,id).map((course) => (
+                                   <Card key={course.courseId} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                               
                               
                                         <CardContent>
                                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                                  <Avatar alt="Ardit korko" src={ getuserByid(course.teacherId).image}  /> 
+                                                  <Avatar alt="Ardit korko" src={ getuserByid(users,course.teacherId).image}  /> 
                                                   <Box>
-                                                       <Typography variant="h5">{ getuserByid(course.teacherId).name}</Typography>
+                                                       <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
                                                        <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
      
                                                   </Box>
@@ -201,7 +204,7 @@ const TeacherProfile = () => {
                                         
                 
                     </Box>
-                    {getCoursesById(id).length > 8 ?
+                    {getCoursesById(courses,users,id).length > 8 ?
                          <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}  >
                               <Button onClick={() => { navigate("/Courses") }} variant="contained" sx={{
                                    backgroundColor: colors.yellow[100],

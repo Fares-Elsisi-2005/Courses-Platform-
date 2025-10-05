@@ -21,6 +21,9 @@ import UserProfileUpdate from "./pages/UserProfileUpdate";
 import Video from "./pages/Video";
 import NotFound from "./pages/NotFound";
 
+// app context 
+import {AppProvider} from "./Contexts/AppContext";
+
 
 
 
@@ -35,8 +38,9 @@ function App() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <div className="app"style={{
+        <CssBaseline />
+        <AppProvider>
+          <div className="app"style={{
           display: 'flex',
           minHeight: '100vh', 
           position:"relative"
@@ -89,6 +93,7 @@ function App() {
              
           </main>
         </div>
+        </AppProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

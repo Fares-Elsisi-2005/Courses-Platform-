@@ -18,6 +18,8 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Logout from '@mui/icons-material/Logout';
+import { useAppData } from "../Contexts/AppContext";
+
 import { getuserByid} from "./../services/serviceProvider";
 
 
@@ -26,7 +28,9 @@ import { getuserByid} from "./../services/serviceProvider";
 
 
 const TobBar = ({ isCollapsed, setIsCollapsed }) => {
-  let userData = getuserByid("u_1002")
+    const { state } = useAppData();
+          const { users,currentUser} = state;
+  let userData = getuserByid(users,currentUser.userId);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);

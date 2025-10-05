@@ -1,70 +1,68 @@
-// services/userService.js
-import { users, courses,categories } from "./../data/data";
  
 
 // get one teacher by id
-export function getuserByid(id) {
+export function getuserByid(users,id) {
     return users.filter((user) => user.userId === id)[0]
 }
  
 
 // get one course by id
-export function getCourse(id) {
+export function getCourse(courses,id) {
   return courses.filter((Course) => Course.courseId == id)[0];
 }
 
 
 //todo: =======================================================================you can do one function to get all coures,coures by main or sub category
 // get  courses by url barams (sub category)
-export function getCoursesBySubCategory(categoryId, subCategoryId) {
+export function getCoursesBySubCategory(courses,categoryId, subCategoryId) {
   return courses.filter((course)=>course.mainCategoryId === categoryId).filter((course)=> course.subCategoryId === subCategoryId)
 }
 
 // get subcategory name by id
-export function getsubCategoryName(categoryId, subCategoryId) {
+export function getsubCategoryName(categories,categoryId, subCategoryId) {
   return categories.filter((cat) => cat.categoryId === categoryId)[0].subCategories.filter((sub) => sub.id === subCategoryId)[0].name;
 }
 
 // get category name by id
-export function getCategoryName(categoryId) {
+export function getCategoryName(categories,categoryId) {
   return categories.filter((cat) => cat.categoryId === categoryId)[0].name;
 }
 
 // get courses by url barams (main category)
-export function getCoursesByMainCategory(categoryId ) {
+export function getCoursesByMainCategory(courses,categoryId ) {
   return courses.filter((course)=>course.mainCategoryId === categoryId) 
 }
   
 
 // get teacher total playlists number by id
-export function getTotalPlaylists(id) {
-  return getuserByid(id).teacherCourses.length;
+export function getTotalPlaylists(users,id) {
+  return getuserByid(users,id).teacherCourses.length;
 }
   
 // get teacher total videos number by id
-export function getTotalVideos(id) {
+export function getTotalVideos(courses,users,id) {
   let videosCount = 0
-  getuserByid(id).teacherCourses.forEach((courseId) => {
-    videosCount += getCourse(courseId).playlist.length
+  getuserByid(users,id).teacherCourses.forEach((courseId) => {
+    videosCount += getCourse(courses,courseId).playlist.length
   });
   return videosCount;
 }
 
   
 // get teacher total enrolled student  number by id
-export function getTotalEnrolledStudent(id) {
+export function getTotalEnrolledStudent(courses,users,id) {
   let enrolledStudentCount = 0
-  getuserByid(id).teacherCourses.forEach((courseId) => {
-    enrolledStudentCount += getCourse(courseId).studentsCount;
+  getuserByid(users,id).teacherCourses.forEach((courseId) => {
+    enrolledStudentCount += getCourse(courses,courseId).studentsCount;
   });
   return enrolledStudentCount;
 }
   
 // get teacher total videos likes   number by id
-export function getTotalPlaylitslikes(id) {
+export function getTotalPlaylitslikes(courses,users,id) {
   let likesCount = 0
-  getuserByid(id).teacherCourses.forEach((courseId) => {
-    getCourse(courseId).playlist.forEach((video) => {
+  getuserByid(users,id).teacherCourses.forEach((courseId) => {
+    getCourse(courses,courseId).playlist.forEach((video) => {
       likesCount += video.likes
     });
   });
@@ -74,10 +72,10 @@ export function getTotalPlaylitslikes(id) {
 
   
 // get teacher total Comments  number by id
-export function getTotalComments(id) {
+export function getTotalComments(courses,users,id) {
   let commentsCount = 0
-  getuserByid(id).teacherCourses.forEach((courseId) => {
-    getCourse(courseId).playlist.forEach((video) => {
+  getuserByid(users,id).teacherCourses.forEach((courseId) => {
+    getCourse(courses,courseId).playlist.forEach((video) => {
       commentsCount += video.comments.length
     });
   });
@@ -87,11 +85,11 @@ export function getTotalComments(id) {
 
 
 // get teacher courses by id
-export function getCoursesById(id) {
-  let courses = [];
-  getuserByid(id).teacherCourses.forEach((courseId) => {
-    courses.push(getCourse(courseId));
+export function getCoursesById(courses,users,id) {
+  let teachercourses = [];
+  getuserByid(users,id).teacherCourses.forEach((courseId) => {
+    teachercourses.push(getCourse(courses,courseId));
    })
-  return  courses;
+  return  teachercourses;
 }
   

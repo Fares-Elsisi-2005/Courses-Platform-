@@ -5,14 +5,18 @@ import { useNavigate } from "react-router-dom";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import { getuserByid} from "./../services/serviceProvider";
+import { getuserByid } from "./../services/serviceProvider";
+import { useAppData } from "../Contexts/AppContext";
+
  
 
 const UserProfile = () => {
+      const { state } = useAppData();
+     const { users ,currentUser} = state;
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
-     let userData = getuserByid("u_1002");
+     let userData = getuserByid(users,currentUser.userId);
 
      /* 
      {

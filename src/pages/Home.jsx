@@ -13,7 +13,8 @@ import * as IoIcons from "react-icons/io5";
 import * as MdIcons from "react-icons/md";
 import * as HiIcons from "react-icons/hi";
 import * as SiIcons from "react-icons/si";
-import { courses, categories } from "../data/data";
+/* import { courses, categories } from "../data/data"; */
+import { useAppData } from "../Contexts/AppContext";
 
 const allIcons = { 
      ...FaIcons, 
@@ -28,10 +29,14 @@ const allIcons = {
 
 
 const Home = () => {
+     const { state } = useAppData();
+     const { courses, categories,users } = state;
+     console.log(courses)
+
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
-     let CurrentUserData = getuserByid("u_1002");
+     let CurrentUserData = getuserByid(users,"u_1002");
 
 
      const handleClickChipMainCategory = (mainCategoryid) => {
@@ -180,14 +185,12 @@ const Home = () => {
                    
                     {
                          courses.map((course) => (
-                              <Card key={course.courseId} sx={{ maxWidth: "100%" }}>
-                         
-                         
+                              <Card key={course.courseId} sx={{ maxWidth: "100%",display:"flex",flexDirection:"column",justifyContent:"space-between" }}>
                                    <CardContent>
                                         <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src= {getuserByid(course.teacherId).image} /> 
+                                             <Avatar alt="Ardit korko" src= {getuserByid(users,course.teacherId).image} /> 
                                              <Box>
-                                                  <Typography variant="h5">{ getuserByid(course.teacherId).name}</Typography>
+                                                  <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
                                                   <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
 
                                              </Box>

@@ -10,15 +10,19 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { getuserByid} from "./../services/serviceProvider";
+import { useAppData } from "../Contexts/AppContext";
 
  
-const SideBar = ({ isCollapsed ,setIsCollapsed }) => {
+const SideBar = ({ isCollapsed, setIsCollapsed }) => {
+     const { state } = useAppData();
+          const { users,currentUser } = state;
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const isSmallScreen = useMediaQuery('(max-width:900px)');
      const ismobile = useMediaQuery('(max-width:500px)');
      const navigate = useNavigate();
-     let userData = getuserByid("u_1002")
+     let userData = getuserByid(users, currentUser.userId);
+     console.log("from side bar",userData )
 
      console.log(isCollapsed)
      return (

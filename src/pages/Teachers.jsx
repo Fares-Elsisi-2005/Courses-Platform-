@@ -7,13 +7,17 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
-import { users } from "../data/data";
+/* import { users } from "../data/data"; */
+import { useAppData } from "../Contexts/AppContext";
+
 
 import {   getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } from "./../services/serviceProvider";
  
 
 
 const Teachers = () => {
+      const { state } = useAppData();
+          const { courses, users } = state;
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
@@ -75,9 +79,9 @@ const Teachers = () => {
                                    </Box>
 
                                    <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                                   <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>{getTotalPlaylists(teacher.userId)}</span></Typography>
-                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>{getTotalVideos(teacher.userId)}</span></Typography>
-                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>{getTotalPlaylitslikes(teacher.userId)}</span></Typography>
+                                   <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>{getTotalPlaylists(users,teacher.userId)}</span></Typography>
+                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>{getTotalVideos(courses,users,teacher.userId)}</span></Typography>
+                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>{getTotalPlaylitslikes(courses,users,teacher.userId)}</span></Typography>
                                         
 
                                         

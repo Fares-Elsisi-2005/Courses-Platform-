@@ -8,9 +8,13 @@ import { tokens } from "../theme";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate,useParams  } from "react-router-dom";
 import { getuserByid,getCoursesByMainCategory,getCoursesBySubCategory,getsubCategoryName,getCategoryName} from "./../services/serviceProvider";
-import { courses} from "../data/data";
+/* import { courses} from "../data/data";
+ */
+import { useAppData } from "../Contexts/AppContext";
 
 const Courses = () => {
+     const { state } = useAppData();
+     const { courses, categories,users } = state;
      const [title, setTitle] = useState("Our Courses");
      const [filteredCourses, setFilteredCourses] = useState(courses);
 
@@ -32,11 +36,11 @@ const Courses = () => {
           let newTitle = "Our Courses";
 
           if (validCategories.includes(categoryParam) && validSubCategories.includes(subCategoryParam)) {
-               newCourses = getCoursesBySubCategory(categoryParam, subCategoryParam);
-               newTitle = getsubCategoryName(categoryParam,subCategoryParam);
+               newCourses = getCoursesBySubCategory(courses,categoryParam, subCategoryParam);
+               newTitle = getsubCategoryName(categories,categoryParam,subCategoryParam);
           } else if (validCategories.includes(categoryParam)) {
-               newCourses = getCoursesByMainCategory(categoryParam);
-               newTitle = getCategoryName(categoryParam);
+               newCourses = getCoursesByMainCategory(courses,categoryParam);
+               newTitle = getCategoryName(categories,categoryParam);
           }
 
           setFilteredCourses(newCourses);
@@ -59,12 +63,12 @@ const Courses = () => {
                     }}>
                     {
                          filteredCourses.map((course) => (
-                              <Card key={course.courseId} sx={{ maxWidth: "100%" }}>
+                              <Card key={course.courseId} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between" }}>
                                    <CardContent>
                                         <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src={getuserByid(course.teacherId).image} /> 
+                                             <Avatar alt="Ardit korko" src={getuserByid(users,course.teacherId).image} /> 
                                              <Box>
-                                                  <Typography variant="h5">{ getuserByid(course.teacherId).name}</Typography>
+                                                  <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
                                                   <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
                                              </Box>
                                         </Box>

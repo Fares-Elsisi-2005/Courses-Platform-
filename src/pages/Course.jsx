@@ -9,15 +9,18 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useState } from "react";
 import { getCourse,getuserByid} from "./../services/serviceProvider";
+import { useAppData } from "../Contexts/AppContext";
  
 
 const Course = () => {
+     const { state } = useAppData();
+     const { courses,  users } = state;
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const { id } = useParams();
      const navigate = useNavigate();
      const [isCourseSaved, setIsCourseSaved] = useState(false);
-     let courseData =  getCourse(id);
+     let courseData =  getCourse(courses,id);
      
 
      return ( 
@@ -73,9 +76,9 @@ const Course = () => {
                               </Box>
                               <Box alignSelf={"start"}>
                                    <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src= {getuserByid(courseData.teacherId).image}  /> 
+                                             <Avatar alt="Ardit korko" src= {getuserByid(users,courseData.teacherId).image}  /> 
                                              <Box>
-                                             <Typography variant="h5">{ getuserByid(courseData.teacherId).name}</Typography>
+                                             <Typography variant="h5">{ getuserByid(users,courseData.teacherId).name}</Typography>
                                              <Typography variant="h6" sx={{ color: colors.primary[300], }}>{ courseData.createdAt}</Typography>
 
                                              </Box>
