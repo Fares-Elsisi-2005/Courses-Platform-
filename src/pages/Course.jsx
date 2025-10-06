@@ -13,14 +13,25 @@ import { useAppData } from "../Contexts/AppContext";
  
 
 const Course = () => {
-     const { state } = useAppData();
-     const { courses,  users } = state;
+     const { state,dispatch } = useAppData();
+     const { courses,  users ,currentUser} = state;
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const { id } = useParams();
      const navigate = useNavigate();
-     const [isCourseSaved, setIsCourseSaved] = useState(false);
-     let courseData =  getCourse(courses,id);
+     let courseData = getCourse(courses, id);
+     const [isCourseSaved, setIsCourseSaved] = useState(currentUser.savedPlaylits.includes(courseData.courseId));
+    
+     function handleCourseSaved(CourseSavedState) {
+          setIsCourseSaved(!isCourseSaved)
+          if (CourseSavedState) {
+               dispatch({ type: "courseSaved", payload: { course: courseData } })
+               
+          } else {
+               dispatch({ type: "courseUnSaved", payload: { course: courseData } })
+               
+          }
+     }
      
 
      return ( 
@@ -35,7 +46,7 @@ const Course = () => {
                     <Box borderRadius={"10px"} p={"20px"}
                          backgroundColor={colors.primary[200]}> 
                          
-                         <Button  onClick={()=>{setIsCourseSaved(!isCourseSaved)}} sx={{backgroundColor:colors.primary[100],mb:"20px"}}>
+                         <Button  onClick={()=>{handleCourseSaved(!isCourseSaved)}} sx={{backgroundColor:colors.primary[100],mb:"20px"}}>
                               {isCourseSaved ?
                                    <BookmarkIcon sx={{ color: colors.purple[500], mr: "5px" }} />
                                    :

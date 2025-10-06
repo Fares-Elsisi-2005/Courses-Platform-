@@ -37,7 +37,7 @@ export default  function appReducer(AppData, action) {
             
             return newAppData;
         }
-        case "unVideoLiked": {
+        case "VideoUnLiked": {
             const newCurrentUser = {...AppData.currentUser,likedVideos: AppData.currentUser.likedVideos.filter((videoid)=> videoid !== action.payload.videoId)}
 
             const newUsersData = AppData.users.map((user) => {
@@ -64,6 +64,39 @@ export default  function appReducer(AppData, action) {
             }) 
             const newAppData = {...AppData,currentUser:newCurrentUser, users: newUsersData,courses:newCoursesData}
             
+            return newAppData;
+        }
+        case "courseSaved": {
+            const newCurrentUser = { ...AppData.currentUser, savedPlaylits: [...AppData.currentUser.savedPlaylits, action.payload.course.courseId] };
+                const newUsersData = AppData.users.map((user) => {
+                        if (user.userId == AppData.currentUser.userId) { 
+                            return {...user,savedPlaylits:[...AppData.currentUser.savedPlaylits,action.payload.course.courseId]}
+                        } else {
+                            return user;
+                        }
+                })
+            console.log("saved from reducer: ", newCurrentUser)
+            
+             
+            const newAppData = {...AppData,  users: newUsersData,currentUser:newCurrentUser }
+
+            return newAppData;
+        }
+        case "courseUnSaved": {
+             const newCurrentUser = { ...AppData.currentUser, savedPlaylits: AppData.currentUser.savedPlaylits.filter((courseId)=> courseId !== action.payload.course.courseId ) };
+                const newUsersData = AppData.users.map((user) => {
+                        if (user.userId == AppData.currentUser.userId) { 
+                            return {...user,savedPlaylits: AppData.currentUser.savedPlaylits.filter((courseId)=> courseId !== action.payload.course.courseId )}
+                        } else {
+                            return user;
+                        }
+                })
+            console.log("unsaved from reducer: ", newCurrentUser)
+            
+             
+            const newAppData = {...AppData,  users: newUsersData,currentUser:newCurrentUser }
+
+
             return newAppData;
         }
         default: {

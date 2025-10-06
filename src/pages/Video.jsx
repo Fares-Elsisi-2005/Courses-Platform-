@@ -23,10 +23,7 @@ const Video = () => {
      const navigate = useNavigate();
      let courseData = getCourse(courses,courseid)
      let videoData = courseData.playlist.filter((video) => video.videoId === videoid)[0]
-     const [islike, setIslike] = useState(currentUser.likedVideos.includes(videoid))
-     console.log("from video: ",currentUser.likedVideos.includes(videoid))
-    
-     /*   */
+     const [islike, setIslike] = useState(currentUser.likedVideos.includes(videoid)) 
 
      function handleVideoLiked(likeState) { 
           setIslike(!islike)
@@ -34,7 +31,7 @@ const Video = () => {
           if (likeState) {
                dispatch({type:"VideoLiked",payload:{course:courseData,videoId:videoid}})
           } else {
-               dispatch({type:"unVideoLiked",payload:{course:courseData,videoId:videoid}})
+               dispatch({type:"VideoUnLiked",payload:{course:courseData,videoId:videoid}})
                
           }
           

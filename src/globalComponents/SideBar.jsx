@@ -22,9 +22,7 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
      const ismobile = useMediaQuery('(max-width:500px)');
      const navigate = useNavigate();
      let userData = getuserByid(users, currentUser.userId);
-     console.log("from side bar",userData )
-
-     console.log(isCollapsed)
+      
      return (
           <Box maxWidth={ismobile?"200":"360px"} sx={{
                transition: "width 0.4s ease",
