@@ -25,7 +25,10 @@ const LikedVideos = () => {
           divider.current?.scrollIntoView();
      }, []); 
      return ( 
-          <Box>
+
+          <>
+               {currentUser.likedVideos.length > 0 ?
+                     <Box>
                <Typography variant="h3">Liked Videos</Typography>
                <Divider ref={divider} sx={{ margin: "15px 0px" }} />
                
@@ -116,7 +119,16 @@ const LikedVideos = () => {
                          </Button>
                     </Box>
                )}
+                    </Box> : <Box display={"flex"} justifyContent={"center"} alignItems={"center"} height={"100vh"}>
+                         <Typography variant="h1">No liked Videos</Typography>
           </Box>
+
+               }
+               
+          </>
+
+      /*     currentUser.LikedVideos.length>0? */
+         
      )
 }
 

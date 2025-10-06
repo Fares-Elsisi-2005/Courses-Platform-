@@ -25,8 +25,11 @@ const SavedPlaylits = () => {
      useEffect(() => {
           divider.current?.scrollIntoView();
      }, []); 
-     return ( 
-          <Box>
+    return ( 
+         <>
+            {
+                currentUser.likedVideos.length > 0 ?
+                     <Box>
                <Typography variant="h3">Saved Playlists</Typography>
                <Divider ref={divider} sx={{ margin: "15px 0px" }} />
                
@@ -112,7 +115,13 @@ const SavedPlaylits = () => {
                          </Button>
                     </Box>
                )}
+                    </Box> :
+                    <Box display={"flex"} justifyContent={"center"} alignItems={"center"} height={"100vh"}>
+                         <Typography variant="h1">No Saved Courses</Typography>
           </Box>
+            }
+         </>
+         
      )
 }
 

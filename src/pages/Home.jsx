@@ -76,11 +76,11 @@ const Home = () => {
                          }}>
                               <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Likes And Comments</Typography>
                               <Typography variant="h5">total Liked Videos: <span style={{color:colors.purple[500]}}>{CurrentUserData.likedVideos.length}</span></Typography>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Liked vidoes</Button>
+                              <Button onClick={()=>{navigate("/LikedVideos")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Liked vidoes</Button>
                               <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>{CurrentUserData.userCommentsId.length}</span></Typography>
                               <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View comments</Button>
                               <Typography variant="h5">Saved Playlists: <span style={{ color: colors.purple[500] }}>{CurrentUserData.savedPlaylits.length}</span></Typography>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Playlists</Button>
+                              <Button  onClick={()=>{navigate("/SavedPlaylits")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Playlists</Button>
                              
 
                               
