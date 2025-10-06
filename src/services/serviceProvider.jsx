@@ -11,6 +11,14 @@ export function getCourse(courses,id) {
   return courses.filter((Course) => Course.courseId == id)[0];
 }
 
+// get one video by id
+export function getVideo(courses, id) {
+  for (const course of courses) {
+    const video = course?.playlist?.find(v => v.videoId === id);
+    if (video) return {   video, courseID:course.courseId };
+  }
+  return null;
+}
 
 //todo: =======================================================================you can do one function to get all coures,coures by main or sub category
 // get  courses by url barams (sub category)

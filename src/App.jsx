@@ -12,6 +12,7 @@ import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import Course from "./pages/Course";
 import Courses from "./pages/Courses";
+import SavedPlaylits from  "./pages/SavedPlaylists";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import TeacherProfile from "./pages/TeacherProfile";
@@ -19,6 +20,7 @@ import Teachers from "./pages/Teachers";
 import UserProfile from "./pages/UserProfile";
 import UserProfileUpdate from "./pages/UserProfileUpdate";
 import Video from "./pages/Video";
+import LikedVideos from "./pages/LikedVideos"
 import NotFound from "./pages/NotFound";
 
 // app context 
@@ -76,7 +78,9 @@ function App() {
                 <Route path="/courses/:categoryParam?/:subCategoryParam?" element={<Courses />} />
  
                 <Route path="/Course/:id" element={<Course />} /> 
+                <Route path="/SavedPlaylits" element={<SavedPlaylits />} /> 
                 <Route path="/Video/:courseid/:videoid" element={<Video />} /> 
+                <Route path="/LikedVideos" element={<LikedVideos />} /> 
                 <Route path="/Teachers" element={<Teachers />} /> 
                 <Route path="/TeacherProfile/:id" element={<TeacherProfile />} /> 
                 <Route path="/UserProfile" element={<UserProfile />} /> 
