@@ -9,7 +9,9 @@ export const tokens = (mode) => ({
         primary: {
             100:"#303330",
             200: "#202320",
-            300: "#fff", 
+            300: "#fff",
+            400:"#141313e0",
+            
         },
         white: {
             100:"#fff"
@@ -17,6 +19,7 @@ export const tokens = (mode) => ({
         dark: {
             100: "#202320",
             200: "#313531ff",
+            300: "#4b504bff",
         },
         purple: {
             500:"rgb(172 89 178)",
@@ -29,12 +32,16 @@ export const tokens = (mode) => ({
         yellow: {
             100:"#e4c600ff",
             200:"#c6af1dff",
+        },
+        blue: {
+            100:"#2177e8"
         }
     } : {
          primary: {
             100:"#d3d5d5",
             200: "#fff",
             300: "#3a3939ff",
+            400:"#ede5e5c6",
             
             
             },
@@ -45,6 +52,7 @@ export const tokens = (mode) => ({
         dark: {
             100: "#202320",
             200: "#313531ff",
+            300: "#4b504bff",
         },
          purple: {
              500: "rgb(172 89 178)",
@@ -58,6 +66,9 @@ export const tokens = (mode) => ({
         yellow: {
            100:"#e4c600ff",
             200:"#c6af1dff",
+            },
+        blue: {
+            100:"#2177e8"
         }
     })
 })

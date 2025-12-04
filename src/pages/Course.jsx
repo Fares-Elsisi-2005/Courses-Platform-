@@ -8,7 +8,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useState } from "react";
-import { getCourse,getuserByid} from "./../services/serviceProvider";
+import {getimageUrl, getCourse,getuserByid} from "./../services/serviceProvider";
 import { useAppData } from "../Contexts/AppContext";
  
 
@@ -97,7 +97,7 @@ const Course = () => {
                                    <Box  >
                                         <Typography variant="h4" sx={{marginBottom:"10px"}}>{courseData.title}</Typography>
                                         <Typography variant="body1">{ courseData.description}</Typography>
-                                        <Button onClick={()=>{navigate(`/TeacherProfile/${courseData.teacherId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Profile</Button>
+                                        <Button onClick={()=>{navigate(`/UserProfile/${courseData.teacherId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Profile</Button>
                                    </Box>
 
                               </Box>
@@ -130,7 +130,7 @@ const Course = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src= {video.thumbImage}
+                                        src= {getimageUrl(video.thumbImage)}
                                         loading="lazy"
                                         alt=""
                                         style={{

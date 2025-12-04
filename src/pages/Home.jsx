@@ -7,7 +7,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
  
-import { getuserByid } from "./../services/serviceProvider";
+import { getuserByid,getimageUrl } from "./../services/serviceProvider";
 import * as FaIcons from "react-icons/fa"; // all fontawesome icons
 import * as IoIcons from "react-icons/io5";
 import * as MdIcons from "react-icons/md";
@@ -199,7 +199,7 @@ const Home = () => {
                                         <Box position={"relative"}>
                                              <CardMedia
                                                   sx={{ height: 260 }}
-                                                  image={course.image}
+                                                  image={getimageUrl(course.image)}
                                                   title="green iguana"
                                              />
                                              

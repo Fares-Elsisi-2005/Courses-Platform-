@@ -8,7 +8,7 @@ const AppDataContext = createContext();
 // Create provider ===> filling the box with the intial data and reducer
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, {
-    currentUser: users[1],
+    currentUser: users[0],
     users,
     categories,
     courses,

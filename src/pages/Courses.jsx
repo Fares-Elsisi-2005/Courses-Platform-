@@ -7,7 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate,useParams  } from "react-router-dom";
-import { getuserByid,getCoursesByMainCategory,getCoursesBySubCategory,getsubCategoryName,getCategoryName} from "./../services/serviceProvider";
+import {getimageUrl, getuserByid,getCoursesByMainCategory,getCoursesBySubCategory,getsubCategoryName,getCategoryName} from "./../services/serviceProvider";
 /* import { courses} from "../data/data";
  */
 import { useAppData } from "../Contexts/AppContext";
@@ -76,7 +76,7 @@ const Courses = () => {
                                         <Box position={"relative"}>
                                              <CardMedia
                                                   sx={{ height: 260 }}
-                                                  image={course.image}
+                                                  image={getimageUrl(course.image)}
                                                   title={course.title}
                                              />
                                              <Box sx={{

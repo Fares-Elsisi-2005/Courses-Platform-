@@ -7,7 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
 import { useEffect, useRef } from "react";
 import { useNavigate  } from "react-router-dom";
-import {  getCourse ,getuserByid} from "./../services/serviceProvider";
+import {getimageUrl,  getCourse ,getuserByid} from "./../services/serviceProvider";
 /* import { courses} from "../data/data";
  */
 import { useAppData } from "../Contexts/AppContext";
@@ -60,7 +60,7 @@ const SavedPlaylits = () => {
                                         <Box position={"relative"}>
                                              <CardMedia
                                                   sx={{ height: 260 }}
-                                                  image={courseData.image}
+                                                  image={getimageUrl(courseData.image)}
                                                   title={courseData.title}
                                              />
                                              <Box sx={{

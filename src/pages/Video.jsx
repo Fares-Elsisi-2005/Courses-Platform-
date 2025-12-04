@@ -8,7 +8,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
  
 import { useState } from "react";
 import Comments from "../components/Comments";
-import { getCourse, getuserByid } from "./../services/serviceProvider";
+import {getimageUrl, getCourse, getuserByid } from "./../services/serviceProvider";
 import { useAppData } from "../Contexts/AppContext";
 
 
@@ -96,7 +96,7 @@ const Video = () => {
                     <Box>
                          <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} mb={"15px"}   >
                               <Box display={"flex"}   gap={"10px"} >
-                                   <Avatar alt="Ardit korko" src= {getuserByid(users,courseData.teacherId ).image}  /> 
+                                   <Avatar alt="Ardit korko" src= {getimageUrl(getuserByid(users,courseData.teacherId ).image)}  /> 
                                    <Box>
                                              <Typography variant="h5">{getuserByid(users,courseData.teacherId ).name}</Typography>
                                         <Typography variant="h6" sx={{color:colors.primary[300],}}>{courseData.createdAt}</Typography>
@@ -104,7 +104,7 @@ const Video = () => {
                                    </Box>
                               </Box>
 
-                              <Button onClick={()=>{navigate(`/TeacherProfile/${courseData.teacherId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                              <Button onClick={()=>{navigate(`/UserProfile/${courseData.teacherId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
                                    width:"fit-content", 
                                    color:colors.white[100],
                                    textTransform:"capitalize",

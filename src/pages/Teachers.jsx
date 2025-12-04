@@ -11,11 +11,12 @@ import Avatar from '@mui/material/Avatar';
 import { useAppData } from "../Contexts/AppContext";
 
 
-import {   getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } from "./../services/serviceProvider";
+import { getimageUrl,  getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } from "./../services/serviceProvider";
  
 
 
 const Teachers = () => {
+   
       const { state } = useAppData();
           const { courses, users } = state;
      const theme = useTheme();
@@ -70,7 +71,7 @@ const Teachers = () => {
                          
                               <CardContent>
                                    <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                        <Avatar alt="Ardit korko" src= {teacher.image}  /> 
+                                        <Avatar alt="Ardit korko" src= {getimageUrl(teacher.image)}  /> 
                                         <Box>
                                              <Typography variant="h5">{teacher.name}</Typography>
                                              <Typography variant="h6" sx={{color:colors.primary[300],}}>{teacher.role}</Typography>
@@ -90,7 +91,7 @@ const Teachers = () => {
                                    
                               </CardContent>
                               <CardActions>
-                                   <Button onClick={()=>{navigate(`/TeacherProfile/${teacher.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                   <Button onClick={()=>{navigate(`/UserProfile/${teacher.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
                                         width:"fit-content", 
                                         color:colors.white[100],
                                         textTransform:"capitalize",

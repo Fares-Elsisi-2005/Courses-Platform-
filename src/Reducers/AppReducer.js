@@ -9,6 +9,22 @@
  */
 export default  function appReducer(AppData, action) {
     switch (action.type) {
+        case "AddNewCourse": {
+            const newCourse = action.payload.course;
+            const newCourses = [...AppData.courses, newCourse];
+              const newCurrentUser = { ...AppData.currentUser, teacherCourses: [...AppData.currentUser.teacherCourses, action.payload.course.courseId] };
+                const newUsersData = AppData.users.map((user) => {
+                        if (user.userId == AppData.currentUser.userId) { 
+                            return {...user,teacherCourses:[...AppData.currentUser.teacherCourses,action.payload.course.courseId]}
+                        } else {
+                            return user;
+                        }
+                })
+ 
+            const newAppData = { ...AppData, courses: newCourses, users: newUsersData, currentUser: newCurrentUser }
+            console.log("new app state:",newAppData)
+            return newAppData
+        }
         case "VideoLiked": {
             const newCurrentUser = {...AppData.currentUser,likedVideos:  [...AppData.currentUser.likedVideos,action.payload.videoId]}
             const newUsersData = AppData.users.map((user) => {
@@ -74,9 +90,7 @@ export default  function appReducer(AppData, action) {
                         } else {
                             return user;
                         }
-                })
-            console.log("saved from reducer: ", newCurrentUser)
-            
+                }) 
              
             const newAppData = {...AppData,  users: newUsersData,currentUser:newCurrentUser }
 

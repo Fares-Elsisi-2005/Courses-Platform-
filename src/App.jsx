@@ -15,16 +15,21 @@ import Courses from "./pages/Courses";
 import SavedPlaylits from  "./pages/SavedPlaylists";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import TeacherProfile from "./pages/TeacherProfile";
 import Teachers from "./pages/Teachers";
-import UserProfile from "./pages/UserProfile";
+import CreateCourse from "./pages/createCourse";
+
+import UserProfilePage from "./pages/UserProfilePage"
 import UserProfileUpdate from "./pages/UserProfileUpdate";
 import Video from "./pages/Video";
 import LikedVideos from "./pages/LikedVideos"
 import NotFound from "./pages/NotFound";
 
-// app context 
-import {AppProvider} from "./Contexts/AppContext";
+// context 
+import { AppProvider } from "./Contexts/AppContext";
+import { AuthProvider } from "./Contexts/AuthContext";
+
+// component for role based
+import ProtectedRoute from "./components/ProtectedRoute"
 
 
 
@@ -41,7 +46,8 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppProvider>
+        <AuthProvider>
+           <AppProvider>
           <div className="app"style={{
           display: 'flex',
           minHeight: '100vh', 
@@ -82,13 +88,23 @@ function App() {
                 <Route path="/Video/:courseid/:videoid" element={<Video />} /> 
                 <Route path="/LikedVideos" element={<LikedVideos />} /> 
                 <Route path="/Teachers" element={<Teachers />} /> 
-                <Route path="/TeacherProfile/:id" element={<TeacherProfile />} /> 
-                <Route path="/UserProfile" element={<UserProfile />} /> 
+                <Route
+                  path="/UserProfile/:id"
+                  element={
+                    <UserProfilePage />
+                  }
+                />
+                <Route
+                  path="/TeachersCrateCourse/:id"
+                  element={
+                    <CreateCourse/>
+                  }
+                />
                 <Route path="/UserProfileUpdate" element={<UserProfileUpdate />} /> 
                 
                 <Route path="/Login" element={ <Login/>} /> 
                 <Route path="/SignUp" element={ <SignUp/>} /> 
-                <Route path="/*" element={ <NotFound/>} /> 
+                <Route path="*" element={ <NotFound/>} /> 
   
               </Routes>
              
@@ -98,9 +114,30 @@ function App() {
           </main>
         </div>
         </AppProvider>
+        </AuthProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
 
 export default App;
+
+/* 
+home => all
+about=> all
+contactus=> all
+courses => all
+course => all
+video => student, teachers , enrolled, admin
+liked videos => student, teachers, admin
+saved courses => student ,teachers,admin
+login => all
+sign up => all
+teacherProfile=>teacher, student ,admin
+updateteacherProfile=> teacher, admin
+studentProfile =>student, teacher, admin
+updateUserProfile => student, admin
+teachers => all
+notfound =>all
+
+ */

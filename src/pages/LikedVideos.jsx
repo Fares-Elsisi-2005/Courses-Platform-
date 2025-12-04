@@ -6,7 +6,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { tokens } from "../theme";
 import { useEffect, useRef } from "react";
 import { useNavigate  } from "react-router-dom";
-import { getVideo} from "../services/serviceProvider";
+import {getimageUrl, getVideo} from "../services/serviceProvider";
 /* import { courses} from "../data/data";
  */
 import { useAppData } from "../Contexts/AppContext";
@@ -56,7 +56,7 @@ const LikedVideos = () => {
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src= {videoData.video.thumbImage}
+                                        src= {getimageUrl(videoData.video.thumbImage)}
                                         loading="lazy"
                                         alt=""
                                         style={{

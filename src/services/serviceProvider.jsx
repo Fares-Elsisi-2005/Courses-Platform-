@@ -101,3 +101,18 @@ export function getCoursesById(courses,users,id) {
   return  teachercourses;
 }
   
+
+
+// convert image file to url
+export function getimageUrl(image)  {
+  if (!image) return "";
+
+  // If it's a File object → create a blob URL
+  if (image instanceof File) {
+    return URL.createObjectURL(image);
+  }
+
+  // Otherwise it's already a string URL
+  return image;
+};
+   

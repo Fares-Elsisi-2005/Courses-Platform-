@@ -19,8 +19,10 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Logout from '@mui/icons-material/Logout';
 import { useAppData } from "../Contexts/AppContext";
+import { useAuth } from "../Contexts/AuthContext";
 
-import { getuserByid} from "./../services/serviceProvider";
+
+import {getimageUrl, getuserByid} from "./../services/serviceProvider";
 
 
 
@@ -28,8 +30,10 @@ import { getuserByid} from "./../services/serviceProvider";
 
 
 const TobBar = ({ isCollapsed, setIsCollapsed }) => {
-    const { state } = useAppData();
-          const { users,currentUser} = state;
+  const { user, dispatchUser } = useAuth();
+   
+  const { state } = useAppData();
+  const { users,currentUser} = state;
   let userData = getuserByid(users,currentUser.userId);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -50,14 +54,25 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
   
   const handleClickLogin = () => {
     handleClose();
-    navigate("/Login");
+    dispatchUser({type:"LOGIN",payload:{
+  user: currentUser,
+  role:  "teacher",
+}})
+   /*  navigate("/Login"); */
   }
   const handleClickSignUp = () => {
     handleClose();
-    navigate("/SignUp");
-  }
+    
+     navigate("/SignUp");
+   
      
-
+  }
+  const handleClickLogout= () => {
+    handleClose();
+    dispatchUser({ type: "LOGOUT" })
+    
+     
+  }
      
     return (
         
@@ -165,14 +180,14 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {userData.image} alt="profile image" /> 
+       {user?.user? <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
+                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {getimageUrl(userData.image)} alt="profile image" /> 
                 <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{userData.name}</Typography>
                 <Typography variant="h5" sx={{ color: colors.grey[400] }}>{userData.role}</Typography>
-                <Button onClick={()=>{navigate("/UserProfile")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
+                <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                     
-        </Box>
         <Divider />
+        </Box> :null}
         <MenuItem onClick={()=>{
               handleClickSignUp()
         }}>
@@ -191,12 +206,15 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
           </ListItemIcon>
           Login
         </MenuItem>
-        <MenuItem  onClick={handleClose}>
+           { user?.user? <MenuItem  
+            onClick={()=>{
+              handleClickLogout()
+        }}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
-        </MenuItem>
+        </MenuItem>:null}
       </Menu>
             </Box>
              
