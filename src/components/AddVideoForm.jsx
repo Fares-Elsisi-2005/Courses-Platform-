@@ -12,17 +12,22 @@ import { Box } from '@mui/material';
 import { useFormikContext } from "formik";
 import { useDropzone } from "react-dropzone";
 import { useTheme } from "@mui/material/styles";
-import { tokens } from "../theme";
-
+import { tokens } from "../theme"; 
 import {
   TextField,
   Avatar,
 } from "@mui/material";
 
+import { useAppData } from "../Contexts/AppContext";
+import {createNewid } from "./../services/serviceProvider";
+ 
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": { padding: theme.spacing(2) },
   "& .MuiDialogActions-root": { padding: theme.spacing(1) }
 }));
+
+ 
 
 export default function AddVideoForm({ open, setOpen, videoToEdit }) {
   const theme = useTheme();
@@ -30,31 +35,33 @@ export default function AddVideoForm({ open, setOpen, videoToEdit }) {
 
   const { values, setFieldValue } = useFormikContext();
 
-  const emptyVideo = {
-    videoId: "v_3009",
-    title: "",
-    url: "",
-    likes: 0,
-    thumbImage: "",
-    createdAt: "",
-    comments: []
-  };
+   const { state } = useAppData();
+       const {   courses } = state;
 
-  const [video, setVideo] = useState(emptyVideo);
+  
+    
+
+  const [video, setVideo] = useState({} );
 
     
   
 
   //  Sync incoming videoToEdit when modal opens
   useEffect(() => {
-    if (videoToEdit) {
-      setVideo(videoToEdit);
-    } else {
-      setVideo(emptyVideo);
-    }
-  }, [videoToEdit, open]);
-
-
+  if (videoToEdit) {
+    setVideo(videoToEdit);
+  } else {
+    setVideo({
+      videoId: createNewid("v"),
+      title: "",
+      url: "",
+      likes: 0,
+      thumbImage: "",
+      createdAt: "",
+      comments: []
+    });
+  }
+}, [videoToEdit, open]);
   // Dropzone for the thumbnail image
   const onDrop = (acceptedFiles) => {
     setVideo({ ...video, thumbImage: acceptedFiles[0] });

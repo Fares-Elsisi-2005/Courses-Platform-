@@ -56,7 +56,7 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
     handleClose();
     dispatchUser({type:"LOGIN",payload:{
   user: currentUser,
-  role:  "teacher",
+  role:  "student",
 }})
    /*  navigate("/Login"); */
   }

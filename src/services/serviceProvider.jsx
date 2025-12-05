@@ -116,3 +116,9 @@ export function getimageUrl(image)  {
   return image;
 };
    
+
+// temporyFunction to crate id 
+  export function  createNewid  (prefix) {
+  return `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
+  };
+  

@@ -85,7 +85,8 @@ Here's a structured plan for your React app with Firebase integration, including
 
 ## =======================(todo list)
 
-add a new function to the serviceprovider that check if the image is object or url
-add new part in the appReducer to handle adding new course
 add a function to the serviceprovider that create new id for each course and video
+
+add confirmation message when user crud course or video
+
 save the the curent theme state in the localstorage

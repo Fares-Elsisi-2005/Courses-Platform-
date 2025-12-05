@@ -1,4 +1,6 @@
-import {useTheme, Box,Button ,Typography,Divider,Avatar  } from "@mui/material";
+import React from "react";
+import { useState } from "react";
+import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton ,} from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
 import {getimageUrl,getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "../services/serviceProvider";
@@ -11,6 +13,22 @@ import CardMedia from '@mui/material/CardMedia';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import Slide from '@mui/material/Slide';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+ const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 
 /* 
@@ -36,10 +54,7 @@ const ProfileView = ({profileUser,currentUser,isOwnProfile,isAdmin}) => {
      const { state } = useAppData();
      const { courses, users } = state;
  */
-     console.log("current user:", currentUser)
-     console.log("profileUser user:", profileUser)
-
-     
+      
  
      if (isOwnProfile) {
           if (currentUser.role == "admin") {
@@ -94,15 +109,34 @@ function TeacherOwnProfile({ userData }) {
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
-      const { state } = useAppData();
+      const { state ,dispatch } = useAppData();
      const { courses, users, currentUser } = state;
      
-     console.log("all Courses:", courses);
-      console.log("all users:", users);
-      console.log("current user:", currentUser);
-      console.log("userData:", userData);
-     
+     const [selectedCourses, setSelectedCourses] = useState([]);
+     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
+     
+          const handleSelectedCourse = (isChecked, Coursedata) => {
+                    setSelectedCourses(prev => {
+                    const updated = isChecked ? [...prev, Coursedata] : prev.filter(c => c.courseId !== Coursedata.courseId);
+
+                   
+                    return updated;
+          });
+          };
+          
+
+       const handleDeleteCourses = () => {
+            /*  const updatedPlaylist = playlist.filter(video => ! selectedCourses.some(selected => selected.videoId === video.videoId)); */
+              dispatch({ type: "DeleteCourses", payload: {  coursesToDelete:selectedCourses } })
+             
+       setSelectedCourses([]);
+       setDeleteConfirmOpen(false);
+       }
+       
+      
+     
+    
      return (
             <Box>
                
@@ -201,10 +235,23 @@ function TeacherOwnProfile({ userData }) {
                     
                </Box>
                <Box mt={"30px"}> 
-                    <Box>
-                         <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
-                         <span style={{ color: colors.dark[300] }}>&gt;</span>
-                         <Button onClick={()=>{navigate(`/TeachersCrateCourse/${currentUser.userId}`)}} sx={{ color: colors.blue[100] }}>Add new course</Button> 
+                    <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+                         <Box>
+                                   <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
+                                   <span style={{ color: colors.dark[300] }}>&gt;</span>
+                                   <Button onClick={() => { navigate(`/TeachersCrateCourse/${currentUser.userId}`) }} sx={{ color: colors.blue[100] }}>Add new course</Button> 
+                         </Box>
+                         
+                          {selectedCourses.length > 0 ?
+                                           <IconButton   aria-label="delete" onClick={()=>{setDeleteConfirmOpen(true)}}   >
+                                             <DeleteIcon sx={{ color: colors.purple[500],fontSize:"1.5em" }} />
+                                           </IconButton>
+                                           :
+                                           <IconButton   aria-label="delete" disabled color="primary"   >
+                                             <DeleteIcon style={{fontSize:"1.5em"}} />
+                                           </IconButton>
+                                           
+                                         }
                     </Box>
                     <Divider sx={{ margin: "15px 0px" }} />
                <Box    display="grid"
@@ -226,8 +273,15 @@ function TeacherOwnProfile({ userData }) {
                               getCoursesById(courses, users, userData.userId).map((course) => (
                                     
                                    
-                                   <Card key={course.courseId} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-                              {console.log("hereeeeee",course)}
+                                   <Card 
+                                   key={course.courseId}
+                                   sx={{
+                                   maxWidth: "100%",
+                                   display: "flex",
+                                   flexDirection: "column",
+                                   justifyContent: "space-between",
+                                   }}
+                                   >
                               
                                         <CardContent>
                                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
@@ -237,6 +291,10 @@ function TeacherOwnProfile({ userData }) {
                                                        <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
      
                                                   </Box>
+                                                  
+                                                  <Button sx={{ backgroundColor: colors.blue[100] ,marginLeft:"auto"}} onClick={()=>{navigate(`/TeachersCrateCourse/${currentUser.userId}/${course.courseId}`)}} variant="contained" >edit</Button>
+                                                  
+                                                  
                                              </Box>
      
                                              <Box position={"relative"}>
@@ -268,7 +326,10 @@ function TeacherOwnProfile({ userData }) {
                                              </Typography>
                                              
                                         </CardContent>
-                                        <CardActions>
+                                        <CardActions sx={{
+                                             display: "flex",
+                                             justifyContent:"space-between"
+                                        }}>
                                              <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
                                                   width:"fit-content", 
                                                   color:colors.white[100],
@@ -276,7 +337,13 @@ function TeacherOwnProfile({ userData }) {
                                                   "&:hover":{
                                                        backgroundColor:colors.purple[600]
                                                   },
-                                                  transition:"all 0.3s"  }}>View Playlists</Button>
+                                                  transition: "all 0.3s"
+                                             }}>View Playlists</Button>
+                                             
+                                              <Checkbox  {...label} onClick={(e)=>{handleSelectedCourse(e.target.checked,course)}} sx={{   color: colors.purple[500],
+                                                       '&.Mui-checked': {
+                                                         color: colors.purple[500],
+                                                       },}} />
                                         
                                         </CardActions>
                                    </Card>
@@ -302,6 +369,38 @@ function TeacherOwnProfile({ userData }) {
                               </Button>
                          </Box>:null}
                </Box>
+
+               <Dialog
+                       open={deleteConfirmOpen}
+                       slots={{
+                         transition: Transition,
+                       }}
+                       keepMounted
+                       onClose={()=>{setDeleteConfirmOpen(false)}}
+                       aria-describedby="alert-dialog-slide-description"
+                       sx={{
+                         "& .MuiDialog-container": {
+                           "& .MuiPaper-root": {
+                             width: "100%",
+                             maxWidth: "500px",  // Set your width here
+                             
+                           },
+                         },
+                       }}
+                     >
+                       <DialogTitle>{"confirmation message !!"}</DialogTitle>
+                          
+                       <DialogContent  >
+                         <DialogContentText id="alert-dialog-slide-description">
+                            Delete {selectedCourses.length} courses
+                         </DialogContentText>
+                       </DialogContent>
+                       <DialogActions>
+                         <Button sx={{backgroundColor:colors.purple[500]}}  variant="contained" onClick={()=>{setDeleteConfirmOpen(false)}}>cancle</Button>
+                         <Button sx={{backgroundColor:colors.purple[500]}}  variant="contained" onClick={handleDeleteCourses}>delete</Button>
+                       </DialogActions>
+                     </Dialog>
+               
                
 
           </Box>

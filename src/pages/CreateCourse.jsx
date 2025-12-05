@@ -22,8 +22,11 @@ import { tokens } from "../theme";
 import { Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { useAppData } from "../Contexts/AppContext";
+import { getimageUrl, getCourse,createNewid } from "./../services/serviceProvider";
+
+
 
 
 import BasicInfoStep from "../components/courseBasicInfoForm";
@@ -52,6 +55,7 @@ export default function CreateCourse() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const { courseId} = useParams();
   const { state ,dispatch} = useAppData();
   const { currentUser } = state;
   
@@ -65,8 +69,16 @@ export default function CreateCourse() {
   const handleSubmit = async (values, helpers) => {
     console.log("submit now")
     if (isLastStep) {
+
+      if (courseId) {
+        dispatch({ type: "EditCourse", payload: { course: values, courseId: values.courseId } })
+      } else {
+        dispatch({type:"AddNewCourse",payload:{course:values,courseId:values.courseId}})
+
+
+       }
+
      
-       dispatch({type:"AddNewCourse",payload:{course:values,courseId:values.courseId}})
 
     } else {
       setStep(step + 1);
@@ -75,18 +87,10 @@ export default function CreateCourse() {
     }
   };
 
-  return (
-    <Box width="100%">
-        <Box>
-              <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
-                <span style={{ color: colors.dark[300] }}>&gt;</span>
-              <Button onClick={()=>{navigate(`/TeachersCrateCourse/${currentUser.userId}`)}} sx={{ color: colors.blue[100] }}>Add new course</Button> 
-        </Box>
-        <Divider sx={{ margin: "15px 0px" }} />
-      <Formik
-        initialValues={{
+  
+  let intialValues = {
 
-          courseId: "c_2009",
+          courseId: createNewid("c"),
     title: "",
     description: "",
     mainCategoryId:"",
@@ -99,7 +103,27 @@ export default function CreateCourse() {
           
           
           playlist: [ ],
-        }}
+  }
+  
+  if(courseId){
+     intialValues = getCourse(state.courses, courseId)
+   
+  }
+
+
+  return (
+    <Box width="100%">
+        <Box>
+              <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
+                <span style={{ color: colors.dark[300] }}>&gt;</span>
+        <Button onClick={() => { navigate(`/TeachersCrateCourse/${currentUser.userId}`) }} sx={{ color: colors.blue[100] }}>Add new course</Button> 
+        
+        
+        </Box>
+        <Divider sx={{ margin: "15px 0px" }} />
+      <Formik
+       
+        initialValues={intialValues}
         validationSchema={validationSchemas[step]}
         onSubmit={handleSubmit}
       >

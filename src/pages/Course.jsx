@@ -67,7 +67,7 @@ const Course = () => {
                          > 
                               <Box      >
                                    <Box position={"relative"}>
-                                             <img style={{width:"100%", borderRadius:"10px" }} src= {courseData.image} alt="" />
+                                             <img style={{width:"100%", borderRadius:"10px" }} src= {getimageUrl(courseData.image)} alt="" />
                                              <Box sx={{
                                                   width: "fit-content",
                                                   padding: "6px",
@@ -87,7 +87,7 @@ const Course = () => {
                               </Box>
                               <Box alignSelf={"start"}>
                                    <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src= {getuserByid(users,courseData.teacherId).image}  /> 
+                                             <Avatar alt="Ardit korko" src= {getimageUrl(getuserByid(users,courseData.teacherId).image)}  /> 
                                              <Box>
                                              <Typography variant="h5">{ getuserByid(users,courseData.teacherId).name}</Typography>
                                              <Typography variant="h6" sx={{ color: colors.primary[300], }}>{ courseData.createdAt}</Typography>

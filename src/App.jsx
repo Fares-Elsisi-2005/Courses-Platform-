@@ -95,7 +95,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/TeachersCrateCourse/:id"
+                  path="/TeachersCrateCourse/:id/:courseId?"
                   element={
                     <CreateCourse/>
                   }

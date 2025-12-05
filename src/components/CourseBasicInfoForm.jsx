@@ -46,14 +46,13 @@ const BasicInfoStep = () => {
     );
     
     if (parentCategory) {
-         console.log(parentCategory.categoryId)
+        
     setFieldValue("mainCategoryId", parentCategory.categoryId);
   }
 
   setFieldValue("subCategoryId", subId )
     
-    console.log(parentCategory)
-    console.log(subId)
+   
   }
     
 
@@ -83,7 +82,12 @@ const BasicInfoStep = () => {
         {values.image ? (
           <>
             <Avatar
-              src={URL.createObjectURL(values.image)}
+               src={
+                    values.image instanceof File
+                      ? URL.createObjectURL(values.image)
+                      : values.image
+                  }
+              
               sx={{ width: 80, height: 80, mx: "auto" }}
             />
             <Typography mt={1}>{values.image.name}</Typography>
