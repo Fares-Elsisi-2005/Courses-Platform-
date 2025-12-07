@@ -15,6 +15,7 @@ import * as HiIcons from "react-icons/hi";
 import * as SiIcons from "react-icons/si";
 /* import { courses, categories } from "../data/data"; */
 import { useAppData } from "../Contexts/AppContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 const allIcons = { 
      ...FaIcons, 
@@ -30,9 +31,11 @@ const allIcons = {
 
 const Home = () => {
      const { state } = useAppData();
-     const { courses, categories,users } = state;
-     console.log(courses)
-
+     const { courses, categories, users } = state;
+     const { user } = useAuth();  
+     let currentUserRole = user?.role || "guest";
+     
+          
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
@@ -46,6 +49,17 @@ const Home = () => {
           navigate(`/Courses/${mainCategoryid}/${subCategoryid}`)
           
      }
+
+     const handleBecomingTeacher = () => {
+          if(currentUserRole === "guest"){
+               navigate("/SignUp")
+          } else {
+               navigate("/BecomeTeacher")
+               
+          }
+     }
+
+
      return ( 
           <Box display={"flex"} flexDirection={"column"} gap={"50px"} >
                <Box>
@@ -62,7 +76,8 @@ const Home = () => {
                          },
                          }}
                          >
-                         <Box sx={{
+                         {currentUserRole !== "guest"  ? 
+                              <Box sx={{
                               backgroundColor: colors.primary[200],
                               borderRadius: "10px",
                               padding: "20px",
@@ -86,6 +101,7 @@ const Home = () => {
                               
                               
                          </Box>
+                         :<></>}
                          <Box sx={{
                               backgroundColor: colors.primary[200],
                               borderRadius: "10px",
@@ -144,6 +160,8 @@ const Home = () => {
                               
                          </Box>
                           
+                         {currentUserRole !== "teacher" ?
+                              
                          <Box sx={{
                               backgroundColor: colors.primary[200],
                               borderRadius: "10px",
@@ -158,12 +176,19 @@ const Home = () => {
                          }}>
                               <Typography variant="h4" sx={{marginBottom:"10px"}}>Become A Tutor</Typography>
                               <Typography variant="body1">Publish the course you want, in the way you want, and always have control of your own content.</Typography>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>get started</Button>
+                              <Button onClick={handleBecomingTeacher} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>get started</Button>
                               
 
                               
                               
                          </Box>
+                               :<></>
+                              
+                          }
+                          
+                        
+
+
                          
                     </Box>
 

@@ -4,7 +4,7 @@ export const users =[
     userId: "u_1001",
     name: "Elzero",
     email: "elzero@gmail.com",
-    role: "teacher", 
+    role: "admin", 
     image: "https://randomuser.me/api/portraits/men/32.jpg",
     teacherCourses: ["c_2001","c_2002"],
     createdAt: "2025-08-20T10:00:00Z",

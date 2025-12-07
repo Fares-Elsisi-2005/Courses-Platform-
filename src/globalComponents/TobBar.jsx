@@ -21,6 +21,8 @@ import Logout from '@mui/icons-material/Logout';
 import { useAppData } from "../Contexts/AppContext";
 import { useAuth } from "../Contexts/AuthContext";
 
+import {useFirebaseLogin} from "../hooks/useFirebaseLogin"
+
 
 import {getimageUrl, getuserByid} from "./../services/serviceProvider";
 
@@ -30,7 +32,12 @@ import {getimageUrl, getuserByid} from "./../services/serviceProvider";
 
 
 const TobBar = ({ isCollapsed, setIsCollapsed }) => {
+
+   const { loginWithGoogle } = useFirebaseLogin();
+
   const { user, dispatchUser } = useAuth();
+
+  console.log("user from auth context: ",user)
    
   const { state } = useAppData();
   const { users,currentUser} = state;
@@ -41,6 +48,7 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
   const ismobile = useMediaQuery('(max-width:450px)');
   const [isSearchBar, SetIsSearchBar] = useState(false);
   const navigate = useNavigate();
+ 
 
   /* drop down */
   const [anchorEl, setAnchorEl] = useState(null);
@@ -51,13 +59,12 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
   
   const handleClickLogin = () => {
     handleClose();
-    dispatchUser({type:"LOGIN",payload:{
-  user: currentUser,
-  role:  "student",
-}})
+    loginWithGoogle();
    /*  navigate("/Login"); */
   }
   const handleClickSignUp = () => {
@@ -181,9 +188,9 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
        {user?.user? <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {getimageUrl(userData.image)} alt="profile image" /> 
-                <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{userData.name}</Typography>
-                <Typography variant="h5" sx={{ color: colors.grey[400] }}>{userData.role}</Typography>
+                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= { user?.user.image} alt="profile image" /> 
+                <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
+                <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
                 <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                     
         <Divider />

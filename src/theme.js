@@ -36,7 +36,9 @@ export const tokens = (mode) => ({
         blue: {
             100:"#2177e8"
         }
-    } : {
+    }
+        :
+        {
          primary: {
             100:"#d3d5d5",
             200: "#fff",
@@ -140,17 +142,24 @@ export const ColorModeContext = createContext({
 })
 
 export const useMode = () => {
-    const [mode, setMode] = useState("light");
+    const [mode, setMode] = useState(() => {
+        // Load theme from localStorage or default to "light"
+        const savedTheme = localStorage.getItem("themeMode");
+        return savedTheme || "light";
+    });
 
     const colorMode = useMemo(() => ({
           toggleColorMode: () => {
-            setMode((prev)=>(prev === "dark"?"light":"dark"))
+            setMode((prev) => {
+                const newMode = prev === "dark" ? "light" : "dark";
+                localStorage.setItem("themeMode", newMode);
+                return newMode;
+            });
     }
     }), [])
-    
+
     const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
 
     return [theme, colorMode]
 }
-

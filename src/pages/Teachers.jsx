@@ -9,6 +9,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 /* import { users } from "../data/data"; */
 import { useAppData } from "../Contexts/AppContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 
 import { getimageUrl,  getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } from "./../services/serviceProvider";
@@ -17,11 +18,24 @@ import { getimageUrl,  getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } 
 
 const Teachers = () => {
    
-      const { state } = useAppData();
-          const { courses, users } = state;
+     const { state } = useAppData();
+     const { courses, users } = state;
+     const { user } = useAuth();  
+     let currentUserRole = user?.role || "guest";
+     
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
+
+     const handleBecomingTeacher = () => {
+          if(currentUserRole === "guest"){
+               navigate("/SignUp")
+          } else {
+               navigate("/BecomeTeacher")
+               
+          }
+     }
+
      
      return ( 
           <Box>
@@ -45,8 +59,10 @@ const Teachers = () => {
                               md:"1fr 1fr 1fr",
                               lg: "1fr 1fr 1fr ", // desktop 
                          },
-                         }}>
-                    <Box sx={{
+                    }}>
+                    
+                    {currentUserRole !== "teacher" ?
+                         <Box sx={{
                               backgroundColor: colors.primary[200],
                               borderRadius: "10px",
                               padding: "20px",
@@ -58,13 +74,15 @@ const Teachers = () => {
                          }}>
                               <Typography variant="h4" sx={{marginBottom:"10px"}}>Become A Tutor</Typography>
                               <Typography variant="body1">Publish the course you want, in the way you want, and always have control of your own content.</Typography>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], mb:"20px"  }}>Get started</Button>
+                              <Button onClick={handleBecomingTeacher} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], mb:"20px"  }}>Get started</Button>
                               
 
                               
                               
-                    </Box>
+                    </Box>:<></>
  
+                    }
+                    
                     {users.filter((user) => user.role === "teacher").map((teacher) => (
                           <Card key={teacher.userId} sx={{ maxWidth: "100%" }}>
                          

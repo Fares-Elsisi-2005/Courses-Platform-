@@ -16,6 +16,7 @@ import SavedPlaylits from  "./pages/SavedPlaylists";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Teachers from "./pages/Teachers";
+import BecomeTeacher from "./pages/BecomeTeacher";
 import CreateCourse from "./pages/createCourse";
 
 import UserProfilePage from "./pages/UserProfilePage"
@@ -85,9 +86,20 @@ function App() {
  
                 <Route path="/Course/:id" element={<Course />} /> 
                 <Route path="/SavedPlaylits" element={<SavedPlaylits />} /> 
-                <Route path="/Video/:courseid/:videoid" element={<Video />} /> 
+                    
+                    {/* Protected route */}
+                  <Route
+                    path="/Video/:courseid/:videoid"
+                    element={
+                      <ProtectedRoute allowedRoles={["teacher","admin","student"]}>
+                        <Video />
+                      </ProtectedRoute>
+                    }
+                  />
                 <Route path="/LikedVideos" element={<LikedVideos />} /> 
-                <Route path="/Teachers" element={<Teachers />} /> 
+                    <Route path="/Teachers" element={<Teachers />} /> 
+                    <Route path="/BecomeTeacher" element={<BecomeTeacher />} /> 
+                    
                 <Route
                   path="/UserProfile/:id"
                   element={

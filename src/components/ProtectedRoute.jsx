@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user } = useAuth();
 
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />; // redirect to home if not allowed
+    return <Navigate to="/SignUp" replace />; // redirect to home if not allowed
   }
 
   return children;
