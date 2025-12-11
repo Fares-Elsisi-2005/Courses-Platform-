@@ -27,8 +27,9 @@ add translation system to the website
 
 ## =======================(to remember the next task)
 
-currently we have custum hoo that handle the the user logiing in and save it in firebase database
-we should change what should be change use the currentuser object from the context state and adjust the the ui
+user now can login and logout with firebase and can upgrade his role from student to teacher
 
-then make sure that the every thing that is related to the authentication is working fine
-then start to work on the courses collection
+now you should work on the courses collection and all its affairs
+start by teacher own profile as there it happens all the crud operations of the coureses and videos
+you should move from utility functions to hooks that provide fuctions that work with firebase database
+then when you finish adjust the others ui components

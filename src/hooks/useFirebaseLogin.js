@@ -35,6 +35,7 @@ export function useFirebaseLogin() {
         likedVideos: [],
         userCommentsId: [],
         createdAt: new Date().toISOString(),
+        token:user.accessToken
         };
         
         console.log("new user is created", userData)
@@ -50,7 +51,7 @@ export function useFirebaseLogin() {
       payload: {
         user: userData,
         role: userData.role,
-        token: user.accessToken,
+       
       },
     });
       
@@ -59,3 +60,5 @@ export function useFirebaseLogin() {
 
   return { loginWithGoogle };
 }
+
+ 

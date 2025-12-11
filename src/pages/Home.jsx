@@ -33,14 +33,14 @@ const Home = () => {
      const { state } = useAppData();
      const { courses, categories, users } = state;
      const { user } = useAuth();  
+      
+
      let currentUserRole = user?.role || "guest";
      
           
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
-     const navigate = useNavigate();
-     let CurrentUserData = getuserByid(users,"u_1002");
-
+     const navigate = useNavigate(); 
 
      const handleClickChipMainCategory = (mainCategoryid) => {
           navigate(`/Courses/${mainCategoryid}`)
@@ -90,11 +90,11 @@ const Home = () => {
                               
                          }}>
                               <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Likes And Comments</Typography>
-                              <Typography variant="h5">total Liked Videos: <span style={{color:colors.purple[500]}}>{CurrentUserData.likedVideos.length}</span></Typography>
+                              <Typography variant="h5">total Liked Videos: <span style={{color:colors.purple[500]}}>{user.user.likedVideos.length}</span></Typography>
                               <Button onClick={()=>{navigate("/LikedVideos")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Liked vidoes</Button>
-                              <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>{CurrentUserData.userCommentsId.length}</span></Typography>
+                              <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>{user.user.userCommentsId.length}</span></Typography>
                               <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View comments</Button>
-                              <Typography variant="h5">Saved Playlists: <span style={{ color: colors.purple[500] }}>{CurrentUserData.savedPlaylits.length}</span></Typography>
+                              <Typography variant="h5">Saved Playlists: <span style={{ color: colors.purple[500] }}>{user.user.savedPlaylists.length}</span></Typography>
                               <Button  onClick={()=>{navigate("/SavedPlaylits")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Playlists</Button>
                              
 

@@ -44,9 +44,9 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
                </Box> :  ""}
                
               {user?.user?  <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {getimageUrl(userData.image)} alt="profile image" /> 
-                    <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{userData.name}</Typography>
-                    <Typography variant="h5" sx={{ color: colors.grey[400] }}>{userData.role}</Typography>
+                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {user?.user.image} alt="profile image" /> 
+                    <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
+                    <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
                     <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                </Box>:null}
                <List>
