@@ -1,11 +1,14 @@
 import React from "react";
-import { useState } from "react";
+import { useState ,useMemo} from "react";
 import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton ,} from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
-import {getimageUrl,getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "../services/serviceProvider";
+import {formatTimestamp,getimageUrl,getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "../services/serviceProvider";
 import { useAppData } from "../Contexts/AppContext";
- 
+
+import { useAuth } from "../Contexts/AuthContext";
+import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
+import { useWriteCourse } from "../hooks/useWriteCourse";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -31,22 +34,7 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 });
 
 
-/* 
- {
-    userId: "u_1001",
-    name: "Elzero",
-    email: "elzero@gmail.com",
-    role: "teacher", 
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    teacherCourses: ["c_2001"],
-    createdAt: "2025-08-20T10:00:00Z",
-    savedPlaylits: ["c_2001"],
-    enrolledCourses: ["c_2001"], 
-    likedVideos: ["v_3001", "v_3002"],
-    userCommentsId:[ ]
-    
-  }
- */
+ 
 const ProfileView = ({profileUser,currentUser,isOwnProfile,isAdmin}) => {
    /*  const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -109,26 +97,41 @@ function TeacherOwnProfile({ userData }) {
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
-      const { state ,dispatch } = useAppData();
-     const { courses, users, currentUser } = state;
-     
+      
      const [selectedCourses, setSelectedCourses] = useState([]);
      const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-     
-          const handleSelectedCourse = (isChecked, Coursedata) => {
-                    setSelectedCourses(prev => {
-                    const updated = isChecked ? [...prev, Coursedata] : prev.filter(c => c.courseId !== Coursedata.courseId);
+     const { user } = useAuth();
 
-                   
-                    return updated;
-          });
-          };
-          
+     const teacherCourseIds = useMemo(
+          () => userData?.teacherCourses || [],
+          [userData?.teacherCourses]
+     ); 
+     
+     const { courses, loading, error } = useGetTeacherCourses(teacherCourseIds);
+      const { deleteCourses} = useWriteCourse();
+  
+      
+    
+     
+
+     const handleSelectedCourse = (isChecked, Coursedata) => {
+               setSelectedCourses(prev => {
+               const updated = isChecked ? [...prev, Coursedata.id] : prev.filter(cId => cId  !== Coursedata.id);
+
+               
+               return updated;
+     });
+     };
+     
 
        const handleDeleteCourses = () => {
-            /*  const updatedPlaylist = playlist.filter(video => ! selectedCourses.some(selected => selected.videoId === video.videoId)); */
-              dispatch({ type: "DeleteCourses", payload: {  coursesToDelete:selectedCourses } })
+            /*  dispatch({ type: "DeleteCourses", payload: { coursesToDelete: selectedCourses } }) */
+            
+            console.log("selected couress", selectedCourses);
+            console.log("user id",userData.userId);
+            deleteCourses(selectedCourses, userData.userId)
+            
              
        setSelectedCourses([]);
        setDeleteConfirmOpen(false);
@@ -166,23 +169,23 @@ function TeacherOwnProfile({ userData }) {
                          }}>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"} >
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalPlaylists(users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalPlaylists( userData )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalVideos(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalVideos(courses )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  enrolled students: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalEnrolledStudent(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  enrolled students: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalEnrolledStudent(courses )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  likes: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalPlaylitslikes(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  likes: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalPlaylitslikes(courses )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(courses )}</span></Typography>
                          </Box>
 
                     </Box>
@@ -202,7 +205,7 @@ function TeacherOwnProfile({ userData }) {
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"}  >
                               <Box display={"flex"}>
                                     <BookmarkIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
-                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >Saved Playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{ userData.savedPlaylits.length}</span></Typography>
+                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >Saved Playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{ userData.savedPlaylists.length}</span></Typography>
                              </Box>
                               <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>view saved playlists</Button>
                               
@@ -237,9 +240,9 @@ function TeacherOwnProfile({ userData }) {
                <Box mt={"30px"}> 
                     <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                          <Box>
-                                   <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
+                                   <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
                                    <span style={{ color: colors.dark[300] }}>&gt;</span>
-                                   <Button onClick={() => { navigate(`/TeachersCrateCourse/${currentUser.userId}`) }} sx={{ color: colors.blue[100] }}>Add new course</Button> 
+                                   <Button onClick={() => { navigate(`/TeachersCrateCourse/${user.user.userId}`) }} sx={{ color: colors.blue[100] }}>Add new course</Button> 
                          </Box>
                          
                           {selectedCourses.length > 0 ?
@@ -270,11 +273,11 @@ function TeacherOwnProfile({ userData }) {
                    
                       
                          {
-                              getCoursesById(courses, users, userData.userId).map((course) => (
+                              courses.map((course) => (
                                     
                                    
                                    <Card 
-                                   key={course.courseId}
+                                   key={course.id}
                                    sx={{
                                    maxWidth: "100%",
                                    display: "flex",
@@ -285,14 +288,15 @@ function TeacherOwnProfile({ userData }) {
                               
                                         <CardContent>
                                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                                  <Avatar alt="Ardit korko" src={ getuserByid(users,course.teacherId).image}  /> 
-                                                  <Box>
-                                                       <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
-                                                       <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
-     
-                                                  </Box>
                                                   
-                                                  <Button sx={{ backgroundColor: colors.blue[100] ,marginLeft:"auto"}} onClick={()=>{navigate(`/TeachersCrateCourse/${currentUser.userId}/${course.courseId}`)}} variant="contained" >edit</Button>
+                                                  <Avatar alt="Ardit korko" src={ userData.image}  /> 
+                                                  <Box>
+                                                       <Typography variant="h5">{ userData.name}</Typography>
+                                                       <Typography variant="h6" sx={{ color: colors.primary[300], }}> { formatTimestamp(course.createdAt)}</Typography>
+     
+                                                  </Box> 
+}
+                                                  <Button sx={{ backgroundColor: colors.blue[100] ,marginLeft:"auto"}} onClick={()=>{navigate(`/TeachersCrateCourse/${userData.userId}/${course.id}`)}} variant="contained" >edit</Button>
                                                   
                                                   
                                              </Box>
@@ -330,7 +334,7 @@ function TeacherOwnProfile({ userData }) {
                                              display: "flex",
                                              justifyContent:"space-between"
                                         }}>
-                                             <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                             <Button onClick={()=>{navigate(`/Course/${course.id}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
                                                   width:"fit-content", 
                                                   color:colors.white[100],
                                                   textTransform:"capitalize",
@@ -352,7 +356,7 @@ function TeacherOwnProfile({ userData }) {
                                         
                 
                     </Box>
-                    {getCoursesById(courses,users,userData.userId).length > 8 ?
+                    {courses.length > 10 ?
                          <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}  >
                               <Button onClick={() => { navigate("/Courses") }} variant="contained" sx={{
                                    backgroundColor: colors.yellow[100],
@@ -437,7 +441,7 @@ function TeacherPuplicProfile({ userData }) {
                          </Box>
                     </Box>
                     
-                     <Box display="grid"
+                   {/*   <Box display="grid"
                          width={"100%"}
                           
                          gap={2} // spacing between cards
@@ -470,7 +474,7 @@ function TeacherPuplicProfile({ userData }) {
                          </Box>
 
                     </Box>
-                    
+                     */}
                     
                     
                </Box>

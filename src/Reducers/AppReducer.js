@@ -38,9 +38,7 @@ export default  function appReducer(AppData, action) {
             return newAppData
         }
         case "DeleteCourses": {
-           /*  const newCourses = AppData.courses.filter((course) => course.courseId !== action.payload.courseId)
-            const newAppData = { ...AppData, courses: newCourses } */
-
+           
             console.log("courses to delete: ", action.payload.coursesToDelete)
             const newCurrentUser = { ...AppData.currentUser, teacherCourses: AppData.currentUser.teacherCourses.filter((courseId) => !action.payload.coursesToDelete.some((selectedCourse) => selectedCourse.courseId === courseId)) };
               const newUsersData = AppData.users.map((user) => {

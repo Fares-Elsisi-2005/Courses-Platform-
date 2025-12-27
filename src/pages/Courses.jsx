@@ -5,131 +5,277 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useMemo } from "react";
 import { useNavigate,useParams  } from "react-router-dom";
-import {getimageUrl, getuserByid,getCoursesByMainCategory,getCoursesBySubCategory,getsubCategoryName,getCategoryName} from "./../services/serviceProvider";
-/* import { courses} from "../data/data";
- */
+import {formatTimestamp,getimageUrl,  getCoursesByMainCategory,getCoursesBySubCategory,getsubCategoryName,getCategoryName} from "./../services/serviceProvider";
+ 
 import { useAppData } from "../Contexts/AppContext";
+/* import { useAuth } from "../Contexts/AuthContext"; */
+ 
+import { useGetUser } from "../hooks/useGetUser"; 
+import { useGetAllCourses } from "../hooks/useGetAllCourses";
+import { useGetCoursesByCategoryId } from "../hooks/useGetCoursesByCategoryId";
 
-const Courses = () => {
-     const { state } = useAppData();
-     const { courses, categories,users } = state;
-     const [title, setTitle] = useState("Our Courses");
-     const [filteredCourses, setFilteredCourses] = useState(courses);
-
+const CardHeader = ({ userId, courseData }) => {
+            
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
-     const divider = useRef(null);
-     const { categoryParam, subCategoryParam} = useParams();
-     const navigate = useNavigate();
+      
+     
 
-     useEffect(() => {
-          divider.current?.scrollIntoView();
-     }, []);
+     const { userData, loading } = useGetUser(userId);
+     if(loading) return <Box>Loading...</Box>
+ 
+     return(
+           <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
+               <Avatar alt="Ardit korko" src= {userData.image} /> 
+               <Box>
+                    <Typography variant="h5">{getimageUrl( userData.name)}</Typography>
+                    <Typography variant="h6" sx={{ color: colors.primary[300], }}> {formatTimestamp( courseData.createdAt)}</Typography>
 
-     useEffect(() => {
-          const validCategories = [...new Set(courses.map((c) => c.mainCategoryId))];
-          const validSubCategories = [...new Set(courses.map((c) => c.subCategoryId))];
-
-          let newCourses = courses;
-          let newTitle = "Our Courses";
-
-          if (validCategories.includes(categoryParam) && validSubCategories.includes(subCategoryParam)) {
-               newCourses = getCoursesBySubCategory(courses,categoryParam, subCategoryParam);
-               newTitle = getsubCategoryName(categories,categoryParam,subCategoryParam);
-          } else if (validCategories.includes(categoryParam)) {
-               newCourses = getCoursesByMainCategory(courses,categoryParam);
-               newTitle = getCategoryName(categories,categoryParam);
-          }
-
-          setFilteredCourses(newCourses);
-          setTitle(newTitle);
-     }, [categoryParam, subCategoryParam]);
-
-     return ( 
-          <Box>
-               <Typography variant="h3">{title} {title === "Our Courses"?null:"Courses" }</Typography>
-               <Divider ref={divider} sx={{ margin: "15px 0px" }} />
-               
-               <Box display="grid" gap={2}
-                    sx={{
-                         gridTemplateColumns: {
-                              xs: "1fr",       // mobile  
-                              sm: "1fr 1fr",   // tablet  
-                              md:"1fr 1fr 1fr",
-                              lg: "1fr 1fr 1fr", // desktop 
-                         },
-                    }}>
-                    {
-                         filteredCourses.map((course) => (
-                              <Card key={course.courseId} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between" }}>
-                                   <CardContent>
-                                        <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src={getuserByid(users,course.teacherId).image} /> 
-                                             <Box>
-                                                  <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
-                                                  <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
-                                             </Box>
-                                        </Box>
-
-                                        <Box position={"relative"}>
-                                             <CardMedia
-                                                  sx={{ height: 260 }}
-                                                  image={getimageUrl(course.image)}
-                                                  title={course.title}
-                                             />
-                                             <Box sx={{
-                                                  width: "fit-content",
-                                                  padding: "6px",
-                                                  borderRadius: "5px",
-                                                  backgroundColor: "#000000ac",
-                                                  color: "#fff",
-                                                  position: "absolute",
-                                                  top: "10px",
-                                                  left:"10px"
-                                             }}>
-                                                  <Typography variant="h6">{`${course.playlist.length} videos`}</Typography>
-                                             </Box>
-                                        </Box>
-
-                                        <Typography variant="h5" component="div" mt={"10px"}>
-                                             {course.title}
-                                        </Typography>
-                                   </CardContent>
-                                   <CardActions>
-                                        <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{
-                                             backgroundColor:colors.purple[500],
-                                             width:"fit-content", 
-                                             color:colors.white[100],
-                                             textTransform:"capitalize",
-                                             "&:hover":{ backgroundColor:colors.purple[600] },
-                                             transition:"all 0.3s"
-                                        }}>
-                                             View Playlists
-                                        </Button>
-                                   </CardActions>
-                              </Card>
-                         ))
-                    }
                </Box>
-
-               {courses.length > 8 && (
-                    <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}>
-                         <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{
-                              backgroundColor:colors.yellow[100],
-                              width: "fit-content", 
-                              color:colors.white[100],
-                              textTransform:"capitalize",
-                              "&:hover":{ backgroundColor:colors.yellow[200] },
-                              transition: "all 0.3s"
-                         }}>
-                              load more
-                         </Button>
-                    </Box>
-               )}
           </Box>
      )
 }
 
+
+const Courses = () => {
+  const { state } = useAppData();
+  const { categories } = state;
+ 
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const divider = useRef(null);
+
+  const { categoryParam, subCategoryParam } = useParams();
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState("Our Courses");
+   const [paginatedCourses, setPaginatedCourses] = useState([]);
+
+  const {
+    getCourses,
+    resetPagination,
+    loading2,
+    error2,
+    hasMore,
+  } = useGetAllCourses();
+
+  const {
+    getCoursesByMainId,
+    getCoursesBySubId,
+    resetPagination2,
+    loadingCoursesbyCategory,
+    error,
+    hasMore2, }=useGetCoursesByCategoryId();
+
+
+  // Scroll on mount
+  useEffect(() => {
+    divider.current?.scrollIntoView();
+  }, []);
+
+
+// Initial fetch
+  useEffect(() => {
+    
+    
+     if (categoryParam && subCategoryParam) {
+       console.log("categoryParam && subCategoryParam");
+       resetPagination2();
+       setPaginatedCourses([]);
+       loadMoreCoursesBySubCategory();
+    } else if (categoryParam) {
+       console.log("categoryParam")
+       resetPagination2();
+       setPaginatedCourses([]);
+       loadMoreCoursesByMainCategory();
+     } else {
+      resetPagination();
+      setPaginatedCourses([]);
+      loadMoreCourses(); 
+    }
+  }, []);
+
+
+  const loadMoreCourses = async () => {
+    const newCourses = await getCourses();
+    setPaginatedCourses((prev) => [...prev, ...newCourses]);
+  };
+
+  const loadMoreCoursesByMainCategory = async () => {
+    const newCourses = await getCoursesByMainId(categoryParam);
+    setPaginatedCourses((prev) => [...prev, ...newCourses]);
+  };
+  const loadMoreCoursesBySubCategory = async () => {
+    const newCourses = await getCoursesBySubId(subCategoryParam);
+    setPaginatedCourses((prev) => [...prev, ...newCourses]);
+  };
+  
+
+  
+  
+  // -------------------------------
+  // FILTER COURSES (DERIVED STATE)
+  // -------------------------------
+ /*  const filteredCourses = useMemo(() => {
+    if (!courses.length) return [];
+
+    const validCategories = new Set(courses.map(c => c.mainCategoryId));
+    const validSubCategories = new Set(courses.map(c => c.subCategoryId));
+
+    if (
+      validCategories.has(categoryParam) &&
+      validSubCategories.has(subCategoryParam)
+    ) {
+      return getCoursesBySubCategory(
+        courses,
+        categoryParam,
+        subCategoryParam
+      );
+    }
+
+    if (validCategories.has(categoryParam)) {
+      return getCoursesByMainCategory(courses, categoryParam);
+    }
+
+    return courses;
+  }, [courses, categoryParam, subCategoryParam]);
+ */
+  // -------------------------------
+  // TITLE LOGIC
+  // -------------------------------
+  /* useEffect(() => {
+    if (!courses.length) return;
+
+    let newTitle = "Our Courses";
+
+    if (categoryParam && subCategoryParam) {
+      newTitle = getsubCategoryName(categories, categoryParam, subCategoryParam);
+    } else if (categoryParam) {
+      newTitle = getCategoryName(categories, categoryParam);
+    }
+
+    setTitle(newTitle);
+  }, [courses, categoryParam, subCategoryParam, categories]);
+ */
+  // -------------------------------
+  // LOADING / ERROR
+  // -------------------------------
+/*   if (loading) return <Typography>Loading courses...</Typography>;
+  if (error) return <Typography>Error loading courses</Typography>;
+ */
+
+  if (loading2 || loadingCoursesbyCategory) return <Typography>Loading courses...</Typography>;
+  if (error2 || error) return <Typography>Error loading  courses</Typography>;
+
+   
+
+  // -------------------------------
+  // RENDER
+  // -------------------------------
+  return (
+    <Box>
+      <Typography variant="h3">
+        {title} {title === "Our Courses" ? null : "Courses"}
+      </Typography>
+
+      <Divider ref={divider} sx={{ margin: "15px 0px" }} />
+
+      <Box
+        display="grid"
+        gap={2}
+        sx={{
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr 1fr",
+            md: "1fr 1fr 1fr",
+            lg: "1fr 1fr 1fr"
+          }
+        }}
+      >
+        {paginatedCourses.map(course => (
+          <Card
+            key={course.id}
+            sx={{
+              maxWidth: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between"
+            }}
+          >
+            <CardContent>
+              <CardHeader
+                userId={course.teacherId}
+                courseData={course}
+              />
+
+              <Box position="relative">
+                <CardMedia
+                  sx={{ height: 260 }}
+                  image={getimageUrl(course.image)}
+                  title={course.title}
+                />
+
+                <Box
+                  sx={{
+                    width: "fit-content",
+                    padding: "6px",
+                    borderRadius: "5px",
+                    backgroundColor: "#000000ac",
+                    color: "#fff",
+                    position: "absolute",
+                    top: "10px",
+                    left: "10px"
+                  }}
+                >
+                  <Typography variant="h6">
+                    {`${course.playlist.length} videos`}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Typography variant="h5" mt="10px">
+                {course.title}
+              </Typography>
+            </CardContent>
+
+            <CardActions>
+              <Button
+                onClick={() => navigate(`/Course/${course.id}`)}
+                variant="contained"
+                sx={{
+                  backgroundColor: colors.purple[500],
+                  color: colors.white[100],
+                  textTransform: "capitalize",
+                  "&:hover": { backgroundColor: colors.purple[600] }
+                }}
+              >
+                View Playlists
+              </Button>
+            </CardActions>
+          </Card>
+        ))}
+      </Box>
+
+      {hasMore && hasMore2 && (
+        <Box display="flex" justifyContent="center" p="30px">
+          <Button
+            onClick={() =>  loadMoreCourses()}
+            variant="contained"
+            sx={{
+              backgroundColor: colors.yellow[100],
+              color: colors.white[100],
+              "&:hover": { backgroundColor: colors.yellow[200] }
+            }}
+          >
+            Load more
+          </Button>
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 export default Courses;
+ 

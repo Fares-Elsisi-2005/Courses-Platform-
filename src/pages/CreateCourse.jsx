@@ -1,196 +1,226 @@
-import {
+ import {
   Box,
   Button,
   Stepper,
   Step,
   StepLabel,
   Divider,
-  TextField,
   Typography,
-  TextareaAutosize,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  OutlinedInput,
-  Avatar,
   useTheme,
-
 } from "@mui/material";
 import { tokens } from "../theme";
-
-import { Formik, Form, useFormikContext } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
-import { useNavigate,useParams } from "react-router-dom";
-import { useAppData } from "../Contexts/AppContext";
-import { getimageUrl, getCourse,createNewid } from "./../services/serviceProvider";
+import { useState, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-
-
+import { useAuth } from "../Contexts/AuthContext";
+import { useWriteCourse } from "../hooks/useWriteCourse";
+import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
 
 import BasicInfoStep from "../components/courseBasicInfoForm";
 import CurriculumStep from "../components/courseCurriculumForm";
 
- 
-// Validation schemas for each step
+
+// --------------------------------------------------
+// Validation schemas
+// --------------------------------------------------
 const validationSchemas = [
   Yup.object({
-    image: Yup.mixed().nullable(),
     title: Yup.string().required("Title is required"),
-    description: Yup.string().required("Description required"),
-    subCategoryId: Yup.string() ,
+    description: Yup.string().required("Description is required"),
+    subCategoryId: Yup.string().required("Sub category required"),
   }),
-
-  
   Yup.object({
     playlist: Yup.array(),
   }),
 ];
 
- 
-// ---------------------- MAIN COMPONENT (ALL IN ONE) ----------------------
+// --------------------------------------------------
+// Safe EMPTY defaults (never undefined)
+// --------------------------------------------------
+const EMPTY_INITIAL_VALUES = {
+  title: "",
+  description: "",
+  mainCategoryId: "",
+  subCategoryId: "",
+  teacherId: "",
+  image: null,
+  rating: 4.7,
+  studentsCount: 0,
+  reviews: [],
+  playlist: [],
+};
 
 export default function CreateCourse() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const { courseId} = useParams();
-  const { state ,dispatch} = useAppData();
-  const { currentUser } = state;
+  const { courseId } = useParams();
+  const { user } = useAuth();
+  const { addCourse ,editCourse} = useWriteCourse();
   
- 
-       
+  const isEdit = Boolean(courseId);
+
+  // --------------------------------------------------
+  // 🔥 CRITICAL FIX — memoized array
+  // --------------------------------------------------
+  const courseIds = useMemo(
+    () => (isEdit ? [courseId] : []),
+    [isEdit, courseId]
+  );
+
+  const { courses, loading } = useGetTeacherCourses(courseIds);
+
+  // --------------------------------------------------
+  // Stepper state
+  // --------------------------------------------------
   const [step, setStep] = useState(0);
   const steps = ["Basic Info", "Curriculum"];
-
   const isLastStep = step === steps.length - 1;
 
+  // --------------------------------------------------
+  // Build initial values safely
+  // --------------------------------------------------
+  const initialValues = useMemo(() => {
+    if (isEdit && courses.length > 0) {
+      return {
+        ...EMPTY_INITIAL_VALUES,
+        ...courses[0],
+        subCategoryId: courses[0].subCategoryId ?? "",
+        teacherId: courses[0].teacherId ?? user?.user?.userId ?? "",
+      };
+    }
+
+    return {
+      ...EMPTY_INITIAL_VALUES,
+      teacherId: user?.user?.userId ?? "",
+    };
+  }, [isEdit, courses, user]);
+
+  // --------------------------------------------------
+  // Submit handler
+  // --------------------------------------------------
   const handleSubmit = async (values, helpers) => {
-    console.log("submit now")
-    if (isLastStep) {
-
-      if (courseId) {
-        dispatch({ type: "EditCourse", payload: { course: values, courseId: values.courseId } })
-      } else {
-        dispatch({type:"AddNewCourse",payload:{course:values,courseId:values.courseId}})
-
-
-       }
-
-     
-
-    } else {
-      setStep(step + 1);
+    if (!isLastStep) {
+      setStep((prev) => prev + 1);
       helpers.setTouched({});
+      return;
+    }
 
+    try {
+      if (isEdit) {
+        console.log("EDIT COURSE:", values);
+        editCourse({...values})
+        navigate(`/UserProfile/${user.user.userId}`);
+        
+      } else {
+        const newCourseId = await addCourse({
+          ...values,
+          image: "",
+        });
+
+        console.log("NEW COURSE:", newCourseId);
+        navigate(`/UserProfile/${user.user.userId}`);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  
-  let intialValues = {
-
-          courseId: createNewid("c"),
-    title: "",
-    description: "",
-    mainCategoryId:"",
-    subCategoryId:  [],  
-    teacherId: currentUser?.userId,
-    image: null,
-    rating: 4.7,
-    studentsCount: 95,
-    reviews: [],
-          
-          
-          playlist: [ ],
-  }
-  
-  if(courseId){
-     intialValues = getCourse(state.courses, courseId)
-   
+  // --------------------------------------------------
+  // Loading guard (edit mode only)
+  // --------------------------------------------------
+  if (isEdit && loading) {
+    return <Typography>Loading course...</Typography>;
   }
 
-
+  // --------------------------------------------------
+  // Render
+  // --------------------------------------------------
   return (
     <Box width="100%">
-        <Box>
-              <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
-                <span style={{ color: colors.dark[300] }}>&gt;</span>
-        <Button onClick={() => { navigate(`/TeachersCrateCourse/${currentUser.userId}`) }} sx={{ color: colors.blue[100] }}>Add new course</Button> 
-        
-        
-        </Box>
-        <Divider sx={{ margin: "15px 0px" }} />
+      {/* Breadcrumb */}
+      <Box>
+        <Button
+          onClick={() => navigate(`/UserProfile/${user.user.userId}`)}
+          sx={{ color: colors.grey[400] }}
+        >
+          Courses
+        </Button>
+        <span style={{ color: colors.dark[300] }}>&gt;</span>
+        <Button sx={{ color: colors.blue[100] }}>
+          {isEdit ? "Edit Course" : "Add New Course"}
+        </Button>
+      </Box>
+
+      <Divider sx={{ my: 2 }} />
+
       <Formik
-       
-        initialValues={intialValues}
+        initialValues={initialValues}
+        enableReinitialize
         validationSchema={validationSchemas[step]}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <Form>
             {/* Stepper */}
-            <Stepper activeStep={step}   alternativeLabel
+            <Stepper
+              activeStep={step}
+              alternativeLabel
               sx={{
-    mb: 4,
-     
-    "& .MuiStepIcon-root": {
-      width: "32px",
-      height: "32px",
-      color: "#e0e0e0",
-    },
-     
-    "& .MuiStepIcon-root.Mui-completed": {
-      color:  `${colors.purple[600]}`,
-    },
-    "& .MuiStepLabel-label": {
-      mt: 1,
-      fontSize: "0.9rem",
-      fontWeight: 600, 
-    },
-    
-  }}
+                mb: 4,
+                "& .MuiStepIcon-root": {
+                  width: 32,
+                  height: 32,
+                  color: "#e0e0e0",
+                },
+                "& .MuiStepIcon-root.Mui-completed": {
+                  color: colors.purple[600],
+                },
+                "& .MuiStepLabel-label": {
+                  mt: 1,
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                },
+              }}
             >
-              {steps.map((label, i) => (
-                <Step key={i}  >
+              {steps.map((label) => (
+                <Step key={label}>
                   <StepLabel>{label}</StepLabel>
                 </Step>
               ))}
             </Stepper>
 
-            {/* Step Content */}
-            <Box sx={{flexDirection:"column", display:"flex",justifyContent:"center",alignItems:"center" }}>
-              {step === 0 && <BasicInfoStep  />}
+            {/* Step content */}
+            <Box display="flex" flexDirection="column" alignItems="center">
+              {step === 0 && <BasicInfoStep />}
               {step === 1 && <CurriculumStep />}
 
-              
-            {/* Navigation Buttons */}
-            <Box display="flex" mt={4}>
-              {step > 0 && (
+              {/* Buttons */}
+              <Box display="flex" mt={4}>
+                {step > 0 && (
+                  <Button
+                    onClick={() => setStep((prev) => prev - 1)}
+                    variant="outlined"
+                    sx={{ mr: 2 }}
+                  >
+                    Back
+                  </Button>
+                )}
+
                 <Button
-                  onClick={() => setStep(step - 1)}
-                    sx={{
-                      mr: 2,
-                    backgroundColor:colors.grey[400]
-                   }}
-                  variant="outlined"
+                  type="submit"
+                  variant="contained"
+                  sx={{ backgroundColor: colors.purple[500] }}
                 >
-                  Back
+                  {isLastStep ? "Publish Course" : "Next"}
                 </Button>
-              )}
-
-              <Button sx={{backgroundColor:colors.purple[500]}} type="submit" variant="contained">
-                {isLastStep ? "Publish Course" : "Next"}
-              </Button>
+              </Box>
             </Box>
-
-            </Box>
-           
           </Form>
         )}
       </Formik>
     </Box>
   );
 }
-
- 

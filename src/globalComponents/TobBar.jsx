@@ -36,12 +36,10 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
    const { loginWithGoogle } = useFirebaseLogin();
 
   const { user, dispatchUser } = useAuth();
-
-  console.log("user from auth context: ",user)
-   
+ 
   const { state } = useAppData();
   const { users,currentUser} = state;
-  let userData = getuserByid(users,currentUser.userId);
+   
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -65,7 +63,7 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
   const handleClickLogin = () => {
     handleClose();
     loginWithGoogle();
-   /*  navigate("/Login"); */
+    
   }
   const handleClickSignUp = () => {
     handleClose();
@@ -191,18 +189,18 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
                 <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= { user?.user.image} alt="profile image" /> 
                 <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
                 <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
-                <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
+                <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                     
         <Divider />
         </Box> :null}
-        <MenuItem onClick={()=>{
+        {/* <MenuItem onClick={()=>{
               handleClickSignUp()
         }}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Register
-        </MenuItem>
+        </MenuItem> */}
          
         <MenuItem onClick={()=>{
               handleClickLogin()

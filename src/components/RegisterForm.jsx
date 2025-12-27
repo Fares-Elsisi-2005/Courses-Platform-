@@ -11,6 +11,12 @@ import {
   useTheme
 } from "@mui/material";
 import { tokens } from "../theme";
+import GoogleIcon from '@mui/icons-material/Google';
+import { useState } from "react";
+import { useFirebaseLogin } from "../hooks/useFirebaseLogin"
+import Alert from '@mui/material/Alert';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
 
 
 
@@ -78,17 +84,16 @@ const DropzoneField = ({ field, form }) => {
   );
 };
 
-// Main Form
-const RegisterFrom = () => {
-    
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    const handleFormSubmit = (values) => {
+
+
+const TheFormComponent = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const handleFormSubmit = (values) => {
         console.log(values);
     }
-
-    return (
-        <Box maxWidth={"500px"} p="20px" bgcolor={colors.primary[200]} borderRadius={"10px"}>
+  return (
+      <Box maxWidth={"500px"} p="20px" bgcolor={colors.primary[200]} borderRadius={"10px"}>
                     <Formik 
             initialValues={{
                 name: "",
@@ -206,6 +211,63 @@ const RegisterFrom = () => {
             </Formik>
       </Box>
     
+     
+   )
+}
+
+
+
+const LoginUsingGoogleComponent = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const [isLoginIn,setIsLoginIn] = useState(false)
+  
+  const { loading, loginWithGoogle } = useFirebaseLogin();
+  const handleClickLogin = async() => {
+    
+    await loginWithGoogle();
+    setIsLoginIn(true)
+    
+  }
+  
+   
+  return (
+    <Box maxWidth={"500px"} p="20px" bgcolor={colors.primary[200]} borderRadius={"10px"}>
+      {isLoginIn ?
+        <Alert
+        iconMapping={{
+          success: <CheckCircleOutlineIcon fontSize="inherit" />,
+        }}
+      >
+         LOGIN SUCCESSFULY
+        </Alert> :
+        (
+          loading?
+            <Button  startIcon = { <GoogleIcon />}  loading   variant="outlined" sx={{ backgroundColor: colors.purple[500], width: "fit-content", color: colors.white[100], margin: "20px 0" }}>  </Button>
+            
+    :
+            <Button  onClick = { handleClickLogin } startIcon = { <GoogleIcon />} variant="contained" sx={{ backgroundColor: colors.purple[500], width: "fit-content", color: colors.white[100], margin: "20px 0" }}>Login in using Google</Button>
+    
+          
+        )
+                        
+      }
+                 
+      </Box>
+    
+     
+   )
+}
+
+// Main Form
+const RegisterFrom = () => {
+    
+
+  return (
+    <Box display={"flex"} height={"90vh"} justifyContent={"center"} alignItems={"center"} gap={"20px"} flexWrap={"wrap"}>
+      <LoginUsingGoogleComponent/>
+      </Box>
+      
   );
 };
 

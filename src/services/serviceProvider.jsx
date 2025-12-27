@@ -43,34 +43,34 @@ export function getCoursesByMainCategory(courses,categoryId ) {
   
 
 // get teacher total playlists number by id
-export function getTotalPlaylists(users,id) {
-  return getuserByid(users,id).teacherCourses.length;
+export function getTotalPlaylists(user) {
+  return user.teacherCourses.length;
 }
   
 // get teacher total videos number by id
-export function getTotalVideos(courses,users,id) {
+export function getTotalVideos(courses ) {
   let videosCount = 0
-  getuserByid(users,id).teacherCourses.forEach((courseId) => {
-    videosCount += getCourse(courses,courseId).playlist.length
+ courses.forEach((course ) => {
+    videosCount += course.playlist.length
   });
   return videosCount;
 }
 
   
 // get teacher total enrolled student  number by id
-export function getTotalEnrolledStudent(courses,users,id) {
+export function getTotalEnrolledStudent(courses) {
   let enrolledStudentCount = 0
-  getuserByid(users,id).teacherCourses.forEach((courseId) => {
-    enrolledStudentCount += getCourse(courses,courseId).studentsCount;
+  courses.forEach((course ) => {
+    enrolledStudentCount += course.studentsCount;
   });
   return enrolledStudentCount;
 }
   
 // get teacher total videos likes   number by id
-export function getTotalPlaylitslikes(courses,users,id) {
+export function getTotalPlaylitslikes(courses ) {
   let likesCount = 0
-  getuserByid(users,id).teacherCourses.forEach((courseId) => {
-    getCourse(courses,courseId).playlist.forEach((video) => {
+  courses.forEach((course ) => {
+    course.playlist.forEach((video) => {
       likesCount += video.likes
     });
   });
@@ -80,10 +80,10 @@ export function getTotalPlaylitslikes(courses,users,id) {
 
   
 // get teacher total Comments  number by id
-export function getTotalComments(courses,users,id) {
+export function getTotalComments(courses ) {
   let commentsCount = 0
-  getuserByid(users,id).teacherCourses.forEach((courseId) => {
-    getCourse(courses,courseId).playlist.forEach((video) => {
+  courses.forEach((course ) => {
+    course.playlist.forEach((video) => {
       commentsCount += video.comments.length
     });
   });
@@ -103,9 +103,9 @@ export function getCoursesById(courses,users,id) {
   
 
 
-// convert image file to url
-export function getimageUrl(image)  {
-  if (!image) return "";
+// convert image file to URL safely
+export function getimageUrl(image) {
+  if (!image) return null; // ✅ Return null instead of ""
 
   // If it's a File object → create a blob URL
   if (image instanceof File) {
@@ -113,12 +113,37 @@ export function getimageUrl(image)  {
   }
 
   // Otherwise it's already a string URL
-  return image;
-};
-   
+  return image.trim() !== "" ? image : null; // ✅ Guard against empty strings
+}
 
 // temporyFunction to crate id 
   export function  createNewid  (prefix) {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
-  };
+};
   
+
+// formate time
+  export function formatTimestamp(timestamp) {
+  if (!timestamp) return "";
+  return timestamp.toDate().toLocaleDateString();
+}
+  
+/* ============================(switching to fire base)=================================new to */
+  
+/* 
+getuserByid (done)
+getCourse
+getVideo
+getCoursesBySubCategory
+getsubCategoryName
+getCategoryName
+getCoursesByMainCategory
+getTotalPlaylists
+getTotalVideos
+getTotalEnrolledStudent
+getTotalPlaylitslikes
+getTotalComments
+getCoursesById
+getimageUrl
+createNewid
+ */

@@ -1,57 +1,46 @@
-import { Box,Button ,Typography,Divider,Avatar  } from "@mui/material";
- 
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import { useParams } from "react-router-dom";
-import { getuserByid } from "../services/serviceProvider";
-import { useAppData } from "../Contexts/AppContext";
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { useAuth } from "../Contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-
-
+import { useGetUser } from "../hooks/useGetUser";
 import ProfileView from "../components/profileView";
 
-
-
 const UserProfileProfile = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
+  const { user } = useAuth();
 
-     const navigate = useNavigate();
+  // 🔹 real async data handling
+  const { userData: requestedUser, loading } = useGetUser(id);
 
-    
-     const { state } = useAppData(); 
-     const { users } = state; // app data
+  const isOwnProfile = id === user?.user?.userId;
+  const isAdmin = user?.role === "admin";
+ 
+  // 🔹 redirect ONLY after data is resolved
+  useEffect(() => {
+    if (!loading && !requestedUser) {
+      navigate("/not-found", { replace: true });
+    }
+  }, [loading, requestedUser, navigate]);
 
-     const { user } = useAuth(); // current user
-     
-     const { id } = useParams();
-     
+  // 🔹 loading state
+  if (loading) {
+    return <div>Loading profile...</div>;
+  }
 
-     let requestedUserdata = getuserByid(users, id);// profile user data
-    
+  // 🔹 safety fallback (should not happen)
+  if (!requestedUser) return null;
   
-     const isOwnProfile = id === user?.user?.userId
-     const isAdmin = user?.role == "admin"
-
-    
-   
-     if (!requestedUserdata) {
-          console.log("jpjfpjsadf")
-          navigate("/not-found") // incorrect path so it redirect by default for the unknow paths to the not found component
-     } else {
-          return (
-            <ProfileView profileUser={ requestedUserdata} currentUser={user} isOwnProfile={isOwnProfile} isAdmin={isAdmin} />
- 
-     )
-     }
-    
-     
-}
- 
+  return (
+    <ProfileView
+      profileUser={requestedUser}
+      currentUser={user}
+      isOwnProfile={isOwnProfile}
+      isAdmin={isAdmin}
+    />
+      
+  );
+};
 
 export default UserProfileProfile;

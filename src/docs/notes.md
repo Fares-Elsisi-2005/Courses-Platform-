@@ -1,21 +1,20 @@
-# todos
+## ======================(main todo)
 
--the utility functions in (serviceProvider) should be optimize it process the data each time the function will be called you should think for solution to optimize the prefomance mabe using useMemo or elso
+picture and videos upload in cloudinary
+comments section
+search feature for courses and teachers
+contact us form
+other users profiles
 
-- in (courseCurriculumForm) :
-  style the outer container and the card
+## =======================(to remember the next task)
 
-## =======================(todo list 1)
+work on other users profiles
+work on contact us page
+alert messages libarary
 
-user can update profile data
-student should have profile
+work on adding load more button on teachers page
 
-- can becoma a teacher
-  admin should have profile
-  nested comment section
-  work on the BecomeTeacher page
-
-## =======================(todo list 2)
+## =======================(Waiting list near )
 
 add aready exitst message in the register page
 add confirmation message when user crud course or video
@@ -23,13 +22,24 @@ fix the images size ui in the course page
 Validate URL format (YouTube) before saving
 Use yup validation instead of manual checks
 Add createdAt automatically
+
+## ======================(waiting list far)
+
+put the theme value with the currentUserData object that is saved in the local storage and firebase
+fix the image url
+check if the reducers logic is correct and it does not do mutation
+
+when teacher remove a coures then when you loop over the savedPlaylist array wether to skip the id of the coures that is deleted or update the user data and remove that id
+
+update the data model of the user to include the created at fiels
+update the data model of the video to include the created at fiels
+
+-the utility functions in (serviceProvider) should be optimize it process the data each time the function will be called you should think for solution to optimize the prefomance mabe using useMemo or elso
+
+- in (courseCurriculumForm) :
+  style the outer container and the card
+
+## ======================(extra featears)
+
+later work on the regstiration page and add beside google auth add passowrd and email also
 add translation system to the website
-
-## =======================(to remember the next task)
-
-user now can login and logout with firebase and can upgrade his role from student to teacher
-
-now you should work on the courses collection and all its affairs
-start by teacher own profile as there it happens all the crud operations of the coureses and videos
-you should move from utility functions to hooks that provide fuctions that work with firebase database
-then when you finish adjust the others ui components

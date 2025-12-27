@@ -6,16 +6,21 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import { tokens } from "../theme";
- 
-import { getuserByid,getimageUrl } from "./../services/serviceProvider";
+ import { useMemo,useState,useEffect } from "react";
+import {formatTimestamp,  getimageUrl } from "./../services/serviceProvider";
 import * as FaIcons from "react-icons/fa"; // all fontawesome icons
 import * as IoIcons from "react-icons/io5";
 import * as MdIcons from "react-icons/md";
 import * as HiIcons from "react-icons/hi";
 import * as SiIcons from "react-icons/si";
-/* import { courses, categories } from "../data/data"; */
+ 
 import { useAppData } from "../Contexts/AppContext";
 import { useAuth } from "../Contexts/AuthContext";
+ 
+import { useGetUser } from "../hooks/useGetUser";
+import { useGetAllCourses } from "../hooks/useGetAllCourses";
+
+
 
 const allIcons = { 
      ...FaIcons, 
@@ -28,19 +33,51 @@ const allIcons = {
 
 };
 
+const CardHeader = ({ userId, courseData }) => {
+            
+     const theme = useTheme();
+     const colors = tokens(theme.palette.mode);
+      
+     
+
+     const { userData, loading } = useGetUser(userId);
+     if(loading) return <Box>Loading...</Box>
+ 
+     return(
+           <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
+               <Avatar alt="Ardit korko" src= {userData.image} /> 
+               <Box>
+                    <Typography variant="h5">{getimageUrl( userData.name)}</Typography>
+                    <Typography variant="h6" sx={{ color: colors.primary[300], }}> {formatTimestamp( courseData.createdAt)}</Typography>
+
+               </Box>
+          </Box>
+     )
+}
+
 
 const Home = () => {
      const { state } = useAppData();
-     const { courses, categories, users } = state;
+     const {  categories } = state;
      const { user } = useAuth();  
-      
-
+     
      let currentUserRole = user?.role || "guest";
      
           
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate(); 
+     const [paginatedCourses, setPaginatedCourses] = useState([]);
+     
+     const {
+     getCourses,
+     resetPagination,
+     loading2,
+     error2,
+     hasMore,
+     } = useGetAllCourses();
+
+
 
      const handleClickChipMainCategory = (mainCategoryid) => {
           navigate(`/Courses/${mainCategoryid}`)
@@ -58,6 +95,31 @@ const Home = () => {
                
           }
      }
+
+
+     
+     // Initial fetch
+     useEffect(() => {
+          resetPagination();
+          setPaginatedCourses([]);
+          loadMoreCourses(); 
+     }, []);
+
+     const loadMoreCourses = async () => {
+     const newCourses = await getCourses();
+     setPaginatedCourses((prev) => [...prev, ...newCourses]);
+     };
+  
+
+
+     // --------------------------------------------------
+     // Loading guard (edit mode only)
+     // --------------------------------------------------
+
+     if (loading2) return <Typography>Loading  courses...</Typography>;
+     if (error2) return <Typography>Error  paginated courses</Typography>;
+
+
 
 
      return ( 
@@ -209,17 +271,12 @@ const Home = () => {
                          }}>
                    
                     {
-                         courses.map((course) => (
-                              <Card key={course.courseId} sx={{ maxWidth: "100%",display:"flex",flexDirection:"column",justifyContent:"space-between" }}>
+                         paginatedCourses.map((course) => (
+                              <Card key={course.id} sx={{ maxWidth: "100%",display:"flex",flexDirection:"column",justifyContent:"space-between" }}>
                                    <CardContent>
-                                        <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                             <Avatar alt="Ardit korko" src= {getuserByid(users,course.teacherId).image} /> 
-                                             <Box>
-                                                  <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
-                                                  <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
+                                       
 
-                                             </Box>
-                                        </Box>
+                                        <CardHeader userId={course.teacherId } courseData={course } />
 
                                         <Box position={"relative"}>
                                              <CardMedia
@@ -251,7 +308,7 @@ const Home = () => {
                                         
                                    </CardContent>
                                    <CardActions>
-                                        <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                        <Button onClick={()=>{navigate(`/Course/${course.id}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
                                              width:"fit-content", 
                                              color:colors.white[100],
                                              textTransform:"capitalize",

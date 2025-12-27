@@ -7,25 +7,80 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
-/* import { users } from "../data/data"; */
-import { useAppData } from "../Contexts/AppContext";
+ 
 import { useAuth } from "../Contexts/AuthContext";
-
+ 
+import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
+import { useGetUser } from "../hooks/useGetUser";
+import { useGetusersByRole } from "../hooks/useGetUsersByRole";
 
 import { getimageUrl,  getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes } from "./../services/serviceProvider";
+import { useState,useEffect ,useMemo} from "react";
  
 
 
+const TeacherAnalytics = ({teacher, coursesIds}) => {
+     
+     const theme = useTheme();
+     const colors = tokens(theme.palette.mode);
+     
+     const teacherCourseIds = useMemo(
+               () => coursesIds || [],
+               [coursesIds]
+          ); 
+          
+     const { courses, loading} = useGetTeacherCourses(teacherCourseIds);
+     
+     
+       // -------------------------------
+       // LOADING / ERROR
+       // -------------------------------
+      
+     
+     if (loading) return <Typography>Loading Analytics...</Typography>;
+     
+
+     return (
+          <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
+               <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>{teacher.teacherCourses.length}</span></Typography>
+               <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>{getTotalVideos(courses )}</span></Typography>
+               <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>{getTotalPlaylitslikes(courses )}</span></Typography>
+          </Box>
+     )
+}
+
+
 const Teachers = () => {
-   
-     const { state } = useAppData();
-     const { courses, users } = state;
+    
      const { user } = useAuth();  
      let currentUserRole = user?.role || "guest";
      
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
+     const [paginatedUsers,  setPaginatedUsers] = useState([]);
+     const {getAllTeachers,
+     resetPagination,
+     loadingTeachers,
+     error,
+          hasMore, } = useGetusersByRole();
+     
+      
+     
+     // Initial fetch
+       useEffect(() => {
+          
+            resetPagination();
+            setPaginatedUsers([]);
+            loadMoreUsers();
+         
+       }, []);
+     
+     
+          const loadMoreUsers = async () => {
+          const newUsers = await getAllTeachers("teacher");
+          setPaginatedUsers((prev) => [...prev, ...newUsers]);
+          };
 
      const handleBecomingTeacher = () => {
           if(currentUserRole === "guest"){
@@ -36,6 +91,21 @@ const Teachers = () => {
           }
      }
 
+     
+       
+       
+        
+       // -------------------------------
+       // LOADING / ERROR
+       // -------------------------------
+      
+     
+     if (loadingTeachers) return <Typography>Loading Teachers...</Typography>;
+     
+     if (error) return <Typography>{ console.log("the error form teachers page: ",error)}Error loading  Teachers !</Typography>;
+     
+      
+        
      
      return ( 
           <Box>
@@ -83,7 +153,7 @@ const Teachers = () => {
  
                     }
                     
-                    {users.filter((user) => user.role === "teacher").map((teacher) => (
+                    {paginatedUsers.map((teacher) => (
                           <Card key={teacher.userId} sx={{ maxWidth: "100%" }}>
                          
                          
@@ -97,14 +167,7 @@ const Teachers = () => {
                                         </Box>
                                    </Box>
 
-                                   <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                                   <Typography variant="h5" sx={{color:colors.grey[400]}} >total playlists: <span style={{color:colors.purple[500]}}>{getTotalPlaylists(users,teacher.userId)}</span></Typography>
-                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total videos: <span style={{color:colors.purple[500]}}>{getTotalVideos(courses,users,teacher.userId)}</span></Typography>
-                                   <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>{getTotalPlaylitslikes(courses,users,teacher.userId)}</span></Typography>
-                                        
-
-                                        
-                                   </Box>
+                                   <TeacherAnalytics teacher={teacher} coursesIds={teacher.teacherCourses}/>
                               
                                    
                               </CardContent>

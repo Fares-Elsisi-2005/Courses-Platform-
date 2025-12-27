@@ -4,30 +4,67 @@ import CardContent from '@mui/material/CardContent';
  
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { tokens } from "../theme";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef,useMemo } from "react";
 import { useNavigate  } from "react-router-dom";
-import {getimageUrl, getVideo} from "../services/serviceProvider";
-/* import { courses} from "../data/data";
- */
-import { useAppData } from "../Contexts/AppContext";
+import {getimageUrl } from "../services/serviceProvider";
+ 
 
+import { useAuth } from "../Contexts/AuthContext";
+import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
+ 
+
+ 
 const LikedVideos = () => {
-     const { state } = useAppData();
-     const {currentUser,courses} = state;
       
+     const { user } = useAuth();  
+     
 
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const divider = useRef(null); 
      const navigate = useNavigate();
+     
+     
+     const likedVideos = user.user.likedVideos.map((obj) => obj.videoId);
+     const coursesids = user.user.likedVideos.map((obj) => obj.courseId);
+
+     const courseQuery = useMemo(() => coursesids, []);
+     
+      const { courses, loading, error } = useGetTeacherCourses(courseQuery );
+
+     
+     
 
      useEffect(() => {
           divider.current?.scrollIntoView();
      }, []); 
+
+
+
+     // --------------------------------------------------
+     // Loading guard (edit mode only)
+     // --------------------------------------------------
+
+     if (loading) {
+               return <Typography>Loading course...</Typography>;
+     } 
+
+     let Videos = [];
+     
+     for (let i = 0; i < courses.length; i++) { 
+           
+           courses[i].playlist.forEach(video => {
+                if (likedVideos.includes(video.videoId)) {
+                    Videos.push(video);
+               }
+           });
+          
+     }
+ 
      return ( 
 
           <>
-               {currentUser.likedVideos.length > 0 ?
+               {user.user.likedVideos.length > 0 ?
                      <Box>
                <Typography variant="h3">Liked Videos</Typography>
                <Divider ref={divider} sx={{ margin: "15px 0px" }} />
@@ -42,21 +79,21 @@ const LikedVideos = () => {
                          },
                     }}> 
                     {
-                     currentUser.likedVideos.map((videoId) => {
-                         const videoData = getVideo(courses,videoId)
+                     Videos.map((videoData, index) => {
+                         
                         
                           return ( 
-                                <Card key={videoData.video.videoId}  sx={{ maxWidth: "100%" }}>
+                                <Card key={videoData?.videoId}  sx={{ maxWidth: "100%" }}>
                          
                          
                          <CardContent>
                                
 
-                              <Box onClick={()=>{navigate(`/Video/${videoData.courseID}/${videoData.video.videoId}`)}}
+                              <Box onClick={()=>{navigate(`/Video/${coursesids[index]}/${likedVideos[index]}`)}}
                                    position={"relative"} sx={{ cursor: "pointer",overflow:"hidden" }}>
                                      
                                    <img
-                                        src= {getimageUrl(videoData.video.thumbImage)}
+                                        src= {getimageUrl(videoData?.thumbImage)}
                                         loading="lazy"
                                         alt=""
                                         style={{
@@ -89,7 +126,7 @@ const LikedVideos = () => {
 
                               </Box>
                               <Typography variant="h5" component="div" mt={"10px"}>
-                                   {videoData.video.title}
+                                   {videoData?.title}
                               </Typography>
                                
                          </CardContent>
@@ -105,7 +142,7 @@ const LikedVideos = () => {
                    
                </Box>
 
-               {currentUser.likedVideos.length > 8 && (
+               {user.user.likedVideos.length > 8 && (
                     <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}>
                          <Button onClick={()=>{navigate("/Course")}} variant="contained" sx={{
                               backgroundColor:colors.yellow[100],
@@ -127,7 +164,7 @@ const LikedVideos = () => {
                
           </>
 
-      /*     currentUser.LikedVideos.length>0? */
+       
          
      )
 }

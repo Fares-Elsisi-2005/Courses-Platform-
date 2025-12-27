@@ -16,16 +16,15 @@ import { useAuth } from "../Contexts/AuthContext";
 
  
 const SideBar = ({ isCollapsed, setIsCollapsed }) => {
-     const { state } = useAppData();
-     const { users, currentUser } = state;
+     
      const { user } = useAuth();
+     
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const isSmallScreen = useMediaQuery('(max-width:900px)');
      const ismobile = useMediaQuery('(max-width:500px)');
      const navigate = useNavigate();
-     let userData = getuserByid(users, currentUser.userId);
-      
+    
      return (
           <Box maxWidth={ismobile?"200":"360px"} sx={{
                transition: "width 0.4s ease",
@@ -44,10 +43,10 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
                </Box> :  ""}
                
               {user?.user?  <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {user?.user.image} alt="profile image" /> 
+                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {getimageUrl(user?.user.image)} alt="profile image" /> 
                     <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
                     <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
-                    <Button onClick={()=>{navigate(`/UserProfile/${currentUser.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
+                    <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
                </Box>:null}
                <List>
 

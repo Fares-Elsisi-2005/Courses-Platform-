@@ -63,8 +63,11 @@ export default function AddVideoForm({ open, setOpen, videoToEdit }) {
   }
 }, [videoToEdit, open]);
   // Dropzone for the thumbnail image
-  const onDrop = (acceptedFiles) => {
+  /* const onDrop = (acceptedFiles) => {
     setVideo({ ...video, thumbImage: acceptedFiles[0] });
+  }; */
+  const onDrop = (acceptedFiles) => {
+    setVideo({ ...video, thumbImage:  "" });
   };
 
   const { getRootProps, getInputProps } = useDropzone({
