@@ -7,8 +7,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
+
+import SearchTeachersBar from "../components/SearchTeachersBar";
  
 import { useAuth } from "../Contexts/AuthContext";
+
  
 import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
 import { useGetUser } from "../hooks/useGetUser";
@@ -111,13 +114,9 @@ const Teachers = () => {
           <Box>
                <Typography variant="h3">Expert Teachers</Typography>
                <Divider sx={{ mt:"15px",mb:"25px"}} />
-               <Box display="flex" backgroundColor={colors.primary[200]} borderRadius="3px" flex={"1"}   maxWidth={"100%"} mb={"20px"}>
+               <Box display="flex" position="relative"  backgroundColor={colors.primary[200]} borderRadius="3px" flex={"1"}   maxWidth={"100%"} mb={"20px"}>
                                
-                           <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search tutors.." /> 
-                               
-                           <IconButton type="button" sx={{p:1}}>
-                               <SearchIcon/>
-                           </IconButton>
+                               <SearchTeachersBar />
                                
                </Box>
                <Box  display="grid"

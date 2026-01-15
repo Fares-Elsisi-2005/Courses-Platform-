@@ -44,6 +44,7 @@ export function useGetAllCourses() {
       return courses;
     } catch (err) {
       setError(err.message);
+      console.log(err);
       return [];
     } finally {
       setLoading(false);

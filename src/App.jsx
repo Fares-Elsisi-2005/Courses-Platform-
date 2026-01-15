@@ -32,6 +32,8 @@ import { AuthProvider } from "./Contexts/AuthContext";
 // component for role based
 import ProtectedRoute from "./components/ProtectedRoute"
 
+// notification
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -62,7 +64,18 @@ function App() {
             margin: 0,
           },
         }}
-      />
+              />
+               <ToastContainer position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                 />
           <SideBar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
           {isSmallScreen?<div className="darkCover" style={{
             position: "fixed",

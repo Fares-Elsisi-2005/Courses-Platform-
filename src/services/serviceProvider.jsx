@@ -80,11 +80,13 @@ export function getTotalPlaylitslikes(courses ) {
 
   
 // get teacher total Comments  number by id
-export function getTotalComments(courses ) {
+export function getTotalComments(courses) {
+  
+  
   let commentsCount = 0
   courses.forEach((course ) => {
     course.playlist.forEach((video) => {
-      commentsCount += video.comments.length
+      commentsCount += /* video.comments.length */ 0
     });
   });
   return commentsCount;

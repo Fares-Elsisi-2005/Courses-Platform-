@@ -28,9 +28,9 @@ const CardHeader = ({ userId, courseData }) => {
  
      return(
            <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-               <Avatar alt="Ardit korko" src= {userData.image} /> 
+               <Avatar alt="Ardit korko" src= {userData?.image} /> 
                <Box>
-                    <Typography variant="h5">{getimageUrl( userData.name)}</Typography>
+                    <Typography variant="h5">{  userData?.name }</Typography>
                     <Typography variant="h6" sx={{ color: colors.primary[300], }}> {formatTimestamp( courseData.createdAt)}</Typography>
 
                </Box>
@@ -115,56 +115,11 @@ const Courses = () => {
 
   
   
-  // -------------------------------
-  // FILTER COURSES (DERIVED STATE)
-  // -------------------------------
- /*  const filteredCourses = useMemo(() => {
-    if (!courses.length) return [];
-
-    const validCategories = new Set(courses.map(c => c.mainCategoryId));
-    const validSubCategories = new Set(courses.map(c => c.subCategoryId));
-
-    if (
-      validCategories.has(categoryParam) &&
-      validSubCategories.has(subCategoryParam)
-    ) {
-      return getCoursesBySubCategory(
-        courses,
-        categoryParam,
-        subCategoryParam
-      );
-    }
-
-    if (validCategories.has(categoryParam)) {
-      return getCoursesByMainCategory(courses, categoryParam);
-    }
-
-    return courses;
-  }, [courses, categoryParam, subCategoryParam]);
- */
-  // -------------------------------
-  // TITLE LOGIC
-  // -------------------------------
-  /* useEffect(() => {
-    if (!courses.length) return;
-
-    let newTitle = "Our Courses";
-
-    if (categoryParam && subCategoryParam) {
-      newTitle = getsubCategoryName(categories, categoryParam, subCategoryParam);
-    } else if (categoryParam) {
-      newTitle = getCategoryName(categories, categoryParam);
-    }
-
-    setTitle(newTitle);
-  }, [courses, categoryParam, subCategoryParam, categories]);
- */
+   
   // -------------------------------
   // LOADING / ERROR
   // -------------------------------
-/*   if (loading) return <Typography>Loading courses...</Typography>;
-  if (error) return <Typography>Error loading courses</Typography>;
- */
+ 
 
   if (loading2 || loadingCoursesbyCategory) return <Typography>Loading courses...</Typography>;
   if (error2 || error) return <Typography>Error loading  courses</Typography>;

@@ -2,7 +2,9 @@ import { Box, Button, TextField, useMediaQuery,useTheme,TextareaAutosize} from "
 import { Formik } from "formik";
 import * as yup from "yup";
 import { tokens } from "../theme";
- 
+
+import { toast } from 'react-toastify';
+
 
 const initialValues = {
     Name: "",
@@ -32,9 +34,69 @@ const userSchema = yup.object().shape({
 
 const ContactForm = () => {
     const isMobile = useMediaQuery("(max-width:700px)");
-    const handleFormSubmit = (values) => {
+   /*  const handleFormSubmit = (values) => {
         console.log(values);
     }
+ */
+
+    const handleFormSubmit = async (values, { resetForm }) => {
+  const templateId = "template_qu2vkw7";     // from EmailJS dashboard
+  const serviceId = "service_tp3amgs";       // from EmailJS dashboard
+  const publicKey = import.meta.env.VITE_PUBLIC_KEY; // from EmailJS dashboard
+
+  const data = {
+    service_id: serviceId,
+    template_id: templateId,
+    user_id: publicKey, // this is your Public Key
+    template_params: {
+      from_name: values.Name,
+      from_email: values.email,
+      contact: values.contact,
+      message: values.Message,
+    },
+  };
+
+  try {
+    const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const responseData = await res.text();
+    console.log("SUCCESS!", responseData);
+
+    toast.success("Message sent successfully!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+    resetForm();
+  } catch (err) {
+    console.error("FAILED...", err);
+
+    toast.error("Something went wrong. Please try again.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  }
+};
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 

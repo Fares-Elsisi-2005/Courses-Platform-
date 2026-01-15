@@ -7,7 +7,7 @@ import ReactPlayer from "react-player";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
  
 import { useState ,useMemo,useEffect} from "react";
-import Comments from "../components/Comments";
+import Comments from "../components/handleComment/Comments";
 import {formatTimestamp,getimageUrl } from "./../services/serviceProvider";
  
 
@@ -17,10 +17,72 @@ import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { useGetUser } from "../hooks/useGetUser";
 import { useWriteCourse } from "../hooks/useWriteCourse";
-
+import { useVideoComments } from "../hooks/useVideoComments";
+import { useWriteComment } from "../hooks/useWriteComment";
  
  
-
+const commentsData =  {
+  id: 1,
+  items: [
+    {
+      id: 1768147266643,
+            userName: "Fares Ahmed",
+      userId:"PTnhtx2Y5EYGQYFgQHjPY1UuDcJ2",
+      text: "Hey, this is my comment",
+      createdAt: "2023-01-16T12:37:46.643Z",
+      userImage: "",
+      items: [
+        {
+        id: 1768147284466,
+                userName: "Sama Omar",
+         userId:5645,
+        text: "yes it",
+        createdAt: "2023-02-16T12:37:46.643Z",
+        userImage: "",
+        items:[]
+      
+      
+    }
+      ]
+      
+      
+    },
+    {
+      id: 1768147255643,
+         userName: "Fares Ahmed",
+       userId: "PTnhtx2Y5EYGQYFgQHjPY1UuDcJ2",
+      text: "Hey, this is my comment",
+      createdAt: "2023-05-16T12:37:46.643Z",
+      userImage: "",
+      items: [
+        {
+        id: 1768147285463,
+                userName: "Ahmed Sayed",
+         userId:5646,
+        text: "yes it",
+        createdAt: "2023-06-16T12:37:46.643Z",
+        userImage: "",
+        items:[]
+      
+      
+    }
+      ]
+      
+      
+       },
+    {
+        id: 1768147282463,
+                userName: "Ahmed Sayed",
+         userId:5646,
+        text: "shining",
+        createdAt: "2023-06-16T12:37:46.643Z",
+        userImage: "",
+        items:[]
+      
+      
+    }
+  ],
+};
 
  
 
@@ -31,7 +93,7 @@ const Video = () => {
      const { courseid,videoid } = useParams();
      const navigate = useNavigate();
      
-      const { user } = useAuth();
+     const { user } = useAuth();
      const courseId = useMemo(() => [courseid], [courseid]);
      const { courses, loading, error } = useGetTeacherCourses(courseId);
      const { likedVideos } = user.user;
@@ -39,7 +101,10 @@ const Video = () => {
      const { userData } = useGetUser(courses[0]?.teacherId);
      const { updateUserData } = useUpdateUser();
      const { editCourse } = useWriteCourse();
+     const { addComment, editComment, deleteComment,loadingComment,errorComment } = useWriteComment(courseid, videoid);
      const [localCourse, setLocalCourse] = useState(null);
+     const { comments, loadingTheComments } = useVideoComments(courseid, videoid);
+     
 
      useEffect(() => {
   setIslike(likedVideos.some((obj) => obj.videoId === videoid));
@@ -58,6 +123,9 @@ const Video = () => {
      if (!localCourse) {
      return <Typography>Loading course...</Typography>;
      }
+     if ( loadingTheComments) {
+     return <Typography>Loading comments...</Typography>;
+     }
 
      if (error || courses.length === 0) {
      return <Typography>Course not found</Typography>;
@@ -65,7 +133,7 @@ const Video = () => {
     
 
      const courseData = localCourse
-
+      
      const videoData = localCourse.playlist.find(
      (video) => video.videoId === videoid
      );
@@ -81,7 +149,7 @@ function handleVideoLiked() {
     const nextIsLike = !prev;
 
     const updatedUser = {
-      ...userData,
+     ...user.user,
       likedVideos: nextIsLike
         ? [...likedVideos, { courseId: courseId[0], videoId:videoid }]
         : likedVideos.filter((obj) => obj.videoId !== videoid),
@@ -110,7 +178,11 @@ function handleVideoLiked() {
 
     return nextIsLike;
   });
-}
+     }
+     
+   
+
+    
      return (
           <Box>
                 
@@ -196,30 +268,10 @@ function handleVideoLiked() {
                </Box>
 
                </Box>
-                <Typography variant="h3">Add comments</Typography>
-               <Divider sx={{ margin: "15px 0px" }} />
-               <Box sx={{
-                    backgroundColor: colors.primary[200],
-                    p: "15px",
-                     mb:"40px"
-               }}>
-                     
-               
-                    <TextareaAutosize placeholder="enter your comment" style={{ backgroundColor: colors.primary[100], minHeight: "150px", padding: "10px", borderRadius: "7px", minWidth: "100%",maxWidth:"100%", outline: "none", fontFamily: "Sans-serif", fontWeight: "bold", fontSize: "15px", color: colors.primary[300], lineHeight: "1",margin:"15px 0" }}></TextareaAutosize>
-                    <Button   variant="contained" sx={{backgroundColor:colors.purple[500],
-                                   width:"fit-content", 
-                                   color:colors.white[100],
-                                   textTransform:"capitalize",
-                                   "&:hover":{
-                                   backgroundColor:colors.purple[600]
-                                   },
-                                   transition: "all 0.3s"
-                              }}>Add Comment</Button>
-               </Box>
-               <Typography variant="h3">5 Comments</Typography>
-               <Divider sx={{ margin: "15px 0px" }} />
+                
+                
 
-               <Comments/>
+               <Comments data={  comments } loading={loadingComment} error={errorComment} addComment={addComment} editComment={editComment} deleteComment={deleteComment}/>
           </Box>
 
      )

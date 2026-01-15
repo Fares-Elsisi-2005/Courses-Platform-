@@ -27,9 +27,9 @@ const CardHeader = ({ userId, courseData }) => {
  
      return(
            <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-               <Avatar alt="Ardit korko" src= {userData.image} /> 
+               <Avatar alt="Ardit korko" src= {userData?.image} /> 
                <Box>
-                    <Typography variant="h5">{getimageUrl( userData.name)}</Typography>
+                    <Typography variant="h5">{ userData?.name }</Typography>
                     <Typography variant="h6" sx={{ color: colors.primary[300], }}> {formatTimestamp( courseData.createdAt)}</Typography>
 
                </Box>

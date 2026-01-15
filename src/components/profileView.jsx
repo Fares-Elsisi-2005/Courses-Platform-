@@ -49,7 +49,7 @@ const ProfileView = ({profileUser,currentUser,isOwnProfile,isAdmin}) => {
                 return <AdminProfile/>
           }
           if (currentUser.role == "student") {
-               return <StudentOwnProfile/>
+               return <StudentOwnProfile userData={profileUser}/>
           }
           if (currentUser.role == "teacher") {
                return <TeacherOwnProfile userData={profileUser} />
@@ -88,8 +88,80 @@ function AdminProfile() {
      return <Box>Admin</Box>
 }
 
-function StudentOwnProfile() {
-     return <Box>Student own Profile</Box>
+function StudentOwnProfile({ userData }) {
+    
+     const theme = useTheme();
+     const colors = tokens(theme.palette.mode);
+     const navigate = useNavigate();
+     const { user } = useAuth();
+      
+     return (
+           <Box>
+               
+               <Typography variant="h3">Profile Details</Typography>
+               <Divider sx={{ mt: "15px", mb: "25px" }} />
+               <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} sx={{backgroundColor:colors.primary[200],borderRadius:"8px",p:"20px",gap:"50px"}}>
+                    <Box display={"flex"} flexDirection={"column"} marginBottom={"20px"} gap={"10px"} textAlign={"center"}  >
+                         <Avatar alt="Ardit korko" src= {userData.image} sx={{ width: 56, height: 56,alignSelf:"center" }}  /> 
+                         <Box>
+                              <Typography variant="h5">{ userData.name}</Typography>
+                              <Typography variant="h6" sx={{ color: colors.primary[300], }}>{userData.role}</Typography>
+                               <Button onClick={()=>{navigate("/UserProfileUpdate")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>Update Profile</Button> 
+                              
+                         </Box>
+                    </Box>
+                     
+                     <Box display="grid"
+                         width={"100%"}
+                          
+                         gap={2} // spacing between cards
+                         sx={{
+                         gridTemplateColumns: {
+                              
+                              sm: "1fr", // tablet → 3 cards
+                              md: "repeat(3, 1fr)", // desktop → 4 cards
+                         },
+                         }}>
+                         
+                         <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"}  >
+                              <Box display={"flex"}>
+                                    <BookmarkIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
+                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >Saved Playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{ userData.savedPlaylists.length}</span></Typography>
+                             </Box>
+                              <Button onClick={()=>{navigate("/SavedPlaylits")}}  variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>view saved playlists</Button>
+                              
+                         </Box>
+                         
+                        
+                         <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"}  >
+                              <Box display={"flex"}>
+                                    <FavoriteIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
+                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >Liked Videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.likedVideos.length}</span></Typography>
+                             </Box>
+                              <Button onClick={()=>{navigate("/LikedVideos")}}  variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Liked Vidoes</Button>
+                              
+                         </Box>
+                         
+                         <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"}  >
+                              <Box display={"flex"}>
+                                    <ModeCommentIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
+                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.userCommentsId.length}</span></Typography>
+                             </Box>
+                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
+                              
+                         </Box>
+                         
+                        
+                          
+
+                    </Box>
+                    
+                    
+               </Box>
+                
+          </Box>
+     )
+    
      
 }
 
@@ -125,16 +197,16 @@ function TeacherOwnProfile({ userData }) {
      };
      
 
-       const handleDeleteCourses = () => {
-            /*  dispatch({ type: "DeleteCourses", payload: { coursesToDelete: selectedCourses } }) */
+       const handleDeleteCourses = async () => {
             
             console.log("selected couress", selectedCourses);
             console.log("user id",userData.userId);
-            deleteCourses(selectedCourses, userData.userId)
+           await deleteCourses(selectedCourses, userData.userId)
             
-             
-       setSelectedCourses([]);
-       setDeleteConfirmOpen(false);
+          setSelectedCourses([]);
+            setDeleteConfirmOpen(false);
+            window.location.reload();
+            
        }
        
       
@@ -207,7 +279,7 @@ function TeacherOwnProfile({ userData }) {
                                     <BookmarkIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
                                    <Typography variant="h4" sx={{ color: colors.grey[400] }} >Saved Playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{ userData.savedPlaylists.length}</span></Typography>
                              </Box>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>view saved playlists</Button>
+                              <Button onClick={()=>{navigate("/SavedPlaylits")}}  variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>view saved playlists</Button>
                               
                          </Box>
                          
@@ -217,7 +289,7 @@ function TeacherOwnProfile({ userData }) {
                                     <FavoriteIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
                                    <Typography variant="h4" sx={{ color: colors.grey[400] }} >Liked Videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.likedVideos.length}</span></Typography>
                              </Box>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Liked Vidoes</Button>
+                              <Button onClick={()=>{navigate("/LikedVideos")}}  variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Liked Vidoes</Button>
                               
                          </Box>
                          
@@ -424,9 +496,16 @@ function TeacherPuplicProfile({ userData }) {
       const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
-      const { state } = useAppData();
-     const { courses, users } = state;
+      
+      const teacherCourseIds = useMemo(
+          () => userData?.teacherCourses || [],
+          [userData?.teacherCourses]
+     ); 
+     
+     const { courses, loading, error } = useGetTeacherCourses(teacherCourseIds);
 
+     if (loading) return <Box>loading...</Box>
+     
      return (
             <Box>
                <Typography variant="h3">teacher Profile Details</Typography>
@@ -440,8 +519,8 @@ function TeacherPuplicProfile({ userData }) {
                               
                          </Box>
                     </Box>
-                    
-                   {/*   <Box display="grid"
+
+                    <Box display="grid"
                          width={"100%"}
                           
                          gap={2} // spacing between cards
@@ -454,32 +533,34 @@ function TeacherPuplicProfile({ userData }) {
                          }}>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"} >
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalPlaylists(users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total playlists: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalPlaylists( userData )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalVideos(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total videos: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px" }}>{ getTotalVideos(courses )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  enrolled students: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalEnrolledStudent(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  enrolled students: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalEnrolledStudent(courses )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  likes: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalPlaylitslikes(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{ color: colors.grey[400] }} >total  likes: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalPlaylitslikes(courses )}</span></Typography>
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(courses,users,userData.userId)}</span></Typography>
+                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(courses )}</span></Typography>
                          </Box>
 
                     </Box>
-                     */}
+                    
+                    
+                   
                     
                     
                </Box>
             <Box mt={"30px"}>
-                     <Typography variant="h3">Coures</Typography>
+                     <Typography variant="h3">courses</Typography>
                     <Divider sx={{ margin: "15px 0px" }} />
                <Box    display="grid"
                          gap={2} // spacing between cards
@@ -494,16 +575,16 @@ function TeacherPuplicProfile({ userData }) {
                    
                       
                          {
-                              getCoursesById(courses,users,userData.userId).map((course) => (
-                                   <Card key={course.courseId} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                              courses.map((course) => (
+                                   <Card key={course.id} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                               
                               
                                         <CardContent>
                                              <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                                  <Avatar alt="Ardit korko" src={ getuserByid(users,course.teacherId).image}  /> 
+                                                  <Avatar alt="Ardit korko" src={ userData.image}  /> 
                                                   <Box>
-                                                       <Typography variant="h5">{ getuserByid(users,course.teacherId).name}</Typography>
-                                                       <Typography variant="h6" sx={{ color: colors.primary[300], }}> { course.createdAt}</Typography>
+                                                       <Typography variant="h5">{ userData.name}</Typography>
+                                                       <Typography variant="h6" sx={{ color: colors.primary[300], }}> {formatTimestamp( course.createdAt)}</Typography>
      
                                                   </Box>
                                              </Box>
@@ -538,7 +619,7 @@ function TeacherPuplicProfile({ userData }) {
                                              
                                         </CardContent>
                                         <CardActions>
-                                             <Button onClick={()=>{navigate(`/Course/${course.courseId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
+                                             <Button onClick={()=>{navigate(`/Course/${course.id}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
                                                   width:"fit-content", 
                                                   color:colors.white[100],
                                                   textTransform:"capitalize",
@@ -554,7 +635,7 @@ function TeacherPuplicProfile({ userData }) {
                                         
                 
                     </Box>
-                    {getCoursesById(courses,users,userData.userId).length > 8 ?
+                    {courses.length > 8 ?
                          <Box display={"flex"} justifyContent={"center"} alignItems={"center"} p={"30px"}  >
                               <Button onClick={() => { navigate("/Courses") }} variant="contained" sx={{
                                    backgroundColor: colors.yellow[100],

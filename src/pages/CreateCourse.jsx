@@ -17,10 +17,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { useWriteCourse } from "../hooks/useWriteCourse";
 import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
+import { useCloudinaryUpload } from "../hooks/usecloudinaryUpload";
 
 import BasicInfoStep from "../components/courseBasicInfoForm";
 import CurriculumStep from "../components/courseCurriculumForm";
 
+import { toast } from 'react-toastify';
 
 // --------------------------------------------------
 // Validation schemas
@@ -58,7 +60,8 @@ export default function CreateCourse() {
   const navigate = useNavigate();
   const { courseId } = useParams();
   const { user } = useAuth();
-  const { addCourse ,editCourse} = useWriteCourse();
+  const { addCourse, editCourse,writeCourseLoading } = useWriteCourse();
+  const { uploadFile, uploadLoading,uploadError } = useCloudinaryUpload();
   
   const isEdit = Boolean(courseId);
 
@@ -113,14 +116,47 @@ export default function CreateCourse() {
         console.log("EDIT COURSE:", values);
         editCourse({...values})
         navigate(`/UserProfile/${user.user.userId}`);
+        toast.success('Course updated successfully!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        });
         
       } else {
+        // values.image is the CROPPED File
+        console.log("IMAGE object :", values.image);
+
+        const imageUrl = await uploadFile(values.image, "image");
+
+        console.log("IMAGE URL:", imageUrl);
+
+        if (uploadError) {
+          console.log("the upload error: ",uploadError)
+        }
+
         const newCourseId = await addCourse({
           ...values,
-          image: "",
+          image: imageUrl,
         });
 
         console.log("NEW COURSE:", newCourseId);
+          toast.success('Course added successfully!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        });
+
+        
         navigate(`/UserProfile/${user.user.userId}`);
       }
     } catch (err) {
@@ -209,13 +245,25 @@ export default function CreateCourse() {
                   </Button>
                 )}
 
-                <Button
+                {writeCourseLoading?<Button
+                  
+                  variant="contained"
+                  sx={{ backgroundColor: colors.purple[500] }}
+                >
+                  Loding...
+                </Button> :
+                  <Button
                   type="submit"
                   variant="contained"
                   sx={{ backgroundColor: colors.purple[500] }}
                 >
                   {isLastStep ? "Publish Course" : "Next"}
                 </Button>
+                }
+
+                {uploadLoading?<Typography>Uploading...</Typography>:null}
+                
+
               </Box>
             </Box>
           </Form>

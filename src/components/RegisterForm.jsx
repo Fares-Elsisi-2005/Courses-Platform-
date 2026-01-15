@@ -220,7 +220,8 @@ const TheFormComponent = () => {
 const LoginUsingGoogleComponent = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isLoginIn,setIsLoginIn] = useState(false)
+  const storageUser = JSON.parse(localStorage.getItem("currentUserData"));
+  const [isLoginIn,setIsLoginIn] = useState(storageUser.user?true:false)
   
   const { loading, loginWithGoogle } = useFirebaseLogin();
   const handleClickLogin = async() => {

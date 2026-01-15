@@ -18,28 +18,26 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Logout from '@mui/icons-material/Logout';
-import { useAppData } from "../Contexts/AppContext";
+ 
 import { useAuth } from "../Contexts/AuthContext";
 
 import {useFirebaseLogin} from "../hooks/useFirebaseLogin"
 
+import {getimageUrl} from "./../services/serviceProvider";
 
-import {getimageUrl, getuserByid} from "./../services/serviceProvider";
+import { auth } from "../config/firebase-config";
+import { signOut } from "firebase/auth";
 
-
-
+import SearchCoursesBar from "../components/SearchCoursesBar";
  
 
 
 const TobBar = ({ isCollapsed, setIsCollapsed }) => {
 
-   const { loginWithGoogle } = useFirebaseLogin();
+  const { loginWithGoogle } = useFirebaseLogin();
 
   const { user, dispatchUser } = useAuth();
- 
-  const { state } = useAppData();
-  const { users,currentUser} = state;
-   
+  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -65,16 +63,19 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
     loginWithGoogle();
     
   }
-  const handleClickSignUp = () => {
+  const handleClickSignUp =  () => {
     handleClose();
     
      navigate("/SignUp");
    
      
   }
-  const handleClickLogout= () => {
+  const handleClickLogout = async () => {
+    await signOut(auth);  
     handleClose();
-    dispatchUser({ type: "LOGOUT" })
+    dispatchUser({ type: "LOGOUT" });
+    window.location.reload(); 
+
     
      
   }
@@ -102,16 +103,22 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
             
            
         {/* SEARCH BAR */}
-        {ismobile?<></>:<Box display="flex"
-                   backgroundColor={colors.primary[100]} borderRadius="3px" flex={"1"} m={"0px 10px"} maxWidth={"700px"}>
-                
-            <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search Courses.." /> 
-                
-            <IconButton type="button" sx={{p:1}}>
-                <SearchIcon/>
-            </IconButton>
-                
-        </Box>}
+         
+          
+          {!ismobile && (
+            <Box
+              display="flex"
+              backgroundColor={colors.primary[100]}
+              borderRadius="3px"
+              flex="1"
+              m="0px 10px"
+              maxWidth="700px"
+              position="relative"
+            >
+            <SearchCoursesBar/>
+
+            </Box>)}
+            
 
         {/* ICONS */}
             <Box display="flex">
@@ -193,14 +200,7 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
                     
         <Divider />
         </Box> :null}
-        {/* <MenuItem onClick={()=>{
-              handleClickSignUp()
-        }}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Register
-        </MenuItem> */}
+         
          
         <MenuItem onClick={()=>{
               handleClickLogin()
@@ -239,10 +239,7 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
             }}
                         
                     >
-                        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search Courses.." /> 
-                        <IconButton type="button" sx={{ p: 1 }}>
-                            <SearchIcon />
-                        </IconButton>
+                         <SearchCoursesBar />
                     </Box>
                  
             ) : null}
