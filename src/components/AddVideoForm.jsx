@@ -92,8 +92,8 @@ export default function AddVideoForm({ open, setOpen, videoToEdit }) {
   // --- Crop modal complete handler ---
   const handleCropComplete = (croppedFile) => {
     // the real image is croppedFile
-    /* setVideo({ ...video, thumbImage: croppedFile }); */
-    setVideo({ ...video, thumbImage:  "" });
+    setVideo({ ...video, thumbImage: croppedFile });
+    /* setVideo({ ...video, thumbImage:  "" }); */
     setTempThumbFile(null);
     setCropModalOpen(false);
   };

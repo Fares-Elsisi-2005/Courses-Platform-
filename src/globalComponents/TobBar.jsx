@@ -1,5 +1,5 @@
 
-import { Box,Button, IconButton, useTheme,Typography } from "@mui/material";
+import { Box,Button, IconButton, useTheme,Typography,Avatar } from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ColorModeContext, tokens } from "../theme";
@@ -193,7 +193,13 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
        {user?.user? <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= { user?.user.image} alt="profile image" /> 
+              <img style={{ width: "80px", height: "80px", borderRadius: "50%" }} src={user?.user.image} alt="profile image" /> 
+                 {/* 
+                    <Avatar
+        alt="profile image"
+        src= {getimageUrl(user?.user.image)}
+        sx={{ width: "80px", height:  "80px" }}
+      /> */}
                 <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
                 <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
                 <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>

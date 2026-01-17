@@ -1,11 +1,10 @@
 import React from "react";
 import { useState ,useMemo} from "react";
-import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton ,} from "@mui/material";
+import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton, } from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
 import {formatTimestamp,getimageUrl,getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "../services/serviceProvider";
-import { useAppData } from "../Contexts/AppContext";
-
+ 
 import { useAuth } from "../Contexts/AuthContext";
 import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
 import { useWriteCourse } from "../hooks/useWriteCourse";
@@ -16,15 +15,16 @@ import CardMedia from '@mui/material/CardMedia';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import Slide from '@mui/material/Slide';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Tooltip from '@mui/material/Tooltip';
+
+import { useTeacherComments } from "../hooks/useTeacherComments";
 
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -146,9 +146,10 @@ function StudentOwnProfile({ userData }) {
                               <Box display={"flex"}>
                                     <ModeCommentIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
                                    <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.userCommentsId.length}</span></Typography>
-                             </Box>
+                              </Box>
+                              <Tooltip title="Coming soon">
                               <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
-                              
+                              </Tooltip>
                          </Box>
                          
                         
@@ -181,11 +182,12 @@ function TeacherOwnProfile({ userData }) {
      ); 
      
      const { courses, loading, error } = useGetTeacherCourses(teacherCourseIds);
-      const { deleteCourses} = useWriteCourse();
-  
-      
-    
-     
+     const { deleteCourses } = useWriteCourse();
+     const { count, loadingComments } = useTeacherComments({
+               teacherId: user.user.userId,
+               mode: "count",
+               });
+   
 
      const handleSelectedCourse = (isChecked, Coursedata) => {
                setSelectedCourses(prev => {
@@ -257,7 +259,7 @@ function TeacherOwnProfile({ userData }) {
                          </Box>
                          
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"} textAlign={"center"}>
-                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{getTotalComments(courses )}</span></Typography>
+                              <Typography variant="h5" sx={{color:colors.grey[400]}} >total comments: <span style={{color:colors.purple[500],fontWeight:"bold",fontSize:"20px"}}>{count}</span></Typography>
                          </Box>
 
                     </Box>
@@ -297,9 +299,10 @@ function TeacherOwnProfile({ userData }) {
                               <Box display={"flex"}>
                                     <ModeCommentIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
                                    <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.userCommentsId.length}</span></Typography>
-                             </Box>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
-                              
+                              </Box>
+                              <Tooltip title="Coming soon">
+                                   <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
+                              </Tooltip>
                          </Box>
                          
                         

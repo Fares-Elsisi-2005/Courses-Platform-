@@ -20,70 +20,7 @@ import { useWriteCourse } from "../hooks/useWriteCourse";
 import { useVideoComments } from "../hooks/useVideoComments";
 import { useWriteComment } from "../hooks/useWriteComment";
  
- 
-const commentsData =  {
-  id: 1,
-  items: [
-    {
-      id: 1768147266643,
-            userName: "Fares Ahmed",
-      userId:"PTnhtx2Y5EYGQYFgQHjPY1UuDcJ2",
-      text: "Hey, this is my comment",
-      createdAt: "2023-01-16T12:37:46.643Z",
-      userImage: "",
-      items: [
-        {
-        id: 1768147284466,
-                userName: "Sama Omar",
-         userId:5645,
-        text: "yes it",
-        createdAt: "2023-02-16T12:37:46.643Z",
-        userImage: "",
-        items:[]
-      
-      
-    }
-      ]
-      
-      
-    },
-    {
-      id: 1768147255643,
-         userName: "Fares Ahmed",
-       userId: "PTnhtx2Y5EYGQYFgQHjPY1UuDcJ2",
-      text: "Hey, this is my comment",
-      createdAt: "2023-05-16T12:37:46.643Z",
-      userImage: "",
-      items: [
-        {
-        id: 1768147285463,
-                userName: "Ahmed Sayed",
-         userId:5646,
-        text: "yes it",
-        createdAt: "2023-06-16T12:37:46.643Z",
-        userImage: "",
-        items:[]
-      
-      
-    }
-      ]
-      
-      
-       },
-    {
-        id: 1768147282463,
-                userName: "Ahmed Sayed",
-         userId:5646,
-        text: "shining",
-        createdAt: "2023-06-16T12:37:46.643Z",
-        userImage: "",
-        items:[]
-      
-      
-    }
-  ],
-};
-
+  
  
 
 const Video = () => {
@@ -101,7 +38,7 @@ const Video = () => {
      const { userData } = useGetUser(courses[0]?.teacherId);
      const { updateUserData } = useUpdateUser();
      const { editCourse } = useWriteCourse();
-     const { addComment, editComment, deleteComment,loadingComment,errorComment } = useWriteComment(courseid, videoid);
+     const { addComment, editComment, deleteComment,loadingComment,errorComment } = useWriteComment(courseid, videoid,courses[0]?.teacherId);
      const [localCourse, setLocalCourse] = useState(null);
      const { comments, loadingTheComments } = useVideoComments(courseid, videoid);
      
@@ -120,20 +57,20 @@ const Video = () => {
      // ----------------------------------
      // Guards
      // ----------------------------------
-     if (!localCourse) {
-     return <Typography>Loading course...</Typography>;
+
+          if (!localCourse || loading) {
+     return <Typography>Loading video...</Typography>;
      }
-     if ( loadingTheComments) {
+
+     if (loadingTheComments) {
      return <Typography>Loading comments...</Typography>;
      }
 
      if (error || courses.length === 0) {
      return <Typography>Course not found</Typography>;
      }
-    
-
-     const courseData = localCourse
-      
+     const courseData = localCourse;
+ 
      const videoData = localCourse.playlist.find(
      (video) => video.videoId === videoid
      );

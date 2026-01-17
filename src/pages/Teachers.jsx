@@ -1,4 +1,4 @@
-import {useTheme, Box,Button ,Typography,Divider,InputBase,IconButton   } from "@mui/material";
+import {useTheme, Box, Stack,Button ,Typography,Divider,InputBase,IconButton   } from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,7 +7,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
-
+import Skeleton from '@mui/material/Skeleton';
 import SearchTeachersBar from "../components/SearchTeachersBar";
  
 import { useAuth } from "../Contexts/AuthContext";
@@ -50,6 +50,20 @@ const TeacherAnalytics = ({teacher, coursesIds}) => {
                <Typography variant="h5" sx={{color:colors.grey[400]}}>total likes: <span style={{color:colors.purple[500]}}>{getTotalPlaylitslikes(courses )}</span></Typography>
           </Box>
      )
+}
+
+
+const Variants=() =>{
+  return (
+    <Stack flexGrow={1} spacing={1}>
+      {/* For variant="text", adjust the height via font-size */}
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      {/* For other variants, adjust the size with `width` and `height` */}
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" flexGrow={1}sx={{minWidth:"210px"}} height={60} />
+      <Skeleton variant="rounded"flexGrow={1}sx={{minWidth:"210px"}}   height={60} />
+    </Stack>
+  );
 }
 
 
@@ -103,7 +117,7 @@ const Teachers = () => {
        // -------------------------------
       
      
-     if (loadingTeachers) return <Typography>Loading Teachers...</Typography>;
+     if (loadingTeachers) return <Box display={"flex"} gap={"20px"}  flexWrap={"wrap"}><Variants /><Variants /><Variants /></Box>;
      
      if (error) return <Typography>{ console.log("the error form teachers page: ",error)}Error loading  Teachers !</Typography>;
      

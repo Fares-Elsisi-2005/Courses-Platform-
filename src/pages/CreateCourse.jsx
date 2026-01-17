@@ -104,66 +104,81 @@ export default function CreateCourse() {
   // --------------------------------------------------
   // Submit handler
   // --------------------------------------------------
-  const handleSubmit = async (values, helpers) => {
-    if (!isLastStep) {
-      setStep((prev) => prev + 1);
-      helpers.setTouched({});
-      return;
+ const handleSubmit = async (values, helpers) => {
+  if (!isLastStep) {
+    setStep((prev) => prev + 1);
+    helpers.setTouched({});
+    return;
+  }
+
+  try {
+    // -----------------------------
+    // 1️⃣ Upload main course image
+    // -----------------------------
+    let courseImageUrl = values.image;
+
+    if (values.image instanceof File) {
+      courseImageUrl = await uploadFile(values.image, "image");
     }
 
-    try {
-      if (isEdit) {
-        console.log("EDIT COURSE:", values);
-        editCourse({...values})
-        navigate(`/UserProfile/${user.user.userId}`);
-        toast.success('Course updated successfully!', {
+    // -----------------------------
+    // 2️⃣ Upload all video thumbnails
+    // -----------------------------
+    const playlistWithUrls = await Promise.all(
+      values.playlist.map(async (video) => {
+        // Only upload if it's a File, not already a URL
+        console.log("uploading image : ",video.thumbImage)
+        const thumbUrl =
+          video.thumbImage instanceof File
+            ? await uploadFile(video.thumbImage, "image")
+            : video.thumbImage;
+
+        return { ...video, thumbImage: thumbUrl };
+      })
+    );
+    console.log("playlistWithUrls : ",playlistWithUrls)
+
+    // -----------------------------
+    // 3️⃣ Prepare final course object
+    // -----------------------------
+    const finalCourse = {
+      ...values,
+      image: courseImageUrl,
+      playlist: playlistWithUrls,
+    };
+
+    // -----------------------------
+    // 4️⃣ Save to Firebase
+    // -----------------------------
+    if (isEdit) {
+      await editCourse(finalCourse);
+      toast.success("Course updated successfully!", {
         position: "top-right",
         autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored", 
-        });
-        
-      } else {
-        // values.image is the CROPPED File
-        console.log("IMAGE object :", values.image);
-
-        const imageUrl = await uploadFile(values.image, "image");
-
-        console.log("IMAGE URL:", imageUrl);
-
-        if (uploadError) {
-          console.log("the upload error: ",uploadError)
-        }
-
-        const newCourseId = await addCourse({
-          ...values,
-          image: imageUrl,
-        });
-
-        console.log("NEW COURSE:", newCourseId);
-          toast.success('Course added successfully!', {
+        theme: "colored",
+      });
+    } else {
+      await addCourse(finalCourse);
+      toast.success("Course added successfully!", {
         position: "top-right",
         autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored", 
-        });
-
-        
-        navigate(`/UserProfile/${user.user.userId}`);
-      }
-    } catch (err) {
-      console.error(err);
+        theme: "colored",
+      });
     }
-  };
 
+    // -----------------------------
+    // 5️⃣ Navigate back
+    // -----------------------------
+    navigate(`/UserProfile/${user.user.userId}`);
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to save course. See console for details.", {
+      position: "top-right",
+      autoClose: 5000,
+      theme: "colored",
+    });
+  }
+};
   // --------------------------------------------------
   // Loading guard (edit mode only)
   // --------------------------------------------------
@@ -245,24 +260,17 @@ export default function CreateCourse() {
                   </Button>
                 )}
 
-                {writeCourseLoading?<Button
-                  
-                  variant="contained"
-                  sx={{ backgroundColor: colors.purple[500] }}
-                >
-                  Loding...
-                </Button> :
+                 
                   <Button
                   type="submit"
-                  variant="contained"
+                    variant="contained"
+                    loading={writeCourseLoading ||uploadLoading}
                   sx={{ backgroundColor: colors.purple[500] }}
                 >
                   {isLastStep ? "Publish Course" : "Next"}
                 </Button>
-                }
-
-                {uploadLoading?<Typography>Uploading...</Typography>:null}
-                
+              
+ 
 
               </Box>
             </Box>

@@ -4,6 +4,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
+import Skeleton from '@mui/material/Skeleton';
 import { tokens } from "../theme";
 import { useEffect, useRef, useState,useMemo } from "react";
 import { useNavigate,useParams  } from "react-router-dom";
@@ -16,6 +17,7 @@ import { useGetUser } from "../hooks/useGetUser";
 import { useGetAllCourses } from "../hooks/useGetAllCourses";
 import { useGetCoursesByCategoryId } from "../hooks/useGetCoursesByCategoryId";
 
+
 const CardHeader = ({ userId, courseData }) => {
             
      const theme = useTheme();
@@ -24,7 +26,10 @@ const CardHeader = ({ userId, courseData }) => {
      
 
      const { userData, loading } = useGetUser(userId);
-     if(loading) return <Box>Loading...</Box>
+     if(loading) return <Stack mb={"10px"} flexGrow={1} spacing={1}>
+     <Skeleton variant="circular" width={40} height={40} />
+     <Skeleton variant="rectangular" flexGrow={1}sx={{minWidth:"100px"}} height={60} />
+     </Stack>
  
      return(
            <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
@@ -36,6 +41,19 @@ const CardHeader = ({ userId, courseData }) => {
                </Box>
           </Box>
      )
+}
+
+const Variants=() =>{
+  return (
+    <Stack flexGrow={1} spacing={1}>
+      {/* For variant="text", adjust the height via font-size */}
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      {/* For other variants, adjust the size with `width` and `height` */}
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" flexGrow={1}sx={{minWidth:"210px"}} height={60} />
+      <Skeleton variant="rounded"flexGrow={1}sx={{minWidth:"210px"}}   height={60} />
+    </Stack>
+  );
 }
 
 
@@ -81,12 +99,12 @@ const Courses = () => {
     
     
      if (categoryParam && subCategoryParam) {
-       console.log("categoryParam && subCategoryParam");
+       
        resetPagination2();
        setPaginatedCourses([]);
        loadMoreCoursesBySubCategory();
     } else if (categoryParam) {
-       console.log("categoryParam")
+        
        resetPagination2();
        setPaginatedCourses([]);
        loadMoreCoursesByMainCategory();
@@ -121,7 +139,7 @@ const Courses = () => {
   // -------------------------------
  
 
-  if (loading2 || loadingCoursesbyCategory) return <Typography>Loading courses...</Typography>;
+  if (loading2 || loadingCoursesbyCategory) return  <Box display={"flex"} gap={"20px"}  flexWrap={"wrap"}><Variants /><Variants /><Variants /></Box>;
   if (error2 || error) return <Typography>Error loading  courses</Typography>;
 
    
@@ -149,7 +167,10 @@ const Courses = () => {
           }
         }}
       >
-        {paginatedCourses.map(course => (
+        {paginatedCourses.length === 0 ? (
+          <Typography variant="h4">No courses found</Typography>
+        ) : (
+          paginatedCourses.map(course => (
           <Card
             key={course.id}
             sx={{
@@ -210,7 +231,7 @@ const Courses = () => {
               </Button>
             </CardActions>
           </Card>
-        ))}
+        )))}
       </Box>
 
       {hasMore && hasMore2 && (

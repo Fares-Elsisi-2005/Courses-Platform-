@@ -1,10 +1,11 @@
-import { useTheme, Box, Typography, Divider, Chip, Stack, Button } from "@mui/material";
+import { useTheme, Box,  Stack ,Typography, Divider, Chip,   Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
+import Skeleton from '@mui/material/Skeleton';
 import { tokens } from "../theme";
  import { useMemo,useState,useEffect } from "react";
 import {formatTimestamp,  getimageUrl } from "./../services/serviceProvider";
@@ -41,7 +42,11 @@ const CardHeader = ({ userId, courseData }) => {
      
 
      const { userData, loading } = useGetUser(userId);
-     if(loading) return <Box>Loading...</Box>
+     if(loading) return <Stack mb={"10px"} flexGrow={1} spacing={1}>
+     <Skeleton variant="circular" width={40} height={40} />
+     <Skeleton variant="rectangular" flexGrow={1}sx={{minWidth:"100px"}} height={60} />
+     </Stack>
+ 
  
      return(
            <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
@@ -53,6 +58,20 @@ const CardHeader = ({ userId, courseData }) => {
                </Box>
           </Box>
      )
+}
+
+
+const Variants=() =>{
+  return (
+    <Stack flexGrow={1} spacing={1}>
+      {/* For variant="text", adjust the height via font-size */}
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      {/* For other variants, adjust the size with `width` and `height` */}
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" flexGrow={1}sx={{minWidth:"210px"}} height={60} />
+      <Skeleton variant="rounded"flexGrow={1}sx={{minWidth:"210px"}}   height={60} />
+    </Stack>
+  );
 }
 
 
@@ -116,7 +135,8 @@ const Home = () => {
      // Loading guard (edit mode only)
      // --------------------------------------------------
 
-     if (loading2) return <Typography>Loading  courses...</Typography>;
+     if (loading2) return  <Box display={"flex"} gap={"20px"}  flexWrap={"wrap"}><Variants /><Variants /><Variants /></Box>;
+     {/* <Typography>Loading  courses...</Typography> */ }
      if (error2) return <Typography>Error  paginated courses</Typography>;
 
 

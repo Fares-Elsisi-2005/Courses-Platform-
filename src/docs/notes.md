@@ -2,6 +2,9 @@
 
 search feature for courses and teachers
 comments section
+fix the getTotalComments function and handle it
+
+add default image for courses and videos if there is no image
 picture of videos to be uploaded in cloudinary you can add default image if there is no image
 work on adding load more button on teachers page
 work on responsivness and adjusting the ui in general and ux like loading spiners or alse
@@ -15,6 +18,7 @@ the courses somtimes loads and somtimes not
 you don't need logout for state
 when you remove a course or video you should also update the user data (saved courses, liked videos, enrollment)
 the update is not update the
+cloudnairy do has orphan images
 
 ## ======================(main todo)
 
@@ -31,6 +35,8 @@ work on progross feature
 
 ## =======================(to remember the next task)
 
+liked videos see why its not working
+add arrow back and forward to navigate smothly
 search is work fine but you should revsion the code customize it and fix the search button
 
 search feature for courses and teachers

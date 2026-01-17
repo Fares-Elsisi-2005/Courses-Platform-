@@ -1,4 +1,4 @@
-import {useTheme, Box,Button ,List,ListItem,ListItemButton,ListItemIcon ,ListItemText,Typography    } from "@mui/material";
+import {useTheme, Box,Button ,List,ListItem,ListItemButton,ListItemIcon ,ListItemText,Typography ,Avatar   } from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
@@ -9,8 +9,8 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { getimageUrl,getuserByid} from "./../services/serviceProvider";
-import { useAppData } from "../Contexts/AppContext";
+import { getimageUrl, } from "./../services/serviceProvider";
+ 
 import { useAuth } from "../Contexts/AuthContext";
 
 
@@ -43,7 +43,12 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
                </Box> :  ""}
                
               {user?.user?  <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                     <img style={{width:"80px",height:"80px",borderRadius:"50%"}} src= {getimageUrl(user?.user.image)} alt="profile image" /> 
+                    {/* <img style={{ width: "80px", height: "80px", borderRadius: "50%" }} src={getimageUrl(user?.user.image)} alt="profile image" />  */}
+                    <Avatar
+        alt="profile image"
+        src= {getimageUrl(user?.user.image)}
+        sx={{ width: 56, height: 56 }}
+      />
                     <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
                     <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
                     <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>

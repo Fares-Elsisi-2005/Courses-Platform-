@@ -139,13 +139,36 @@ const { savedPlaylists } = user.user;
                 onClick={() =>
                   navigate(`/Video/${course.id}/${video.videoId}`)
                 }
-                sx={{ cursor: "pointer" }}
+                sx={{ cursor: "pointer",position:"relative", }}
               >
                 <img
                   src={getimageUrl(video.thumbImage)}
                   alt=""
                   style={{ width: "100%" }}
                 />
+
+                    <Box sx={{
+                        position: "absolute",
+                        top: "0",
+                        left: "0",
+                        width: "100%",
+                        height: "calc(100% - 6px)", // Adjust for any border/padding
+                        backgroundColor: "transparent",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        "&:hover": {
+                              backgroundColor:"#0000009c"
+                        },
+                        "&:hover .playIcon": {
+                              display:"block"
+                        }
+                    }}>
+                        <PlayArrowIcon className="playIcon" sx={{color:"white", fontSize:"60px",display:"none"}}/>
+                    </Box>
+
+
+
               </Box>
 
               <Typography variant="h5" mt={1}>
