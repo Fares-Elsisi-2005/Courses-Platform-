@@ -10,7 +10,7 @@ import { useTheme } from "@mui/material/styles";
 import { tokens } from "../theme";
 import { useState } from "react";
 import { getimageUrl} from "./../services/serviceProvider";
-import AddVideoForm from "../components/addVideoForm";
+import AddVideoForm from "../components/AddVideoForm";
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';

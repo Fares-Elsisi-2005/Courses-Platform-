@@ -348,87 +348,98 @@ function TeacherOwnProfile({ userData }) {
                    
                       
                          {
-                              courses.map((course) => (
-                                    
-                                   
-                                   <Card 
-                                   key={course.id}
-                                   sx={{
+                    courses.map((course) => (
+                         <Card
+                              key={course.id}
+                              sx={{
                                    maxWidth: "100%",
                                    display: "flex",
                                    flexDirection: "column",
                                    justifyContent: "space-between",
+                              }}
+                         >
+                              <CardContent>
+                                   <Box display={"flex"} marginBottom={"20px"} gap={"10px"}>
+                                        <Avatar alt="Ardit korko" src={userData.image} />
+                                        <Box>
+                                        <Typography variant="h5">{userData.name}</Typography>
+                                        <Typography variant="h6" sx={{ color: colors.primary[300] }}>
+                                             {formatTimestamp(course.createdAt)}
+                                        </Typography>
+                                        </Box>
+                                        <Button
+                                        sx={{ backgroundColor: colors.blue[100], marginLeft: "auto" }}
+                                        onClick={() => { navigate(`/TeachersCrateCourse/${userData.userId}/${course.id}`) }}
+                                        variant="contained"
+                                        >
+                                        edit
+                                        </Button>
+                                   </Box>
+
+                                   <Box position={"relative"}>
+                                        <CardMedia
+                                        sx={{ height: 260 }}
+                                        image={getimageUrl(course.image)}
+                                        title="green iguana"
+                                        />
+                                        <Box
+                                        sx={{
+                                             width: "fit-content",
+                                             padding: "6px",
+                                             borderRadius: "5px",
+                                             backgroundColor: "#000000ac",
+                                             color: "#fff",
+                                             position: "absolute",
+                                             top: "10px",
+                                             left: "10px",
+                                        }}
+                                        >
+                                        <Typography variant="h6">{`${course.playlist.length} videos`}</Typography>
+                                        </Box>
+                                   </Box>
+
+                                   <Typography variant="h5" component="div" mt={"10px"}>
+                                        {course.title}
+                                   </Typography>
+                              </CardContent>
+
+                              <CardActions
+                                   sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
                                    }}
+                              >
+                                   <Button
+                                        onClick={() => { navigate(`/Course/${course.id}`) }}
+                                        variant="contained"
+                                        sx={{
+                                        backgroundColor: colors.purple[500],
+                                        width: "fit-content",
+                                        color: colors.white[100],
+                                        textTransform: "capitalize",
+                                        "&:hover": {
+                                             backgroundColor: colors.purple[600],
+                                        },
+                                        transition: "all 0.3s",
+                                        }}
                                    >
-                              
-                                        <CardContent>
-                                             <Box display={"flex"} marginBottom={"20px"} gap={"10px"} >
-                                                  
-                                                  <Avatar alt="Ardit korko" src={ userData.image}  /> 
-                                                  <Box>
-                                                       <Typography variant="h5">{ userData.name}</Typography>
-                                                       <Typography variant="h6" sx={{ color: colors.primary[300], }}> { formatTimestamp(course.createdAt)}</Typography>
-     
-                                                  </Box> 
-}
-                                                  <Button sx={{ backgroundColor: colors.blue[100] ,marginLeft:"auto"}} onClick={()=>{navigate(`/TeachersCrateCourse/${userData.userId}/${course.id}`)}} variant="contained" >edit</Button>
-                                                  
-                                                  
-                                             </Box>
-     
-                                             <Box position={"relative"}>
-                                                  <CardMedia
-                                                       sx={{ height: 260 }}
-                                                       image={getimageUrl(course.image)}
-                                                       title="green iguana"
-                                                  />
-                                                  
-                                                  <Box sx={{
-                                                       width: "fit-content",
-                                                       padding: "6px",
-                                                       borderRadius: "5px",
-                                                       backgroundColor: "#000000ac",
-                                                       color: "#fff",
-                                                       position: "absolute",
-                                                       top: "10px",
-                                                       left:"10px"
-                                                       
-                                                  }}>
-                                                       <Typography variant="h6">{`${course.playlist.length} videos`}</Typography>
-                                                       
-                                                  </Box>
-     
-     
-                                             </Box>
-                                             <Typography variant="h5" component="div" mt={"10px"}>
-                                                       {course.title}
-                                             </Typography>
-                                             
-                                        </CardContent>
-                                        <CardActions sx={{
-                                             display: "flex",
-                                             justifyContent:"space-between"
-                                        }}>
-                                             <Button onClick={()=>{navigate(`/Course/${course.id}`)}} variant="contained" sx={{backgroundColor:colors.purple[500],
-                                                  width:"fit-content", 
-                                                  color:colors.white[100],
-                                                  textTransform:"capitalize",
-                                                  "&:hover":{
-                                                       backgroundColor:colors.purple[600]
-                                                  },
-                                                  transition: "all 0.3s"
-                                             }}>View Playlists</Button>
-                                             
-                                              <Checkbox  {...label} onClick={(e)=>{handleSelectedCourse(e.target.checked,course)}} sx={{   color: colors.purple[500],
-                                                       '&.Mui-checked': {
-                                                         color: colors.purple[500],
-                                                       },}} />
-                                        
-                                        </CardActions>
-                                   </Card>
-                              ))
-                         }
-                                        
+                                        View Playlists
+                                   </Button>
+
+                                   <Checkbox
+                                        {...label}
+                                        onClick={(e) => { handleSelectedCourse(e.target.checked, course) }}
+                                        sx={{
+                                        color: colors.purple[500],
+                                        '&.Mui-checked': {
+                                             color: colors.purple[500],
+                                        },
+                                        }}
+                                   />
+                              </CardActions>
+                         </Card>
+                    ))
+                    }          
                 
                     </Box>
                     {courses.length > 10 ?
