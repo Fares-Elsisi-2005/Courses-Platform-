@@ -19,8 +19,8 @@ import { useWriteCourse } from "../hooks/useWriteCourse";
 import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
 import { useCloudinaryUpload } from "../hooks/usecloudinaryUpload";
 
-import BasicInfoStep from "../components/courseBasicInfoForm";
-import CurriculumStep from "../components/courseCurriculumForm";
+import BasicInfoStep from "../components/CourseBasicInfoForm";
+import CurriculumStep from "../components/CourseCurriculumForm";
 
 import { toast } from 'react-toastify';
 
