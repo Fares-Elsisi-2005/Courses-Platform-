@@ -17,7 +17,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Teachers from "./pages/Teachers";
 import BecomeTeacher from "./pages/BecomeTeacher";
-import CreateCourse from "./pages/createCourse";
+import CreateCourse from "./pages/CreateCourse";
 
 import UserProfilePage from "./pages/UserProfilePage"
 import UserProfileUpdate from "./pages/UserProfileUpdate";
