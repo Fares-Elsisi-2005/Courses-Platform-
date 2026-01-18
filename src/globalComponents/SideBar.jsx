@@ -43,7 +43,7 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
                </Box> :  ""}
                
               {user?.user?  <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} p={"25px"} gap={"10px"}>
-                    {/* <img style={{ width: "80px", height: "80px", borderRadius: "50%" }} src={getimageUrl(user?.user.image)} alt="profile image" />  */}
+                  
                     <Avatar
         alt="profile image"
         src= {getimageUrl(user?.user.image)}

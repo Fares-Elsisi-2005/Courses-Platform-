@@ -99,7 +99,7 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
                  
             }}
         >
-            <Typography variant="h2" sx={{color:colors.primary[300]}}>Educa.</Typography>
+            <Typography onClick={()=>{navigate("/")}}  variant="h2" sx={{color:colors.primary[300],cursor:"pointer"}}>Educa.</Typography>
             
            
         {/* SEARCH BAR */}

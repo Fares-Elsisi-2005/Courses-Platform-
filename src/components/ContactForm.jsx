@@ -4,7 +4,8 @@ import * as yup from "yup";
 import { tokens } from "../theme";
 
 import { toast } from 'react-toastify';
-
+ 
+import { useState } from "react";
 
 const initialValues = {
     Name: "",
@@ -33,6 +34,8 @@ const userSchema = yup.object().shape({
 
 
 const ContactForm = () => {
+
+    const [loading, setLoading] = useState(false);
     const isMobile = useMediaQuery("(max-width:700px)");
    /*  const handleFormSubmit = (values) => {
         console.log(values);
@@ -56,7 +59,8 @@ const ContactForm = () => {
     },
   };
 
-  try {
+        try {
+            setLoading(true);
     const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -68,7 +72,8 @@ const ContactForm = () => {
     }
 
     const responseData = await res.text();
-    console.log("SUCCESS!", responseData);
+            console.log("SUCCESS!", responseData);
+        setLoading(false);
 
     toast.success("Message sent successfully!", {
       position: "top-right",
@@ -161,7 +166,8 @@ const ContactForm = () => {
                                 sx={{gridColumn:"span 4"}}
                             />
                             <TextField
-                            fullWidth
+                                fullWidth
+                                type="text"
                             variant="filled"
                             label="Message"
                             name="Message"
@@ -179,10 +185,12 @@ const ContactForm = () => {
 
                         </Box>
 
-                        <Box display="flex" justifyContent="end" mt="20px">
-                            <Button type="submit" color="secondary" variant="contained">
+                        <Box display="flex"  justifyContent="end" mt="20px">
+
+                            <Button type="submit"loading={loading} color="secondary" variant="contained">
                                 Send Message
                             </Button>
+                            
                         </Box>
                     </form>
                 )}

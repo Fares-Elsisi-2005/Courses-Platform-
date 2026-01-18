@@ -31,8 +31,10 @@ const Course = () => {
  
   
     // 🔹 real async data handling
-
-const { savedPlaylists } = user.user;
+  console.log("user that make : ", user)
+ 
+const { savedPlaylists } = user.user?user.user: [];
+   
 
   const [isCourseSaved, setIsCourseSaved] = useState(false);
 
@@ -74,7 +76,11 @@ const { savedPlaylists } = user.user;
       <Typography variant="h3">Playlist Details</Typography>
       <Divider sx={{ my: 2 }} />
 
+      
+
       <Box p={3} borderRadius="10px" bgcolor={colors.primary[200]}>
+        
+        {user.user && (
         <Button
           onClick={handleCourseSaved}
           sx={{ backgroundColor: colors.primary[100], mb: 2 }}
@@ -88,6 +94,7 @@ const { savedPlaylists } = user.user;
             {isCourseSaved ? "Saved" : "Save Playlist"}
           </Typography>
         </Button>
+      )}
 
         <Box display="grid" gap={3} gridTemplateColumns="1fr 1fr">
           <Box>
@@ -124,7 +131,6 @@ const { savedPlaylists } = user.user;
           </Box>
         </Box>
       </Box>
-
       {/* Videos */}
       <Typography variant="h3" mt={4}>
         Playlist Videos

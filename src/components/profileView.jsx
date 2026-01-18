@@ -1,9 +1,9 @@
 import React from "react";
 import { useState ,useMemo} from "react";
-import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton, } from "@mui/material";
+import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton,Stack  } from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
-import {formatTimestamp,getimageUrl,getCoursesById, getuserByid,getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "../services/serviceProvider";
+import {formatTimestamp,getimageUrl, getTotalPlaylists,getTotalVideos,getTotalPlaylitslikes,getTotalEnrolledStudent,getTotalComments} from "../services/serviceProvider";
  
 import { useAuth } from "../Contexts/AuthContext";
 import { useGetTeacherCourses } from "../hooks/useGetCoursesById";
@@ -23,6 +23,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Tooltip from '@mui/material/Tooltip';
+import Skeleton from '@mui/material/Skeleton';
 
 import { useTeacherComments } from "../hooks/useTeacherComments";
 
@@ -33,6 +34,20 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
+
+const Variants=() =>{
+  return (
+    <Stack flexGrow={1} spacing={1}>
+      {/* For variant="text", adjust the height via font-size */}
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      {/* For other variants, adjust the size with `width` and `height` */}
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" flexGrow={1}sx={{minWidth:"210px"}} height={60} />
+      <Skeleton variant="rounded"flexGrow={1}sx={{minWidth:"210px"}}   height={60} />
+    </Stack>
+  );
+}
 
  
 const ProfileView = ({profileUser,currentUser,isOwnProfile,isAdmin}) => {
@@ -346,7 +361,7 @@ function TeacherOwnProfile({ userData }) {
 
                          
                    
-                      
+                       {courses.length === 0 && <Typography variant="h4" sx={{ gridColumn: "span 3" }}>No courses found</Typography>}
                          {
                     courses.map((course) => (
                          <Card
@@ -518,7 +533,7 @@ function TeacherPuplicProfile({ userData }) {
      
      const { courses, loading, error } = useGetTeacherCourses(teacherCourseIds);
 
-     if (loading) return <Box>loading...</Box>
+     if (loading) return <Box display={"flex"} gap={"20px"}  flexWrap={"wrap"}><Variants /><Variants /><Variants /></Box>
      
      return (
             <Box>
@@ -588,6 +603,7 @@ function TeacherPuplicProfile({ userData }) {
                          }}>
                    
                       
+                         {courses.length === 0 && <Typography variant="h4" sx={{ gridColumn: "span 3" }}>No courses found</Typography>}
                          {
                               courses.map((course) => (
                                    <Card key={course.id} sx={{ maxWidth: "100%", display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
