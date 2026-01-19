@@ -96,7 +96,13 @@ const { savedPlaylists } = user.user?user.user: [];
         </Button>
       )}
 
-        <Box display="grid" gap={3} gridTemplateColumns="1fr 1fr">
+        <Box display="grid" gap={3}  sx={{
+        gridTemplateColumns :{
+         
+                              xs: "1fr", // tablet → 3 cards
+                              sm: "repeat(2, 1fr)", 
+      }
+      }}>
           <Box>
             <img
               src={getimageUrl(course.image)}
@@ -137,7 +143,14 @@ const { savedPlaylists } = user.user?user.user: [];
       </Typography>
       <Divider sx={{ my: 2 }} />
 
-      <Box display="grid" gap={2} gridTemplateColumns="repeat(3, 1fr)">
+      <Box display="grid" gap={2} sx={{
+        gridTemplateColumns :{
+         
+                              xs: "1fr", // tablet → 3 cards
+                              sm: "repeat(2, 1fr)", 
+                              md: "repeat(3, 1fr)", 
+      }
+      }} >
         {course.playlist.map((video) => (
           <Card key={video.videoId}>
             <CardContent>

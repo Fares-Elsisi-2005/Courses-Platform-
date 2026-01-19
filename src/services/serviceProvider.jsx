@@ -125,11 +125,35 @@ export function getimageUrl(image) {
   
 
 // formate time
-  export function formatTimestamp(timestamp) {
+ export function formatTimestamp(timestamp) {
   if (!timestamp) return "";
-  return timestamp.toDate().toLocaleDateString();
+
+  let date;
+
+  // Firestore Timestamp
+  if (typeof timestamp.toDate === "function") {
+    date = timestamp.toDate();
+  }
+  // ISO string or normal date string
+  else if (typeof timestamp === "string") {
+    date = new Date(timestamp);
+  }
+  // Already a Date object
+  else if (timestamp instanceof Date) {
+    date = timestamp;
+  } else {
+    return "";
+  }
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
-  
+
 /* ============================(switching to fire base)=================================new to */
   
 /* 

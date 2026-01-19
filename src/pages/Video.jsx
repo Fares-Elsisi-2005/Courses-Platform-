@@ -78,8 +78,7 @@ const Video = () => {
       if (!videoData) {
      return <Typography>Video not found</Typography>;
      }
-
-
+ 
 
 function handleVideoLiked() {
   setIslike((prev) => {
@@ -181,7 +180,7 @@ function handleVideoLiked() {
                                    <Avatar alt="Ardit korko" src= {getimageUrl(userData?.image)}  /> 
                                    <Box>
                                              <Typography variant="h5">{userData?.name}</Typography>
-                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>{ userData?.createdAt}</Typography>
+                                        <Typography variant="h6" sx={{color:colors.primary[300],}}>{ formatTimestamp( userData?.createdAt )}</Typography>
 
                                    </Box>
                               </Box>

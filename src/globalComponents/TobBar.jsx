@@ -208,10 +208,11 @@ const TobBar = ({ isCollapsed, setIsCollapsed }) => {
         </Box> :null}
          
          
-        <MenuItem onClick={()=>{
-              handleClickLogin()
-          
-        }}>
+        <MenuItem  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleClickLogin();
+  }}>
           <ListItemIcon>
             <LoginIcon fontSize="small" />
           </ListItemIcon>
