@@ -170,6 +170,28 @@ const Home = () => {
                          },
                          }}
                          >
+                         {currentUserRole == "teacher"?
+                         <Box sx={{
+                              backgroundColor: colors.primary[200],
+                              borderRadius: "10px",
+                              padding: "20px",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "10px",
+                              height: "fit-content",
+                              justifyContent:"center"
+                              , alignItems:"center"
+                              
+                              
+                         }}>
+                              <Typography variant="h4" sx={{marginBottom:"10px"}}>Create New Course</Typography>
+                              <Button loading={loading} onClick={() => { navigate(`/TeachersCrateCourse/${user.user.userId}`) }} variant="contained" sx={{backgroundColor:colors.blue[100], width:"fit-content", color:colors.white[100]  }}>Add Course</Button>
+                                                            
+
+                              
+                              
+                         </Box>:<></>
+                         }
                          {currentUserRole !== "guest"  ? 
                               <Box sx={{
                               backgroundColor: colors.primary[200],
