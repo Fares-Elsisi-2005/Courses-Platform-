@@ -21,6 +21,8 @@ import { useAuth } from "../Contexts/AuthContext";
 import { useGetUser } from "../hooks/useGetUser";
 import { useGetAllCourses } from "../hooks/useGetAllCourses";
 
+import {useFirebaseLogin} from "../hooks/useFirebaseLogin"
+
 
 
 const allIcons = { 
@@ -79,6 +81,10 @@ const Home = () => {
      const { state } = useAppData();
      const {  categories } = state;
      const { user } = useAuth();  
+     const storageUser = JSON.parse(localStorage.getItem("currentUserData"));
+     const [isLoginIn,setIsLoginIn] = useState(storageUser.user?true:false);
+  
+     const { loading, loginWithGoogle } = useFirebaseLogin();
      
      let currentUserRole = user?.role || "guest";
      
@@ -129,6 +135,12 @@ const Home = () => {
      setPaginatedCourses((prev) => [...prev, ...newCourses]);
      };
   
+     
+     const handleClickLogin = () => {
+     
+     loginWithGoogle();
+     
+     }
 
 
      // --------------------------------------------------
@@ -183,7 +195,30 @@ const Home = () => {
                               
                               
                          </Box>
-                         :<></>}
+                         : <Box sx={{
+                              backgroundColor: colors.primary[200],
+                              borderRadius: "10px",
+                              padding: "20px",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "10px",
+                              height: "fit-content",
+                              justifyContent:"center"
+                              , alignItems:"center"
+                              
+                              
+                         }}>
+                              <Typography variant="h4" sx={{marginBottom:"10px"}}>login  first</Typography>
+                              <Button loading={loading} onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleClickLogin();
+                              }} variant="contained" sx={{backgroundColor:colors.orange[100], width:"fit-content", color:colors.white[100]  }}>Login</Button>
+                                                            
+
+                              
+                              
+                         </Box>}
                          <Box sx={{
                               backgroundColor: colors.primary[200],
                               borderRadius: "10px",

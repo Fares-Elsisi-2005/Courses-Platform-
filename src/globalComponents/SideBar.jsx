@@ -13,6 +13,8 @@ import { getimageUrl, } from "./../services/serviceProvider";
  
 import { useAuth } from "../Contexts/AuthContext";
 
+import {useFirebaseLogin} from "../hooks/useFirebaseLogin"
+
 
  
 const SideBar = ({ isCollapsed, setIsCollapsed }) => {
@@ -24,6 +26,14 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
      const isSmallScreen = useMediaQuery('(max-width:900px)');
      const ismobile = useMediaQuery('(max-width:500px)');
      const navigate = useNavigate();
+     
+     const { loading, loginWithGoogle } = useFirebaseLogin();
+     const handleClickLogin = () => {
+     
+          loginWithGoogle();
+     
+     }
+
     
      return (
           <Box maxWidth={ismobile?"200":"360px"} sx={{
@@ -52,7 +62,32 @@ const SideBar = ({ isCollapsed, setIsCollapsed }) => {
                     <Typography variant="h3" sx={{color:colors.primary[300],whiteSpace:"nowrap"}}>{user?.user.name}</Typography>
                     <Typography variant="h5" sx={{ color: colors.grey[400] }}>{user?.role}</Typography>
                     <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"180px", color:colors.white[100]  }}>View Profile</Button>
-               </Box>:null}
+               </Box>:
+               <Box sx={{
+                              backgroundColor: colors.primary[200],
+                              borderRadius: "10px",
+                              padding: "20px",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "10px",
+                              height: "fit-content",
+                              justifyContent:"center"
+                              , alignItems:"center"
+                              
+                              
+                         }}>
+                              <Typography variant="h4" sx={{marginBottom:"10px"}}>login now</Typography>
+                              <Button loading={loading} onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleClickLogin();
+                              }} variant="contained" sx={{backgroundColor:colors.orange[100], width:"fit-content", color:colors.white[100]  }}>Login</Button>
+                                                            
+
+                              
+                              
+                         </Box> 
+               }
                <List>
 
                     <ListItem disablePadding >

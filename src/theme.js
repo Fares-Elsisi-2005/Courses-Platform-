@@ -35,6 +35,9 @@ export const tokens = (mode) => ({
         },
         blue: {
             100:"#2177e8"
+        },
+        orange:{
+            100:"#fd9b0a"
         }
     }
         :
@@ -71,6 +74,10 @@ export const tokens = (mode) => ({
             },
         blue: {
             100:"#2177e8"
+        },
+    
+        orange:{
+            100:"#fd9b0a"
         }
     })
 })
