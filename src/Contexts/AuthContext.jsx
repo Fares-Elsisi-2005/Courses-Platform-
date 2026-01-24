@@ -1,7 +1,6 @@
- 
   // src/Contexts/AuthContext.jsx
-import { createContext, useReducer, useEffect, useContext, useRef } from "react";
-import { onAuthStateChanged, getRedirectResult } from "firebase/auth";
+import { createContext, useReducer, useEffect, useContext } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../config/firebase-config";
 import { AuthReducer } from "../Reducers/AuthReducer";
@@ -17,26 +16,24 @@ const initialState = storageUser ?? {
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatchUser] = useReducer(AuthReducer, initialState);
-  const redirectHandled = useRef(false); // prevents double execution
 
-  // ✅ Handle Google Redirect Result (Mobile Fix)
+  // 🔐 Firebase Auth Listener (Single Source of Truth)
   useEffect(() => {
-    const handleRedirectLogin = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) {
+        dispatchUser({ type: "LOGOUT" });
+        return;
+      }
+
       try {
-        if (redirectHandled.current) return;
-
-        const result = await getRedirectResult(auth);
-        redirectHandled.current = true;
-
-        if (!result?.user) return;
-
-        const firebaseUser = result.user;
         const userRef = doc(db, "users", firebaseUser.uid);
         const snapshot = await getDoc(userRef);
 
-        // Create Firestore user if not exists
+        let userData;
+
+        // ✅ Create user if not exists (important for redirect timing)
         if (!snapshot.exists()) {
-          const userData = {
+          userData = {
             userId: firebaseUser.uid,
             name: firebaseUser.displayName,
             email: firebaseUser.email,
@@ -50,35 +47,9 @@ export const AuthProvider = ({ children }) => {
           };
 
           await setDoc(userRef, userData);
+        } else {
+          userData = snapshot.data();
         }
-      } catch (error) {
-        console.error("Redirect login error:", error);
-      }
-    };
-
-    handleRedirectLogin();
-  }, []);
-
-  // 🔐 Firebase Auth Listener
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      // ⛔ Not logged in
-      if (!firebaseUser) {
-        dispatchUser({ type: "LOGOUT" });
-        return;
-      }
-
-      try {
-        const userRef = doc(db, "users", firebaseUser.uid);
-        const snapshot = await getDoc(userRef);
-
-        // ⛔ Firestore user missing (wait instead of logout)
-        if (!snapshot.exists()) {
-          console.warn("Firestore user not ready yet, waiting...");
-          return;
-        }
-
-        const userData = snapshot.data();
 
         dispatchUser({
           type: "LOGIN",
@@ -93,14 +64,15 @@ export const AuthProvider = ({ children }) => {
         });
 
       } catch (error) {
-        console.error("Auth check failed:", error);
+        console.error("Auth error:", error);
+        dispatchUser({ type: "LOGOUT" });
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  // 💾 Sync to localStorage
+  // 💾 Persist session
   useEffect(() => {
     localStorage.setItem("currentUserData", JSON.stringify(state));
   }, [state]);
