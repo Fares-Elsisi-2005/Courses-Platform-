@@ -78,13 +78,14 @@ const Variants=() =>{
 
 
 const Home = () => {
-     const { state } = useAppData();
-     const {  categories } = state;
-     const { user } = useAuth();  
-     const storageUser = JSON.parse(localStorage.getItem("currentUserData"));
-     const [isLoginIn,setIsLoginIn] = useState(storageUser.user?true:false);
-  
-     const { loading, loginWithGoogle } = useFirebaseLogin();
+      console.log("Home component rendering");
+      const { state } = useAppData();
+      const { categories } = state;
+      const { user } = useAuth();
+      const storageUser = JSON.parse(localStorage.getItem("currentUserData"));
+      const [isLoginIn,setIsLoginIn] = useState(storageUser?.user?true:false);
+
+      const { loading, loginWithGoogle } = useFirebaseLogin();
      
      let currentUserRole = user?.role || "guest";
      
@@ -125,9 +126,10 @@ const Home = () => {
      
      // Initial fetch
      useEffect(() => {
+          console.log("Home useEffect running");
           resetPagination();
           setPaginatedCourses([]);
-          loadMoreCourses(); 
+          loadMoreCourses();
      }, []);
 
      const loadMoreCourses = async () => {
@@ -154,7 +156,8 @@ const Home = () => {
 
 
 
-     return ( 
+     console.log("Home returning JSX");
+     return (
           <Box display={"flex"} flexDirection={"column"} gap={"50px"} >
                <Box>
                     <Typography variant="h3">Quick Options</Typography>

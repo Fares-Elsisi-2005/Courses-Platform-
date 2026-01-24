@@ -19,7 +19,9 @@ export const AuthProvider = ({ children }) => {
 
   // 🔐 Firebase Auth Listener (Single Source of Truth)
   useEffect(() => {
+    console.log("AuthContext useEffect running");
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      console.log("onAuthStateChanged fired, firebaseUser:", firebaseUser);
       if (!firebaseUser) {
         dispatchUser({ type: "LOGOUT" });
         return;

@@ -17,6 +17,7 @@ export function useGetAllCourses() {
 
   const getCourses = async () => {
     try {
+      console.log("Fetching courses from Firestore");
       setLoading(true);
       setError(null);
 
@@ -43,6 +44,7 @@ export function useGetAllCourses() {
 
       return courses;
     } catch (err) {
+      console.log("Error fetching courses:", err);
       setError(err.message);
       console.log(err);
       return [];
