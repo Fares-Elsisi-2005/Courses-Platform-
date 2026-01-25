@@ -1,17 +1,22 @@
  import { db } from "../config/firebase-config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
+import { useState } from "react";
 
 export function useConvertToTeacher() {
   const { user, dispatchUser } = useAuth();
+  const [convertionLoding, setConvertionLoading] = useState(false);
+  const [isTeacher, setIsTeacher]= useState( user?.role === "teacher")
+
   
   const convertToTeacher = async () => {
+    setConvertionLoading(true);
     const userRef = doc(db, "users", user.user.userId);
     const snapshot = await getDoc(userRef);
 
     if (snapshot.exists()) {
       const userData = snapshot.data();
-      console.log("User data in firebase:", userData);
+      console.log("User data to be converted in firebase:", userData);
 
       const newUserData = {
         ...userData,
@@ -31,16 +36,21 @@ export function useConvertToTeacher() {
           role: newUserData.role,
         },
       });
+
+      setConvertionLoading(false);
+      setIsTeacher(true);
     } else {
       console.log("User not found");
 
       dispatchUser({
         type: "LOGOUT",
       });
+      setConvertionLoading(false);
+
     }
   };
 
-  return { convertToTeacher };
+  return { convertToTeacher, convertionLoding,isTeacher };
 }
 /* 
 take the current user id
