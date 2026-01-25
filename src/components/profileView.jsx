@@ -329,10 +329,10 @@ function TeacherOwnProfile({ userData }) {
                </Box>
                <Box mt={"30px"}> 
                     <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
-                         <Box>
+                         <Box display={"flex"} justifyContent={"center"} alignItems={"center"} gap={"5px"}>
                                    <Button onClick={()=>{navigate(`/UserProfile/${user.user.userId}`)}} sx={{ color: colors.grey[400] }}>Coures</Button>
                                    <span style={{ color: colors.dark[300] }}>&gt;</span>
-                                   <Button onClick={() => { navigate(`/TeachersCrateCourse/${user.user.userId}`) }} sx={{ color: colors.blue[100] }}>Add new course</Button> 
+                                   <Button onClick={() => { navigate(`/TeachersCrateCourse/${user.user.userId}`) }} variant="contained" sx={{backgroundColor:colors.blue[100], width:"fit-content", color:colors.white[100], fontSize:"10px" }}>Add new course</Button> 
                          </Box>
                          
                           {selectedCourses.length > 0 ?
