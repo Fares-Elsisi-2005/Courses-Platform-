@@ -30,25 +30,31 @@ function buildCommentTree(comments) {
 }
 
 const Comments = ({ data ,loading, error, addComment, editComment, deleteComment  }) => {
- 
+  
   const treeData = useMemo(() => buildCommentTree(data), [data]);
    
-   const [commentsData, setCommentsData] = useState(treeData );
+  const [commentsData, setCommentsData] = useState(treeData );
+
    useEffect(() => {
   setCommentsData(treeData);
    }, [treeData]);
   
-  const { insertNode, editNode, deleteNode } = useNode();
-
+    const { insertNode, editNode, deleteNode } = useNode();
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-  /* const navigate = useNavigate(); */
-  const handleInsertNode = (comment, input) => {
   
+  const handleInsertNode = (comment, input) => {
+      console.log("comment:",comment);
+      console.log("input:",input);
+   
+   
     addComment({
-  text: input,
-  parentId: comment.id === 1 ? null : comment.id
-});
+      text: input,
+      parentId: comment.id === 1 ? null : comment.id
+    });
+
+
+
   };
 
   const handleEditNode = (folderId, value) => {

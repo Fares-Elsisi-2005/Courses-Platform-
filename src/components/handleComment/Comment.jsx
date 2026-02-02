@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {formatTimestamp,getimageUrl } from "../../services/serviceProvider";
  
+ 
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -69,8 +70,10 @@ const Comment = ({
   comment,
   commentLength,
   loading  ,
-  error 
-}) => { 
+  error,
+  courseId,
+  videoId
+}) => {
 
    const { user } = useAuth();
   const theme = useTheme();
@@ -83,10 +86,13 @@ const Comment = ({
   const [isAllowComment, setIsAllowComment] = useState(input.length > 0);
   const inputRef = useRef(null);
 
+
+
   // new style
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    console.log("event",event.currentTarget)
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -108,15 +114,16 @@ const Comment = ({
   };
 
   const onAddComment = () => {
+     
     if (editMode) {
-      
       handleEditNode(comment.id, inputRef?.current?.innerText || "");
     } else {
       setExpand(true);
-      handleInsertNode(comment , input);//here
-      
+      handleInsertNode(comment , input); 
       setShowInput(false);
       setInput("");
+      
+    
     }
 
     if (editMode) setEditMode(false);
@@ -376,13 +383,4 @@ export default Comment;
 
  
 
-
-           /* <>
-                        <img
-                        src={expand ? UpArrow : DownArrow}
-                        width={10}
-                        height={10}
-                        alt=""
-                        style={{ marginRight: 4,color:colors.primary[300] }}
-                        
-                      /> */
+ 

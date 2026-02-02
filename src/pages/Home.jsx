@@ -9,7 +9,7 @@ import Skeleton from '@mui/material/Skeleton';
 import { tokens } from "../theme";
  import { useMemo,useState,useEffect } from "react";
 import {formatTimestamp,  getimageUrl } from "./../services/serviceProvider";
-import * as FaIcons from "react-icons/fa"; // all fontawesome icons
+import * as FaIcons from "react-icons/fa"; 
 import * as IoIcons from "react-icons/io5";
 import * as MdIcons from "react-icons/md";
 import * as HiIcons from "react-icons/hi";
@@ -23,6 +23,7 @@ import { useGetAllCourses } from "../hooks/useGetAllCourses";
 
 import {useFirebaseLogin} from "../hooks/useFirebaseLogin"
 
+import { useUserCommentsCounts } from "../hooks/useUserCommentsCounts";
 
 
 const allIcons = { 
@@ -78,7 +79,7 @@ const Variants=() =>{
 
 
 const Home = () => {
-      console.log("Home component rendering");
+      
       const { state } = useAppData();
       const { categories } = state;
       const { user } = useAuth();
@@ -94,6 +95,8 @@ const Home = () => {
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate(); 
      const [paginatedCourses, setPaginatedCourses] = useState([]);
+     const [comments, setComments] = useState([]);
+     
      
      const {
      getCourses,
@@ -102,6 +105,8 @@ const Home = () => {
      error2,
      hasMore,
      } = useGetAllCourses();
+
+     const {  getCommentsByUserId,loadingCommentsCounts,errorComments,} = useUserCommentsCounts(user?.user?.userId);
 
 
 
@@ -126,11 +131,19 @@ const Home = () => {
      
      // Initial fetch
      useEffect(() => {
-          console.log("Home useEffect running");
           resetPagination();
           setPaginatedCourses([]);
           loadMoreCourses();
      }, []);
+
+       useEffect(() => {
+        const fetchComments = async () => {
+            const commentsData = await getCommentsByUserId();
+            setComments(commentsData);
+        };
+
+        fetchComments();
+    }, []);
 
      const loadMoreCourses = async () => {
      const newCourses = await getCourses();
@@ -149,14 +162,17 @@ const Home = () => {
      // Loading guard (edit mode only)
      // --------------------------------------------------
 
+     if(loadingCommentsCounts) return <Box>Loading comments counts...</Box>;
+
      if (loading2) return  <Box display={"flex"} gap={"20px"}  flexWrap={"wrap"}><Variants /><Variants /><Variants /></Box>;
-     {/* <Typography>Loading  courses...</Typography> */ }
+     
+     if (errorComments) return <Typography>Error   comments counts</Typography>;
      if (error2) return <Typography>Error  paginated courses</Typography>;
 
+      
 
 
-
-     console.log("Home returning JSX");
+ 
      return (
           <Box display={"flex"} flexDirection={"column"} gap={"50px"} >
                <Box>
@@ -211,8 +227,8 @@ const Home = () => {
                               <Typography variant="h4" sx={{marginBottom:"10px",width:"100%"}}>Likes And Comments</Typography>
                               <Typography variant="h5">total Liked Videos: <span style={{color:colors.purple[500]}}>{user.user.likedVideos.length}</span></Typography>
                               <Button onClick={()=>{navigate("/LikedVideos")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Liked vidoes</Button>
-                              <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>{user.user.userCommentsId.length}</span></Typography>
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View comments</Button>
+                              <Typography variant="h5">total Comments: <span style={{color:colors.purple[500]}}>{comments.length}</span></Typography>
+                              <Button onClick={()=>{navigate("/UserComments")}}   variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View comments</Button>
                               <Typography variant="h5">Saved Playlists: <span style={{ color: colors.purple[500] }}>{user.user.savedPlaylists.length}</span></Typography>
                               <Button  onClick={()=>{navigate("/SavedPlaylits")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100]  }}>View Playlists</Button>
                              

@@ -13,6 +13,7 @@ import ContactUs from "./pages/ContactUs";
 import Course from "./pages/Course";
 import Courses from "./pages/Courses";
 import SavedPlaylits from  "./pages/SavedPlaylists";
+import UserCommentsPage from "./pages/UserCommentsPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Teachers from "./pages/Teachers";
@@ -99,6 +100,7 @@ function App() {
  
                 <Route path="/Course/:id" element={<Course />} /> 
                 <Route path="/SavedPlaylits" element={<SavedPlaylits />} /> 
+                <Route path="/UserComments" element={<UserCommentsPage />} />
                     
                     {/* Protected route */}
                   <Route

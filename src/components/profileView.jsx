@@ -1,5 +1,5 @@
 import React from "react";
-import { useState ,useMemo} from "react";
+import { useState ,useMemo,useEffect} from "react";
 import { useTheme, Box, Button, Typography, Divider, Avatar, Checkbox, IconButton,Stack  } from "@mui/material";
 import { tokens } from "../theme";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Skeleton from '@mui/material/Skeleton';
 
 import { useTeacherComments } from "../hooks/useTeacherComments";
-
+import { useUserCommentsCounts } from "../hooks/useUserCommentsCounts";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -51,23 +51,38 @@ const Variants=() =>{
 
  
 const ProfileView = ({profileUser,currentUser,isOwnProfile,isAdmin}) => {
-   /*  const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    const navigate = useNavigate();
-     const { state } = useAppData();
-     const { courses, users } = state;
- */
+
+      const { user } = useAuth();
+     const [comments, setComments] = useState([]);
+     const {  getCommentsByUserId,loadingCommentsCounts,errorComments,} = useUserCommentsCounts(user?.user?.userId);
       
+      useEffect(() => {
+             const fetchComments = async () => {
+                 const commentsData = await getCommentsByUserId();
+                 setComments(commentsData);
+             };
+     
+             fetchComments();
+         }, []);
+
+         
+     // --------------------------------------------------
+     // Loading guard (edit mode only)
+     // --------------------------------------------------
+
+     if(loadingCommentsCounts) return <Box>Loading comments counts...</Box>;
+     
+     if (errorComments) return <Typography>Error   comments counts</Typography>;
  
      if (isOwnProfile) {
           if (currentUser.role == "admin") {
-                return <AdminProfile/>
+                return <AdminProfile commentsCounts={comments.length}/>
           }
           if (currentUser.role == "student") {
-               return <StudentOwnProfile userData={profileUser}/>
+               return <StudentOwnProfile userData={profileUser} commentsCounts={comments.length}/>
           }
           if (currentUser.role == "teacher") {
-               return <TeacherOwnProfile userData={profileUser} />
+               return <TeacherOwnProfile userData={profileUser} commentsCounts={comments.length} />
           }
         
           
@@ -76,10 +91,10 @@ const ProfileView = ({profileUser,currentUser,isOwnProfile,isAdmin}) => {
      if (!isOwnProfile) {
           if (currentUser.role == "admin") {
                if (profileUser.role == "student") {
-               return <StudentOwnProfile/>
+               return <StudentOwnProfile commentsCounts={comments.length}/>
                }
                if (profileUser.role == "teacher") {
-                    return <TeacherOwnProfile userData={profileUser} />
+                    return <TeacherOwnProfile userData={profileUser} commentsCounts={comments.length} />
                }
           }
           else {
@@ -103,7 +118,7 @@ function AdminProfile() {
      return <Box>Admin</Box>
 }
 
-function StudentOwnProfile({ userData }) {
+function StudentOwnProfile({ userData ,commentsCounts}) {
     
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
@@ -160,11 +175,11 @@ function StudentOwnProfile({ userData }) {
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"}  >
                               <Box display={"flex"}>
                                     <ModeCommentIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
-                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.userCommentsId.length}</span></Typography>
+                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{commentsCounts}</span></Typography>
                               </Box>
-                              <Tooltip title="Coming soon">
-                              <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
-                              </Tooltip>
+                              
+                              <Button onClick={()=>{navigate("/UserComments")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
+                            
                          </Box>
                          
                         
@@ -181,7 +196,7 @@ function StudentOwnProfile({ userData }) {
      
 }
 
-function TeacherOwnProfile({ userData }) {
+function TeacherOwnProfile({ userData,commentsCounts }) {
      const theme = useTheme();
      const colors = tokens(theme.palette.mode);
      const navigate = useNavigate();
@@ -313,11 +328,11 @@ function TeacherOwnProfile({ userData }) {
                          <Box backgroundColor={colors.primary[100]} p={"20px"} borderRadius={"7px"}  >
                               <Box display={"flex"}>
                                     <ModeCommentIcon sx={{fontSize:"50px",p:"10px", backgroundColor:colors.primary[300],color:colors.primary[200],borderRadius:"8px",mr:"20px"}}/>
-                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{userData.userCommentsId.length}</span></Typography>
+                                   <Typography variant="h4" sx={{ color: colors.grey[400] }} >your comments: <span style={{ color: colors.purple[500], fontWeight: "bold", fontSize: "20px", display: "block" }}>{commentsCounts}</span></Typography>
                               </Box>
-                              <Tooltip title="Coming soon">
-                                   <Button variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
-                              </Tooltip>
+                              
+                              <Button  onClick={()=>{navigate("/UserComments")}} variant="contained" sx={{backgroundColor:colors.purple[500], width:"fit-content", color:colors.white[100], margin:"20px 0"  }}>View Comments</Button>
+                             
                          </Box>
                          
                         

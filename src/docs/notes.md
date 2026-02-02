@@ -1,7 +1,5 @@
 ## ============(todos to deploy at nearst time )
-
-search feature for courses and teachers
-comments section
+ 
 fix the getTotalComments function and handle it
 
 add default image for courses and videos if there is no image
@@ -9,7 +7,7 @@ picture of videos to be uploaded in cloudinary you can add default image if ther
 work on adding load more button on teachers page
 work on responsivness and adjusting the ui in general and ux like loading spiners or alse
 check firebase rules and move it to production mode
-when user click on unavailable category then show a message
+ 
 when you remove a course or video you should also update the user data (saved courses, liked videos, enrollment)
 
 ## =====================(important notes and issus you should be awears of)
@@ -30,6 +28,13 @@ work on progross feature
 add arrow back and forward to navigate smothly
 
 ## =======================(to remember the next task)
+solve the problem of updating the user data
+when you remove a course or video you should also update the user data (saved courses, liked videos, enrollment)
+
+continue the user comments page and link it to the analytics
+
+the side bar need to be scroallbale
+customize the useComments hook so it can get the comments of the user by its id then inject the data in the  Comments component 
 
 Validate URL format (YouTube) before saving
 
@@ -139,3 +144,5 @@ What do you think? Have you faced similar challenges in your projects? I'd love 
 #React #JavaScript #FullStack #WebDevelopment #Firebase #ProblemSolving #LearningJourney #OpenSource
 
 This post is engaging, highlights your effort and challenges, includes technical details, and encourages interaction. You can replace [GitHub Link] with your actual repository URL when posting.
+
+
